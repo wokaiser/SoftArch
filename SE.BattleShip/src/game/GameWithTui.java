@@ -1,9 +1,11 @@
 package game;
 
-import playground.Coordinates;
-import util.observer.IObserver;
-import general.Constances;
+import interfaces.IObserver;
+
 import java.util.*;
+
+import model.general.Constances;
+import model.playground.Coordinates;
 import controller.GameController;
 
 /** 

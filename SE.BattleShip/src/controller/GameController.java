@@ -2,11 +2,12 @@ package controller;
 
 import java.util.LinkedList;
 import java.util.List;
-import general.Constances;
-import general.Status;
-import playground.Coordinates;
-import playground.Playground;
-import playground.Ship;
+
+import model.general.Constances;
+import model.general.Status;
+import model.playground.Coordinates;
+import model.playground.Playground;
+import model.playground.Ship;
 import util.observer.Observable;
 
 /** 

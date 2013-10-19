@@ -1,23 +1,26 @@
 package game;
 
-import general.Constances;
-import gui.PlaygroundFrame;
-import gui.StatusPanel;
+import interfaces.IObserver;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
 import javax.swing.*;
+
+import model.general.Constances;
+import view.gui.PlaygroundFrame;
+import view.gui.StatusPanel;
 import controller.GameController;
-import util.observer.IObserver;
 
 /** 
  * The GameWithGui class supports playing Battleships over a graphical user interface.
  * @author Dennis Parlak
  */
 public class GameWithGui implements IObserver {
-	private static final long serialVersionUID = 956420925709077363L;
+	
 	private static final int DEFAULT_PANEL_WIDTH = 1200;
 	private static final int DEFAULT_PANEL_HEIGHT = 710;
 	

@@ -1,12 +1,11 @@
 package controller;
 
-import general.Constances;
-
 import java.util.LinkedList;
 import java.util.List;
 
-import playground.Playground;
-import playground.Coordinates;
+import model.general.Constances;
+import model.playground.Coordinates;
+import model.playground.Playground;
 
 /** 
  * The Class AI guesses the next Shot.

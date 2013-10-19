@@ -1,5 +1,7 @@
 package util.observer;
 
+import interfaces.IObserver;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;

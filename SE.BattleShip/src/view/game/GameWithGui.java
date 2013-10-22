@@ -1,4 +1,4 @@
-package game;
+package view.game;
 
 import interfaces.IObserver;
 
@@ -10,9 +10,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import model.general.Constances;
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
+import model.general.Constances;
 import controller.GameController;
 
 /** 
@@ -173,8 +173,8 @@ public class GameWithGui implements IObserver {
 					return;
 				}
 				int status = controller.shoot(null);
-				ownFrame.sync();
-				enemyFrame.sync();
+				ownFrame.update();
+				enemyFrame.update();
 				if (Constances.SHOOT_HIT != status && Constances.SHOOT_DESTROYED != status) {
 					break;
 				}

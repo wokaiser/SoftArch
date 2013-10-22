@@ -18,11 +18,7 @@ import util.observer.Observable;
 public class GameController extends Observable {
 	public static final String AI_PLAYER_1 = "Computer 1";
 	public static final String AI_PLAYER_2 = "Computer 2";
-	/* the length of the different ship types */
-	private static final int LENGTHBATTLESHIP = 5;
-	private static final int LENGTHCRUISER = 4;
-	private static final int LENGTHDESTROYER = 3;
-	private static final int LENGTHSUBMARINE = 2;
+
 	/* game types */
 	public static final int MULTIPLAYER = 1;
 	public static final int SINGLEPLAYER = 2;
@@ -118,14 +114,14 @@ public class GameController extends Observable {
 	 */
 	private List<Ship> createShips() {
 		List<Ship> tmp = new LinkedList<Ship>();
-		tmp.add(new Ship("Battleship", LENGTHBATTLESHIP, 'A'));
-		tmp.add(new Ship("1st Cruiser", LENGTHCRUISER, 'B'));
-		tmp.add(new Ship("2nd Cruiser", LENGTHCRUISER, 'C'));
-		tmp.add(new Ship("1st Destroyer", LENGTHDESTROYER , 'D'));
-		tmp.add(new Ship("2nd Destroyer", LENGTHDESTROYER, 'E'));
-		tmp.add(new Ship("1st Submarine", LENGTHSUBMARINE, 'F'));
-		tmp.add(new Ship("2nd Submarine", LENGTHSUBMARINE, 'G'));
-		tmp.add(new  Ship("3rd Submarine", LENGTHSUBMARINE, 'H'));
+		tmp.add(new Ship("Battleship", Ship.LENGTHBATTLESHIP, 'A'));
+		tmp.add(new Ship("1st Cruiser", Ship.LENGTHCRUISER, 'B'));
+		tmp.add(new Ship("2nd Cruiser", Ship.LENGTHCRUISER, 'C'));
+		tmp.add(new Ship("1st Destroyer", Ship.LENGTHDESTROYER , 'D'));
+		tmp.add(new Ship("2nd Destroyer", Ship.LENGTHDESTROYER, 'E'));
+		tmp.add(new Ship("1st Submarine", Ship.LENGTHSUBMARINE, 'F'));
+		tmp.add(new Ship("2nd Submarine", Ship.LENGTHSUBMARINE, 'G'));
+		tmp.add(new  Ship("3rd Submarine", Ship.LENGTHSUBMARINE, 'H'));
 		return tmp;
 	}
 	

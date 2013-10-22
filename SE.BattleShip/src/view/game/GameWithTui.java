@@ -1,4 +1,4 @@
-package game;
+package view.game;
 
 import interfaces.IObserver;
 

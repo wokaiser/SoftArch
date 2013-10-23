@@ -128,12 +128,12 @@ public class GameWithTui implements IObserver {
 				y = INPUT.nextInt();
 				if (!target.setColumn(x))
 				{
-					System.err.println("Invalid input! Only use numbers that are in the playfield!");
+					printMessage("Invalid input! Only use numbers that are in the playfield!", MessageType.Err);
 					continue;
 				}
 				if (!target.setRow(y))
 				{
-					System.err.println("Invalid input! Only use numbers that are in the playfield!");
+					printMessage("Invalid input! Only use numbers that are in the playfield!", MessageType.Err);
 					continue;
 				}
 				break;

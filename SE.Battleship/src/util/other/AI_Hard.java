@@ -294,7 +294,9 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @param c Coordinate to mark around
 	 */
 	private void markAroundShip(int dR, int dC, int i, Coordinates c) {
-		if((c.setRow(ship.get(i).getRow() + dR))  && (c.setColumn(ship.get(i).getColumn() + dC)) &&	(!playgroundAI.alreadyShot(c))) {
+		if((c.setRow(ship.get(i).getRow() + dR)) &&
+			(c.setColumn(ship.get(i).getColumn() + dC)) &&
+			(!playgroundAI.alreadyShot(c))) {
 			playgroundAI.shoot(c);
 			removeFromRange(c);
 		}

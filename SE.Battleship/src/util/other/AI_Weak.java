@@ -32,7 +32,7 @@ public class AI_Weak extends AI_Base implements IAi {
 	public Coordinates shoot() {
 		Coordinates target = new Coordinates(this.rows, this.columns);
 		target = aIguess();
-		this.playgroundAI.shoot(target);
+		playgroundAI.shoot(target);
 		removeFromRange(target);
 		return target;
 	}
@@ -42,13 +42,11 @@ public class AI_Weak extends AI_Base implements IAi {
 	 * @return true if nothing was hit
 	 */
 	public boolean setFlags(int shootStatus) {
-		if (shootStatus == Constances.SHOOT_HIT) {
+		if (shootStatus == Constances.SHOOT_HIT || shootStatus == Constances.SHOOT_DESTROYED) {
 			return false;
-		} else if (shootStatus == Constances.SHOOT_DESTROYED) {
-			return false;
-		} else {
-			return true;
-		}	
+		}
+			
+		return true;
 	}	
 	/**
 	 * AI guesses next shot

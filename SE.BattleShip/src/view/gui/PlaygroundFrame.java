@@ -121,7 +121,7 @@ public class PlaygroundFrame implements ActionListener {
 	 * To sync them call this method. The playground will be updated
 	 * with the playground from the controller.
 	 */
-	public void sync() {
+	public void update() {
 		char [][] playground = getActivePlayground();
 
 	    for (int row = 0; row < this.controller.getRows(); row++) {
@@ -156,7 +156,7 @@ public class PlaygroundFrame implements ActionListener {
 					target.setRow(row);
 					target.setColumn(column);
 					controller.shoot(target);
-					sync();
+					update();
 					controller.gameFinished();
 				}
 	    	}

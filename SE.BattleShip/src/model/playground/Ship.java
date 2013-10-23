@@ -12,6 +12,13 @@ public class Ship {
 	private int health;
 	
 	private static final int SUNKEN = 0;
+	
+	/* the length of the different ship types */
+	public static final int LENGTHBATTLESHIP = 5;
+	public static final int LENGTHCRUISER = 4;
+	public static final int LENGTHDESTROYER = 3;
+	public static final int LENGTHSUBMARINE = 2;
+	
 	public static final int MIN_SHIP_SIZE = 2;
 	public static final int MAX_SHIP_SIZE = 5;
 	public static final int MIN_SHIP_NAME_LENGTH = 1;

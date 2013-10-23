@@ -22,6 +22,7 @@ public class AI_Hard extends AI_Base implements IAi {
 	private List<Coordinates> ship;
 	private enum Direction {None, North, East, South, West}
 	private Direction direct = Direction.None;
+	private Coordinates coords;
 	
 	private static final int MIN_DIRECT = 1;
 	private static final int TWO = 2;
@@ -38,15 +39,15 @@ public class AI_Hard extends AI_Base implements IAi {
 		if (r <= 0 || c <= 0) {
 			throw new IllegalArgumentException("Only positive arguments allowed!");
 		}
-		this.rows = r;
-		this.columns = c;
-		this.playgroundAI = new Playground(r, c);
+		setRows(r);
+		setColumns(c);
+		setPlaygroundAI(new Playground(r, c));
 		this.coords = new Coordinates(r, c);
 		this.firstHit = new Coordinates(r, c);
 		this.wasHit = false;
 		this.wasHitFirst = true;
 		this.ship = new LinkedList<Coordinates>();
-		this.range = new LinkedList<Coordinates>();
+		setRange(new LinkedList<Coordinates>());
 		fillRange();
 	}
 	/**
@@ -54,9 +55,9 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @return Coordinates to which the AI shoots
 	 */
 	public Coordinates shoot() {
-		Coordinates target = new Coordinates(this.rows, this.columns);
+		Coordinates target = new Coordinates(getRows(), getColumns());
 		target = aIguess();
-		this.playgroundAI.shoot(target);
+		getPlaygroundAI().shoot(target);
 		removeFromRange(target);
 		return target;
 	}
@@ -83,18 +84,18 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @return Coordinates to shot to
 	 */
 	private Coordinates aIguess() {
-		Coordinates result = new Coordinates(rows, columns);
+		Coordinates result = new Coordinates(getRows(), getColumns());
 		/* mark the last shot on the own playground */		
 		ifDestroyed();
 		ifWasHitFirst();
 		if (!this.wasHit && direct == Direction.None)
 		{
 			while (true) {
-				Coordinates tmp = new Coordinates(rows, columns);
+				Coordinates tmp = new Coordinates(getRows(), getColumns());
 				tmp = randomCoordinates();
 				result.setRow(tmp.getRow());
 				result.setColumn(tmp.getColumn());
-				if (!playgroundAI.alreadyShot(result)) {
+				if (!getPlaygroundAI().alreadyShot(result)) {
 					setCoords(result);
 					return result;
 				}
@@ -107,7 +108,7 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * Handle AI when a ship was destroyed
 	 */
 	private void ifDestroyed() {
-		Coordinates tmp = new Coordinates(rows, columns);
+		Coordinates tmp = new Coordinates(getRows(), getColumns());
 		if (shipDestroyed) {
 			tmp.setRow(this.coords.getRow());
 			tmp.setColumn(this.coords.getColumn());
@@ -119,6 +120,14 @@ public class AI_Hard extends AI_Base implements IAi {
 			this.wasHit = false;
 			this.wasHitFirst = true;
 		}
+	}
+	/**
+	 * Set the coordinates of this Object
+	 * @param The value to be set
+	 */
+	private void setCoords(Coordinates input) {
+		coords.setRow(input.getRow());
+		coords.setColumn(input.getColumn());
 	}
 	/**
 	 * Handle AI when ship was hit first
@@ -135,8 +144,8 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @return
 	 */
 	private Coordinates chooseDirection() {
-		Coordinates tmp = new Coordinates(rows, columns);
-		Coordinates result = new Coordinates(rows, columns);
+		Coordinates tmp = new Coordinates(getRows(), getColumns());
+		Coordinates result = new Coordinates(getRows(), getColumns());
 		tmp.setRow(this.coords.getRow());
 		tmp.setColumn(this.coords.getColumn());
 		if (wasHit) {
@@ -173,9 +182,9 @@ public class AI_Hard extends AI_Base implements IAi {
 			coords = aIguess(coords, dA);
 		} else {
 			coords = aIguess(firstHit, dB);
-			if (playgroundAI.alreadyShot(coords)) {
+			if (getPlaygroundAI().alreadyShot(coords)) {
 				coords = aIguess(firstHit, dC);
-				if (playgroundAI.alreadyShot(coords)) {
+				if (getPlaygroundAI().alreadyShot(coords)) {
 					coords = aIguess(firstHit, dD);
 				}
 			}
@@ -215,7 +224,7 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @return
 	 */
 	private Coordinates aIdirectionGuess(Direction dir, Coordinates lastShot) {
-		Coordinates tmp = new Coordinates(rows, columns);
+		Coordinates tmp = new Coordinates(getRows(), getColumns());
 		tmp.setRow(lastShot.getRow());
 		tmp.setColumn(lastShot.getColumn());
 		int x = lastShot.getColumn();
@@ -227,7 +236,7 @@ public class AI_Hard extends AI_Base implements IAi {
 		case North:
 			this.direct = Direction.North;
 			tmp.setColumn(--x);
-			if (playgroundAI.alreadyShot(tmp)) {
+			if (getPlaygroundAI().alreadyShot(tmp)) {
 				tmp.setColumn(++x);
 				return null;
 			}
@@ -235,7 +244,7 @@ public class AI_Hard extends AI_Base implements IAi {
 		case East:
 			this.direct = Direction.East;
 			tmp.setRow(++y);
-			if (playgroundAI.alreadyShot(tmp)) {
+			if (getPlaygroundAI().alreadyShot(tmp)) {
 				tmp.setRow(--y);
 				return null;
 			}
@@ -243,7 +252,7 @@ public class AI_Hard extends AI_Base implements IAi {
 		case South:
 			this.direct = Direction.South;
 			tmp.setColumn(++x);
-			if (playgroundAI.alreadyShot(tmp)) {
+			if (getPlaygroundAI().alreadyShot(tmp)) {
 				tmp.setColumn(--x);
 				return null;
 			}
@@ -251,7 +260,7 @@ public class AI_Hard extends AI_Base implements IAi {
 		case West:
 			this.direct = Direction.West;
 			tmp.setRow(--y);
-			if (playgroundAI.alreadyShot(tmp)) {
+			if (getPlaygroundAI().alreadyShot(tmp)) {
 				tmp.setRow(++y);
 				return null;
 			}
@@ -282,7 +291,7 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * Mark all places surrounding a sunken ship
 	 */
 	private void markAroundShip() {
-		Coordinates tmp = new Coordinates(rows, columns);
+		Coordinates tmp = new Coordinates(getRows(), getColumns());
 		int length = ship.size();
 		for (int i = 0; i < length; i++) {
 			markAroundShip(1, 0, i, tmp);
@@ -305,8 +314,8 @@ public class AI_Hard extends AI_Base implements IAi {
 	private void markAroundShip(int dR, int dC, int i, Coordinates c) {
 		if((c.setRow(ship.get(i).getRow() + dR)) &&
 			(c.setColumn(ship.get(i).getColumn() + dC)) &&
-			(!playgroundAI.alreadyShot(c))) {
-			playgroundAI.shoot(c);
+			(!getPlaygroundAI().alreadyShot(c))) {
+			getPlaygroundAI().shoot(c);
 			removeFromRange(c);
 		}
 	}

@@ -8,6 +8,8 @@ import model.playground.Playground;
 import interfaces.IAi;
 
 public class AI_Weak extends AI_Base implements IAi {
+
+	private Coordinates coords;
 	
 	/**
 	 * Sets the range of the field which the AI needs to know
@@ -18,11 +20,11 @@ public class AI_Weak extends AI_Base implements IAi {
 		if (r <= 0 || c <= 0) {
 			throw new IllegalArgumentException("Only positive arguments allowed!");
 		}
-		rows = r;
-		columns = c;
-		playgroundAI = new Playground(r, c);
+		setRows(r);
+		setColumns(c);
+		setPlaygroundAI(new Playground(r, c));
 		coords = new Coordinates(r, c);
-		range = new LinkedList<Coordinates>();
+		setRange(new LinkedList<Coordinates>());
 		fillRange();
 	}
 	/**
@@ -30,9 +32,9 @@ public class AI_Weak extends AI_Base implements IAi {
 	 * @return Coordinates to which the AI shoots
 	 */
 	public Coordinates shoot() {
-		Coordinates target = new Coordinates(this.rows, this.columns);
+		Coordinates target = new Coordinates(getRows(), getColumns());
 		target = aIguess();
-		playgroundAI.shoot(target);
+		getPlaygroundAI().shoot(target);
 		removeFromRange(target);
 		return target;
 	}
@@ -54,16 +56,24 @@ public class AI_Weak extends AI_Base implements IAi {
 	 * @return Coordinates to shot to
 	 */
 	private Coordinates aIguess() {
-		Coordinates result = new Coordinates(rows, columns);
+		Coordinates result = new Coordinates(getRows(), getColumns());
 		while (true) {
-			Coordinates tmp = new Coordinates(rows, columns);
+			Coordinates tmp = new Coordinates(getRows(), getColumns());
 			tmp = randomCoordinates();
 			result.setRow(tmp.getRow());
 			result.setColumn(tmp.getColumn());
-			if (!playgroundAI.alreadyShot(result)) {
+			if (!getPlaygroundAI().alreadyShot(result)) {
 				setCoords(result);
 				return result;
 			}
 		}
+	}
+	/**
+	 * Set the coordinates of this Object
+	 * @param The value to be set
+	 */
+	private void setCoords(Coordinates input) {
+		coords.setRow(input.getRow());
+		coords.setColumn(input.getColumn());
 	}
 }

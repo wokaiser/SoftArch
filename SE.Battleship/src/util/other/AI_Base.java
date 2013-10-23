@@ -7,11 +7,52 @@ import model.playground.Playground;
 
 public abstract class AI_Base {
 	
-	protected int rows, columns;
-	protected List<Coordinates> range;
-	protected Playground playgroundAI;
-	protected Coordinates coords;
-
+	private int rows, columns;
+	private List<Coordinates> range;
+	private Playground playgroundAI;
+	
+	/**
+	 * @return Returns the number of rows in the playfield
+	 */
+	protected int getRows() {
+		return rows;
+	}
+	/**
+	 * @return Returns the number of columns in the playfield
+	 */
+	protected int getColumns() {
+		return columns;
+	}
+	/**
+	 * Sets the number of rows in the playfield
+	 */
+	protected void setRows(int rows) {
+		this.rows = rows;
+	}
+	/**
+	 * Sets the number of columnds in the playfield
+	 */
+	protected void setColumns(int columns) {
+		this.columns = columns;
+	}
+	/**
+	 * Sets the range from which the ai chooses its random guess
+	 */
+	protected void setRange(List<Coordinates> range) {
+		this.range = range;
+	}
+	/**
+	 * @return Returns the playground the ai marks its hits and misses for guessing
+	 */
+	protected Playground getPlaygroundAI() {
+		return playgroundAI;
+	}
+	/**
+	 * Sets the playground where the ai marks its hits and misses for guessing
+	 */
+	protected void setPlaygroundAI(Playground playgroundAI) {
+		this.playgroundAI = playgroundAI;
+	}
 	/**
 	 * Chooses a random coordinate
 	 * @return A coordinate
@@ -33,14 +74,6 @@ public abstract class AI_Base {
 		int tmp = max;
 		tmp++;
 		return (int) (Math.random() * (tmp - min) + min); 
-	}
-	/**
-	 * Set the coordinates of this Object
-	 * @param The value to be set
-	 */
-	protected void setCoords(Coordinates input) {
-		this.coords.setRow(input.getRow());
-		this.coords.setColumn(input.getColumn());
 	}
 	/**
 	 * Fills the Range of all availible fields

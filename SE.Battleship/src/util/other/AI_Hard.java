@@ -188,13 +188,7 @@ public class AI_Hard extends AI_Base implements IAi {
 	 * @param d Direction to shot to
 	 * @return Coordinates to shot to
 	 */
-	private Coordinates aIguess(Coordinates c, Direction d) {
-		int x, y;
-		Coordinates tmp = new Coordinates(this.rows, this.columns);
-		tmp.setRow(c.getRow());
-		tmp.setColumn(c.getColumn());
-		y = c.getRow();
-		x = c.getColumn();
+	private Coordinates aIguess(Coordinates lastShot, Direction d) {
 		Direction dir = d; 
 		int i = 0;
 		while(true) {
@@ -206,51 +200,66 @@ public class AI_Hard extends AI_Base implements IAi {
 				this.ship.clear();
 				return aIguess();
 			}
-			switch (dir) {
-			case None:
-				dir = random();
-				continue;
-			case North:
-				this.direct = Direction.North;
-				tmp.setColumn(--x);
-				if (playgroundAI.alreadyShot(tmp)) {
-					tmp.setColumn(++x);
-					dir = random();
-					continue;
-				}
-				return tmp;
-			case East:
-				this.direct = Direction.East;
-				tmp.setRow(++y);
-				if (playgroundAI.alreadyShot(tmp)) {
-					tmp.setRow(--y);
-					dir = random();
-					continue;
-				}
-				return tmp;
-			case South:
-				this.direct = Direction.South;
-				tmp.setColumn(++x);
-				if (playgroundAI.alreadyShot(tmp)) {
-					tmp.setColumn(--x);
-					dir = random();
-					continue;
-				}
-				return tmp;
-			case West:
-				this.direct = Direction.West;
-				tmp.setRow(--y);
-				if (playgroundAI.alreadyShot(tmp)) {
-					tmp.setRow(++y);
-					dir = random();
-					continue;
-				}
-				return tmp;
-			default:
-				throw new IllegalStateException();	
+			Coordinates nextShot = aIdirectionGuess(dir, lastShot);
+			if(nextShot != null) { 
+				return nextShot;
 			}
+			
+			dir = random();
 		}
-	}
+	}	
+	/**
+	 * Guesses in a specific direction
+	 * @param dir Direction to shoot to
+	 * @param lastShot Coordinates of the last shot
+	 * @return
+	 */
+	private Coordinates aIdirectionGuess(Direction dir, Coordinates lastShot) {
+		Coordinates tmp = new Coordinates(rows, columns);
+		tmp.setRow(lastShot.getRow());
+		tmp.setColumn(lastShot.getColumn());
+		int x = lastShot.getColumn();
+		int y = lastShot.getRow();
+		
+		switch (dir) {
+		case None:
+			return null;
+		case North:
+			this.direct = Direction.North;
+			tmp.setColumn(--x);
+			if (playgroundAI.alreadyShot(tmp)) {
+				tmp.setColumn(++x);
+				return null;
+			}
+			return tmp;
+		case East:
+			this.direct = Direction.East;
+			tmp.setRow(++y);
+			if (playgroundAI.alreadyShot(tmp)) {
+				tmp.setRow(--y);
+				return null;
+			}
+			return tmp;
+		case South:
+			this.direct = Direction.South;
+			tmp.setColumn(++x);
+			if (playgroundAI.alreadyShot(tmp)) {
+				tmp.setColumn(--x);
+				return null;
+			}
+			return tmp;
+		case West:
+			this.direct = Direction.West;
+			tmp.setRow(--y);
+			if (playgroundAI.alreadyShot(tmp)) {
+				tmp.setRow(++y);
+				return null;
+			}
+			return tmp;
+		default:
+			throw new IllegalStateException();	
+		}
+	}	
 	/**
 	 * Generate a random Direction
 	 * @return A random direction

@@ -10,9 +10,13 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
+import modules.AiModule;
 import controller.GameController;
 
 /** 
@@ -197,7 +201,9 @@ public class GameWithGui implements IObserver {
 	 * main method.
 	 */
 	public static void main( String[] args ) {
-		GameController controller = new GameController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		Injector inject = Guice.createInjector(new AiModule());
+		GameController controller = inject.getInstance(GameController.class);
+		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		GameWithGui gui = new GameWithGui(controller);
 		controller.addObserver(gui);
 	}

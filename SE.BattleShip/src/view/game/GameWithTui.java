@@ -4,8 +4,12 @@ import interfaces.IObserver;
 
 import java.util.*;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import model.general.Constances;
 import model.playground.Coordinates;
+import modules.AiModule;
 import controller.GameController;
 
 /** 
@@ -159,7 +163,9 @@ public class GameWithTui implements IObserver {
 	 * main method.
 	 */
 	public static void main( String[] args ) {
-		GameController controller = new GameController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		Injector inject = Guice.createInjector(new AiModule());
+		GameController controller = inject.getInstance(GameController.class);
+		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		GameWithTui tui = new GameWithTui(controller);
 		controller.addObserver(tui);
 		tui.loop();

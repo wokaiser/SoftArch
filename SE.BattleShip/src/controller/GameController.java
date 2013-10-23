@@ -1,7 +1,11 @@
 package controller;
 
+import interfaces.IAi;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import com.google.inject.Inject;
 
 import model.general.Constances;
 import model.general.Status;
@@ -30,13 +34,13 @@ public class GameController extends Observable {
 	private String player1;
 	private String player2;
 	/* AI for player 1 and 2 */
-	private AI player1AI;
-	private AI player2AI;
+	private IAi player1AI;
+	private IAi player2AI;
 	/* the active playground switch after each turn and determine which player turn it is */
 	private Playground enemyPlayground;
 	private String enemyPlayer;
 	private Playground ownPlayground;
-	private AI activeAI;
+	private IAi activeAI;
 	private String activePlayer;
 	/* the status object log information about important method calls like shoot(..) */
 	private Status status;
@@ -44,14 +48,22 @@ public class GameController extends Observable {
 	private int gameType;
 
 	/**
-	 * Creates a new game
+	 * Creates a new game	 
+	 */
+	@Inject
+	public GameController(IAi player1Ai, IAi player2Ai) {
+		player1AI = player1Ai;
+		player2AI = player2Ai;		
+	}
+	/**
+	 * Initialiue this controller
 	 * @param rows The number of rows of the playground
 	 * @param columns The number of columns of the playground
 	 * @param The name of player1 (if it should be a computer player use AI_PLAYER_1)
 	 * @param The name of player2 (if it should be a computer player use AI_PLAYER_2)
 	 * @param The gameType (SINGLEPLAYER or MULITPLAYER)
 	 */
-	public GameController(int rows, int columns, String player1, String player2, int gameType) {
+	public void initController(int rows, int columns, String player1, String player2, int gameType) {
 		newController(rows, columns, player1, player2, gameType);
 	}
 	
@@ -72,8 +84,8 @@ public class GameController extends Observable {
 		this.playground2 = new Playground(rows, columns);
 		this.player1 = player1;
 		this.player2 = player2;
-		this.player1AI = new AI(rows, columns);
-		this.player2AI = new AI(rows, columns);
+		player1AI.initialize(rows, columns);
+		player2AI.initialize(rows, columns);
 		this.playground1.placeShipsRandom(fleet1);
 		this.playground2.placeShipsRandom(fleet2);
 		this.enemyPlayground = this.playground2;
@@ -88,8 +100,7 @@ public class GameController extends Observable {
 		this.switchedPlayer = false;
 		this.gameType = gameType;
 		this.checkGameType();
-	}
-	
+	}	
 	/**
 	 * check for correct game type
 	 * @throws exception if gameType is not SINGLEPLAYER or MULTIPLAYER

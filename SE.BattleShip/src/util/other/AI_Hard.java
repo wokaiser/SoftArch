@@ -1,4 +1,6 @@
-package controller;
+package util.other;
+
+import interfaces.IAi;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +14,7 @@ import model.playground.Playground;
  * @author Wolfgang Kaiser
  */
 
-public class AI {
+public class AI_Hard implements IAi{
 	
 	private Playground playgroundAI;
 	private Coordinates coords, firstHit;
@@ -31,25 +33,25 @@ public class AI {
 	private static final int ABORT_AMOUNT = 50;
 	
 	/**
-	 * Create a AI object.
+	 * Sets the range of the field which the AI needs to know
 	 * @param r The maximum number of row to use.
 	 * @param c The maximum number of column to use.
 	 */
-	public AI(int r, int c) {
+	public void initialize(int r, int c) {
 		if (r <= 0 || c <= 0) {
 			throw new IllegalArgumentException("Only positive arguments allowed!");
 		}
 		this.rows = r;
 		this.columns = c;
-		this.wasHit = false;
-		this.wasHitFirst = true;
 		this.playgroundAI = new Playground(r, c);
 		this.coords = new Coordinates(r, c);
 		this.firstHit = new Coordinates(r, c);
+		this.wasHit = false;
+		this.wasHitFirst = true;
 		this.ship = new LinkedList<Coordinates>();
 		this.range = new LinkedList<Coordinates>();
 		fillRange();
-	}	
+	}
 	/**
 	 * The AI Shoots
 	 * @return Coordinates to which the AI shoots

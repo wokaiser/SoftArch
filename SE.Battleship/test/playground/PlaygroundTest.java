@@ -1,8 +1,10 @@
 package playground;
 
-import general.Constances;
+import model.general.Constances;
+import model.playground.Coordinates;
+import model.playground.Playground;
+import model.playground.Ship;
 import junit.framework.TestCase;
-import playground.Playground;
 
 public class PlaygroundTest extends TestCase {
 	
@@ -121,33 +123,9 @@ public class PlaygroundTest extends TestCase {
 			//shoot
 			playground.shoot(target);
 			fail("Should have raised an IllegalArgumentException");
-		}
-		catch (IllegalArgumentException expected) {
+		} catch (IllegalArgumentException expected) {
 			
 		}
-	}
-	
-	public void testToString() throws Exception {
-		String matrix = "";
-		Playground playground = new Playground(12, 12);
-		Coordinates target = new Coordinates(12, 12);
-		for (int row = 0; row < 12; row++) {
-			for (int column = 0; column < 12; column++){
-				matrix += "0 ";
-			}
-			matrix += "\n";
-		}
-		//place a ship on the playground and check if the ship is visible
-		//(ships should be not visible)
-		Ship shipA = new Ship("Ship in testAlreadyShot", 3, 'A');
-		//place a ship
-		assertTrue(playground.placeShip(target, shipA, Playground.DIRECTION_DOWN));
-		//shoot to the hip
-		assertTrue(Constances.SHOOT_HIT == playground.shoot(target));
-		
-		System.out.println(playground.enemyView());
-		System.out.println(playground.ownView());
-		
 	}
 	
 	public void testAlreadyShot() throws Exception {

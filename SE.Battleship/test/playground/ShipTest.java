@@ -1,5 +1,6 @@
 package playground;
 
+import model.playground.Ship;
 import junit.framework.TestCase;
 
 public class ShipTest extends TestCase {

@@ -1,7 +1,7 @@
 package playground;
 
+import model.playground.Coordinates;
 import junit.framework.TestCase;
-import playground.Coordinates;
 
 public class CoordinatesTest extends TestCase {
 
@@ -41,15 +41,5 @@ public class CoordinatesTest extends TestCase {
 		//get row and column and check if it is as expected
 		assertTrue(4 == c.getRow());
 		assertTrue(3 == c.getColumn());		
-	}
-	
-	public void testToString() throws Exception {
-		Coordinates c = new Coordinates(5, 5);
-		//check if row and column are default
-		assertTrue(c.toString().compareTo("row: 0\ncolumn: 0") == 0);
-		//set row and column to other values
-		c.setRow(2);
-		c.setColumn(3);
-		assertTrue(c.toString().compareTo("row: 2\ncolumn: 3") == 0);
 	}
 }

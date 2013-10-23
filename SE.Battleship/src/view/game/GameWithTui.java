@@ -17,7 +17,9 @@ import controller.GameController;
  * @author Dennis Parlak
  */
 public class GameWithTui implements IObserver {
+	
 	private static final Scanner INPUT = new Scanner(System.in);
+	private enum MessageType { Out, Err };
 	private GameController controller;
 	private int gametype;
 	private String player1;
@@ -43,27 +45,39 @@ public class GameWithTui implements IObserver {
 		}
 		output();
 	}
+	/**
+	 * Prints the messsage to stdout
+	 * @param message
+	 * @param type
+	 */
+	private void printMessage(String message, MessageType type) {
+		if(type == MessageType.Out) {
+			System.out.println(message);
+		} else {
+			System.err.println(message);
+		}
+	}
 	
 	/**
 	 * Lets the user choose the game type
 	 */
 	private void selectGameType() {
-		System.out.println("\nWelcome to BATTLESHIPS !!!\n\n");
+		printMessage("\nWelcome to BATTLESHIPS !!!\n\n", MessageType.Out);
 		while (true) {
 			try {
-				System.out.println("What kind of game would you like to start?");
-				System.out.println("(1) Player vs. Player");
-				System.out.println("(2) Player vs. AI");
+				printMessage("What kind of game would you like to start?", MessageType.Out);
+				printMessage("(1) Player vs. Player", MessageType.Out);
+				printMessage("(2) Player vs. AI", MessageType.Out);
 				gametype = INPUT.nextInt();
 				if (GameController.MULTIPLAYER != gametype && GameController.SINGLEPLAYER != gametype) {
 					throw new IllegalArgumentException();
 				}
 				break;
 			} catch (InputMismatchException x) {
-				System.err.println("Invalid input! Only use numbers!");
+				printMessage("Invalid input! Only use numbers!", MessageType.Err);
 				INPUT.next();
 			} catch (IllegalArgumentException x) {
-				System.err.println("Invalid number entered! Only the given Options are allowed!");
+				printMessage("Invalid number entered! Only the given Options are allowed!", MessageType.Err);
 			}
 		}
 	}	
@@ -74,14 +88,14 @@ public class GameWithTui implements IObserver {
 	private void enterNames() {
 		switch (gametype) {
 		case GameController.SINGLEPLAYER:
-			System.out.println("Please enter your name:");
+			printMessage("Please enter your name:", MessageType.Out);
 			player1 = INPUT.next();
 			player2 = GameController.AI_PLAYER_1;
 			break;
 		case GameController.MULTIPLAYER:
-			System.out.println("Player 1, please enter your Name:");
+			printMessage("Player 1, please enter your Name:", MessageType.Out);
 			player1 = INPUT.next();
-			System.out.println("Player 2, please enter your Name:");
+			printMessage("Player 2, please enter your Name:", MessageType.Out);
 			player2 = INPUT.next();
 			break;
 		}
@@ -109,7 +123,7 @@ public class GameWithTui implements IObserver {
 		int x, y;
 		while (true) {
 			try {
-				System.out.println("Please input Coordinates:");
+				printMessage("Please input Coordinates:", MessageType.Out);
 				x = INPUT.nextInt();
 				y = INPUT.nextInt();
 				if (!target.setColumn(x))
@@ -124,7 +138,7 @@ public class GameWithTui implements IObserver {
 				}
 				break;
 			} catch (InputMismatchException z) {
-				System.err.println("Invalid input! Only use numbers!");
+				printMessage("Invalid input! Only use numbers!", MessageType.Err);
 				INPUT.next();
 			}
 		}
@@ -136,11 +150,11 @@ public class GameWithTui implements IObserver {
 	 */
 	public void output() {
 		if (0 < controller.getStatus().getErrorCount()) {
-			System.err.println(controller.getStatus().getError());	
+			printMessage(controller.getStatus().getError(), MessageType.Err);	
 		}
 
 		if (0 < controller.getStatus().getTextCount()) {
-			System.out.println(controller.getStatus().getText());	
+			printMessage(controller.getStatus().getText(), MessageType.Out);	
 		}
 		controller.getStatus().clear();
 	}
@@ -151,12 +165,12 @@ public class GameWithTui implements IObserver {
 	@Override
 	public void update() {
 		output();
-		System.out.println("****************************************");
-		System.out.println("Own playground ("+controller.getActivePlayer()+")");
-		System.out.println(controller.getOwnPlaygroundAsString());
-		System.out.println("Enemy playground ("+controller.getEnemyPlayer()+")");
-		System.out.println(controller.getEnemyPlaygroundAsString());
-		System.out.println("****************************************");
+		printMessage("****************************************", MessageType.Out);
+		printMessage("Own playground ("+controller.getActivePlayer()+")", MessageType.Out);
+		printMessage(controller.getOwnPlaygroundAsString(), MessageType.Out);
+		printMessage("Enemy playground ("+controller.getEnemyPlayer()+")", MessageType.Out);
+		printMessage(controller.getEnemyPlaygroundAsString(), MessageType.Out);
+		printMessage("****************************************", MessageType.Out);
 	}
 	
 	/**

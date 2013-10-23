@@ -4,6 +4,11 @@ import javax.swing.ImageIcon;
 
 public final class Resources {
 	
+	/**
+	 * Singleton to prevent creation of this class
+	 */
+	private Resources() { }
+	
 	public static final int ICON_WIDTH = 50;
 	public static final int ICON_HEIGHT = 50;
 	public static final ImageIcon CELL_INIT_ICON = new ImageIcon("resources/icons/cell_init.gif");

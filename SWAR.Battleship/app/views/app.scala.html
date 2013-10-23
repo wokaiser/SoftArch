@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+  	<head>
+        @header()
+  	</head>
+    
+  	<body>    
+      <script type="text/x-handlebars">
+            <div class="container">
+                <nav class="navbar navbar-default" role="navigation">
+                  <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Battleship</a>
+                  </div>
+
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                      <li>{{#link-to 'playground'}}Playground{{/link-to}}</li>
+                      <li>{{#link-to 'about'}}About{{/link-to}}</li>
+                    </ul>
+                  </div><!-- /.navbar-collapse -->
+                </nav>
+                
+                {{outlet}}
+            </div>
+        </script>
+        
+        
+        <script type="text/x-handlebars" id="playground">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class='table'>
+                        <thead>
+                            <tr><th>own Playground</th></tr>
+                        </thead>
+
+                        <table border="1">
+                        {{#each row in ownPlayground}}
+                            <tr>
+                            {{#each column in row}}
+                                <div {{action "anActionName" target=view}}>
+                                <td>                                
+                                    <img src='@routes.Assets.at("images/{{unbound column}}.gif")' alt="{{column}}"></img>
+                                </td>
+                                </div>
+
+                            {{/each}}
+                            </tr>
+                        {{/each}}
+                        </table>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <table class='table'>
+                        <thead>
+                            <tr><th>enemy Playground</th></tr>
+                        </thead>
+
+                        <table border="1">
+                        {{#each row in enemyPlayground}}
+                            <tr>
+                            {{#each column in row}}
+                                <div {{action "anActionName" target=view}}>
+                                <td>                                
+                                    <img src='@routes.Assets.at("images/{{unbound column}}.gif")' alt="{{column}}"></img>
+                                </td>
+                                </div>
+
+                            {{/each}}
+                            </tr>
+                        {{/each}}
+                        </table>
+                    </table>
+                </div>
+                
+            </div>
+            {{#if error}}
+                <div class="alert alert-danger">{{error}}</div>
+            {{/if}}
+        </script>
+
+            <script type="text/x-handlebars" id="about">
+                This is the Battleship game for SWAR.
+            </script>
+        
+        
+            @footer()
+  </body>
+</html>

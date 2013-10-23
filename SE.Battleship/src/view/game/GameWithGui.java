@@ -16,7 +16,7 @@ import com.google.inject.Injector;
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
-import modules.AiModule;
+import modules.SettingsModule;
 import controller.GameController;
 
 /** 
@@ -201,7 +201,7 @@ public class GameWithGui implements IObserver {
 	 * main method.
 	 */
 	public static void main( String[] args ) {
-		Injector inject = Guice.createInjector(new AiModule());
+		Injector inject = Guice.createInjector(new SettingsModule());
 		GameController controller = inject.getInstance(GameController.class);
 		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		GameWithGui gui = new GameWithGui(controller);

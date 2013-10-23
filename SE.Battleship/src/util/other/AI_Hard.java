@@ -14,15 +14,12 @@ import model.playground.Playground;
  * @author Wolfgang Kaiser
  */
 
-public class AI_Hard implements IAi{
+public class AI_Hard extends AI_Base implements IAi {
 	
-	private Playground playgroundAI;
-	private Coordinates coords, firstHit;
-	private int rows, columns;
+	private Coordinates firstHit;
 	private boolean wasHit, wasHitFirst;
 	private boolean shipDestroyed;
 	private List<Coordinates> ship;
-	private List<Coordinates> range;
 	private enum Direction {None, North, East, South, West}
 	private Direction direct = Direction.None;
 	
@@ -79,14 +76,6 @@ public class AI_Hard implements IAi{
 			this.wasHit = false;
 			return true;
 		}		
-	}
-	/**
-	 * Set the coordinates of this Object
-	 * @param The value to be set
-	 */
-	private void setCoords(Coordinates input) {
-		this.coords.setRow(input.getRow());
-		this.coords.setColumn(input.getColumn());
 	}
 	/**
 	 * AI guesses next shot
@@ -263,17 +252,6 @@ public class AI_Hard implements IAi{
 		}
 	}
 	/**
-	 * Generate Random numbers in a range (min, max)
-	 * @param min Minimum number (inclusive)
-	 * @param max Maximum number (inclusive)
-	 * @return A random number
-	 */
-	private int random(int min, int max) {
-		int tmp = max;
-		tmp++;
-		return (int) (Math.random() * (tmp - min) + min); 
-	}
-	/**
 	 * Generate a random Direction
 	 * @return A random direction
 	 */
@@ -290,17 +268,6 @@ public class AI_Hard implements IAi{
 		default:
 			throw new IllegalStateException();
 		}
-	}
-	/**
-	 * Chooses a random coordinate
-	 * @return A coordinate
-	 */
-	private Coordinates randomCoordinates() {
-		Coordinates tmp = new Coordinates(rows, columns);
-		int r = random(0, range.size() - 1);
-		tmp.setRow(range.get(r).getRow());
-		tmp.setColumn(range.get(r).getColumn());
-		return tmp;
 	}
 	/**
 	 * Mark all places surrounding a sunken ship
@@ -330,30 +297,6 @@ public class AI_Hard implements IAi{
 		if((c.setRow(ship.get(i).getRow() + dR))  && (c.setColumn(ship.get(i).getColumn() + dC)) &&	(!playgroundAI.alreadyShot(c))) {
 			playgroundAI.shoot(c);
 			removeFromRange(c);
-		}
-	}
-	/**
-	 * Fills the Range of all availible fields
-	 */
-	private void fillRange() {
-		for (int i = 0; i < this.rows; i++) {
-			for (int j = 0; j < this.columns; j++) {
-				Coordinates tmp = new Coordinates(this.rows, this.columns);
-				tmp.setRow(i);
-				tmp.setColumn(j);
-				range.add(tmp);
-			}
-		}
-	}
-	/**
-	 * Remove a field from the range
-	 * @param c The Coordinates to be removed
-	 */
-	private void removeFromRange(Coordinates c) {
-		for (int i = 0; i < range.size() - 1; i++) {
-			if ((c.getRow() == range.get(i).getRow()) && (c.getColumn() == range.get(i).getColumn())) {
-				range.remove(i);
-			}
 		}
 	}
 }

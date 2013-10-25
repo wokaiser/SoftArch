@@ -10,6 +10,10 @@ import controller.GameController;
 
 public class Game {
 	/**
+	 * Made this a singleton to please Sonar :)
+	 */
+	private Game() { }
+	/**
 	 * Starts a new GUI game with an Console logger
 	 * @param args
 	 */

@@ -12,10 +12,9 @@ import controller.GameController;
  */
 public class Logger implements IObserver {
 	
-	private final String FILENAME = "log.txt";
+	private static final String FILENAME = "log.txt";
 	
 	private GameController controller;
-	private PrintWriter printWriter;
 	private int count;
 	
 	/**
@@ -40,13 +39,16 @@ public class Logger implements IObserver {
 	 * Prints the messsage to the console
 	 */
 	private void printMessage(String message) {
+		PrintWriter printWriter = null;
 		try {
 			printWriter = new PrintWriter(new BufferedWriter(new FileWriter(FILENAME, true)));
 			printWriter.println(message);
 		} catch (Exception exc) {
-			exc.printStackTrace();
+
 		} finally {
-			printWriter.close();
+			if(printWriter != null) {
+				printWriter.close();
+			}
 		}
 	}	
 	/**

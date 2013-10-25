@@ -1,10 +1,13 @@
 package game;
 
+import org.junit.Test;
 import util.other.*;
-import junit.framework.TestCase;
 
-public class AITest extends TestCase {
+import static org.junit.Assert.*;
 
+public class AITest {
+
+	@Test
 	public void testAI() throws Exception {
 		try {
 			AI_Hard aiHard = new AI_Hard();

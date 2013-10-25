@@ -1,10 +1,13 @@
 package playground;
 
+import org.junit.Test;
 import model.playground.Coordinates;
-import junit.framework.TestCase;
 
-public class CoordinatesTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class CoordinatesTest {
+
+	@Test
 	public void testCoordinates() throws Exception {
 		try {
 			//test if it's possible to create Coordinate Object with too
@@ -25,7 +28,7 @@ public class CoordinatesTest extends TestCase {
 			
 		}
 	}
-	
+	@Test
 	public void testSetRowGetRowSetColumnGetColumn() throws Exception {
 		//create a coordinate object with max row and column of 5
 		Coordinates c = new Coordinates(5, 5);

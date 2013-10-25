@@ -3,9 +3,10 @@
   <groupId>SE.Battleship</groupId>
   <artifactId>SE.Battleship</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Battleship_Gruop02</name>
+  <name>Battleship_Group02</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -22,6 +23,18 @@
   		<groupId>com.google.inject</groupId>
   		<artifactId>guice</artifactId>
   		<version>3.0</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.11</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.maven.surefire</groupId>
+  		<artifactId>common-junit48</artifactId>
+  		<version>2.16</version>
+  		<scope>test</scope>
   	</dependency>
   </dependencies>
 </project>

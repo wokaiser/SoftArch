@@ -1,13 +1,17 @@
 package playground;
 
+import org.junit.Test;
+
 import model.general.Constances;
 import model.playground.Coordinates;
 import model.playground.Playground;
 import model.playground.Ship;
-import junit.framework.TestCase;
 
-public class PlaygroundTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class PlaygroundTest {
 	
+	@Test
 	public void testPlayground() throws Exception {
 		try {
 			//test if it's possible to create a too small playground
@@ -26,6 +30,7 @@ public class PlaygroundTest extends TestCase {
 		catch (IllegalArgumentException expected) {
 		}
 	}
+	@Test
 	public void testPlaceShipWithRowOutOfRange() throws Exception {
 		try {
 			//declarate a playground
@@ -43,6 +48,7 @@ public class PlaygroundTest extends TestCase {
 			
 		}
 	}
+	@Test
 	public void testPlaceShipWithColumnOutOfRange() throws Exception {
 		try {
 			//declarate a playground
@@ -60,7 +66,7 @@ public class PlaygroundTest extends TestCase {
 			
 		}
 	}
-	
+	@Test
 	public void testPlaceShip() throws Exception {
 		//declarate a playground
 		Playground playground = new Playground(12, 12);
@@ -95,7 +101,7 @@ public class PlaygroundTest extends TestCase {
 		//try to place the ship on a area which was already shot
 		assertFalse(playground.placeShip(target, shipD, Playground.DIRECTION_RIGHT));
 	}
-	
+	@Test
 	public void testShootWithRowOutOfRange() throws Exception {
 		try {
 			//declarate a playground
@@ -112,6 +118,7 @@ public class PlaygroundTest extends TestCase {
 			
 		}
 	}
+	@Test
 	public void testShootWithColumnOutOfRange() throws Exception {
 		try {
 			//declarate a playground
@@ -127,7 +134,7 @@ public class PlaygroundTest extends TestCase {
 			
 		}
 	}
-	
+	@Test
 	public void testAlreadyShot() throws Exception {
 		//declarate a playground
 		Playground playground = new Playground(12, 12);
@@ -149,7 +156,7 @@ public class PlaygroundTest extends TestCase {
 		assertTrue(Constances.SHOOT_HIT == playground.shoot(target));
 		assertTrue(playground.alreadyShot(target));		
 	}
-	
+	@Test
 	public void testGetNumberOfExistingShipsGetNumberOfPlacedShipsGetNumberOfDestroyedShips() throws Exception {
 		//declarate a playground
 		Playground playground = new Playground(12, 12);

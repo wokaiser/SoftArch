@@ -1,11 +1,12 @@
-import play.Project._
-
-name := """SWAR.Battleship"""
+name := "Battleship"
 
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
-	"org.webjars" %% "webjars-play" % "2.2.0", 
-	"org.webjars" % "bootstrap" % "2.3.1")
+  javaJdbc,
+  javaEbean,
+  cache,
+  "org.codehaus.jackson" % "jackson-mapper-asl" % "1.8.5"
+)     
 
-playJavaSettings
+play.Project.playJavaSettings

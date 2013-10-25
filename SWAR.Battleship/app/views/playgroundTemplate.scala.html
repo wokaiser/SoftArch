@@ -1,0 +1,54 @@
+
+
+<script id="playgroundTemplate" type="text/template">
+    {{#runningGame}}
+        <div class="row">
+            <div class="col-md-6">
+                <table class='table'>
+                    <thead>
+                        <tr><th>Enemy Playground</th></tr>
+                    </thead>
+
+                    <table border="1">
+                    {{#enemyPlayground}}
+                        <tr>
+                        {{#.}}
+                            <td>                                
+                                <img class="enemyPlaygroundCell" src='@routes.Assets.at("images/{{state}}.gif")' alt="{{state}}"
+                                     data-x="{{x}}" data-y="{{y}}">
+                                </img>
+                            </td>
+
+                        {{/.}}
+                        </tr>
+                    {{/enemyPlayground}}
+                    </table>
+                </table>
+            </div>
+            
+            <div class="col-md-6">
+                <table class='table'>
+                    <thead>
+                        <tr><th>Own Playground</th></tr>
+                    </thead>
+
+                    <table border="1">
+                    {{#ownPlayground}}
+                        <tr>
+                        {{#.}}
+                            <td>                                
+                                <img class="ownPlaygroundCell" src='@routes.Assets.at("images/{{state}}.gif")' alt="{{state}}"></img>
+                            </td>
+
+                        {{/.}}
+                        </tr>
+                    {{/ownPlayground}}
+                    </table>
+                </table>
+            </div>
+        </div>
+    {{/runningGame}}
+</script>
+
+
+

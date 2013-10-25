@@ -46,15 +46,15 @@ public class GameWithTui implements IObserver {
 		output();
 	}
 	/**
-	 * Prints the messsage to stdout
+	 * Prints the messsage to the console
 	 * @param message
 	 * @param type
 	 */
 	private void printMessage(String message, MessageType type) {
 		if(type == MessageType.Out) {
-			System.out.println(message);
+			System.console().writer().println(message);
 		} else {
-			System.err.println(message);
+			System.console().writer().println("Error: " + message);
 		}
 	}
 	

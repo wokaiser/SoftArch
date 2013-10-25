@@ -8,7 +8,7 @@ import com.google.inject.Injector;
 
 import controller.GameController;
 
-public class Game {
+public final class Game {
 	/**
 	 * Made this a singleton to please Sonar :)
 	 */

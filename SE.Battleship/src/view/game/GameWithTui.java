@@ -177,7 +177,9 @@ public class GameWithTui implements IObserver {
 	 * main method.
 	 */
 	public static void main( String[] args ) {
-		Injector inject = Guice.createInjector(new SettingsModule());
+		SettingsModule settings = new SettingsModule();
+		settings.setSettings(SettingsModule.Settings.Easy);
+		Injector inject = Guice.createInjector(settings);
 		GameController controller = inject.getInstance(GameController.class);
 		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Player 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		GameWithTui tui = new GameWithTui(controller);

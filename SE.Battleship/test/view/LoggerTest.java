@@ -39,9 +39,7 @@ public class LoggerTest {
 
 	@Test
 	public void testupdate() {
-		if(logger == null) {
-			fail("Logger should not be null");
-		}
+		assertNotNull(logger);
 		try {
 			logger.update();
 		} catch (Exception exc) {

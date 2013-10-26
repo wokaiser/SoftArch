@@ -74,8 +74,6 @@ var controller = (function () {
             eventListener["updateStatus"].fire(data);
         } else if (data.info) {
             eventListener["updateStatus"].fire(data); 
-        } else {
-            eventListener["updateStatus"].fire();
         }
     };
     

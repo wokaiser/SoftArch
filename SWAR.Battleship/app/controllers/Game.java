@@ -122,7 +122,6 @@ public class Game extends Controller {
             			System.out.println("---------Update reached--------");
             			ObjectNode status = Json.newObject();                            	
                     	GameController controller = controllers.get(uuid);
-            			controller.getStatus().clear();
                
                 		if (controller.switchedPlayer() && controller.getGameType() == GameController.MULTIPLAYER) {
                 			System.out.println(controller.getActivePlayer()+" please select your target");	
@@ -130,16 +129,20 @@ public class Game extends Controller {
                 		model.general.Status controllerStatus = controller.getStatus();
 
                 		if (controllerStatus.errorExist()) {
+                			System.out.println("Error");
                 			status.put("error", controllerStatus.getError());
                   			out.write(status);
-                			return;
+                  			controller.getStatus().clear();
+                  			return;
                 		}
                 		if (controllerStatus.textExist()) {
+                			System.out.println("Info");
                 			status.put("info", controllerStatus.getText());
                   			out.write(status);
-                			return;
+                  			controller.getStatus().clear();
+                  			status.removeAll();
                 		}
-                   		                        		                       		
+            			
                 		if (controller.gameFinished()) {
                 			return;
                 		}

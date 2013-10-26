@@ -7,6 +7,7 @@ var content = (function () {
     
     var updatePlayground = function (playground) {
         $('#playground').html(Mustache.to_html($('#playgroundTemplate').html(), playground));
+        eventHandle.clickablePlayground();
     };
     
     var updateStatus = function (status) {

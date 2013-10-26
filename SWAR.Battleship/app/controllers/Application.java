@@ -7,7 +7,13 @@ import views.html.*;
 public class Application extends Controller {
     
     public static Result index() {
-        return ok(app.render());
+    	String uuid = session("uuid");
+
+        if ((null == uuid)
+          ||(!Game.validController(uuid))) {
+        	uuid = Game.newGame();
+        	session("uuid", uuid);
+        }    	
+    	return ok(app.render());
     }
-    
 }

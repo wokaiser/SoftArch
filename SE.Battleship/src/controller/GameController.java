@@ -142,6 +142,9 @@ public class GameController extends Observable {
 	 * @return false The game is not finished.
 	 */
 	public boolean gameFinished() {
+		if (null == enemyPlayground) {
+			return true;
+		}
 		if (0 == enemyPlayground.getNumberOfExistingShips()) {
 			status.addText(activePlayer + " won.");
 			return true;

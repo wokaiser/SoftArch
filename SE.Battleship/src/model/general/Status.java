@@ -101,10 +101,10 @@ public class Status {
 	 */
 	public void copyStatus(Status from) {
 		if (0 < from.getTextCount()) {
-			this.addText(from.getText());
+			this.addText(from.getText().substring(1));
 		}
 		if (0 < from.getErrorCount()) {
-			this.addError(from.getError());
+			this.addError(from.getError().substring(1));
 		}
 	}
 	

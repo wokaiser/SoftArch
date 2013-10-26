@@ -1,19 +1,9 @@
 
-/* test data */
-var data = {
-    status          : null,
-    runningGame     : true,
-    enemyPlayground : [[{x : 0, y : 0, state : 'x'}, {x : 1, y : 0, state : '0'}],
-                       [{x : 0, y : 1, state : 'x'}, {x : 1, y : 1, state : '0'}]],
-    ownPlayground   : [[{x : 0, y : 0, state : 'x'}, {x : 1, y : 0, state : '0'}],
-                       [{x : 0, y : 1, state : 'x'}, {x : 1, y : 1, state : '0'}]],
-};
-
 var controller = (function () {    
 
     /* try to connect to the websocket */
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var socket = new WS("ws://ADRESS:PORT/connect");
+    var socket = new WS("ws://TODO:TODO/connect");
 
     /* definition of callback lists. A list contains functions, which will be called
        by the callback interface
@@ -44,7 +34,6 @@ var controller = (function () {
 
         /* callback handler that will be called on success */
         request.done(function (response, textStatus, jqXHR){
-            console.log(response);
             if (response.error) {
                 eventListener[failCallback].fire(response);
                 deferred.reject();
@@ -77,15 +66,23 @@ var controller = (function () {
     
     var websocketReceive = function(event) {
         var data = JSON.parse(event.data);
-        console.log(data);       
-        eventListener["updateStatus"].fire(data);
+        if (data.ownPlayground) {
+            eventListener["updatePlayground"].fire(data);
+        }
+        
+        if (data.error) {
+            eventListener["updateStatus"].fire(data);
+        } else if (data.info) {
+            eventListener["updateStatus"].fire(data); 
+        } else {
+            eventListener["updateStatus"].fire();
+        }
     };
     
     var run = function () {
         /* set the websocket event receiver function */
         socket.onmessage = websocketReceive;
         eventListener["init"].fire();
-        eventListener["updatePlayground"].fire(data);
         /* wait until websocket is conntected */
         socket.onopen = function () {
             

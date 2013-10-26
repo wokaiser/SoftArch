@@ -1,16 +1,25 @@
 package controllers;
 
 import interfaces.IObserver;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
+
 import model.general.Constances;
 import model.playground.Coordinates;
 import modules.SettingsModule;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import controller.GameController;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
 import play.libs.F.Callback;
 import play.libs.Json;
 import play.mvc.*;
@@ -40,6 +49,39 @@ public class Game extends Controller {
 	
 	public static boolean validController(String uuid) {
 		return controllers.containsKey(uuid) ? true : false;
+	}
+	
+	public static JsonNode MatrixToJson(char[][] matrix) {
+		JsonNode arrNode = null;
+		
+		String json = "[";
+		
+		for (int row = 0; row < matrix.length; row++) {
+			json += "[";
+			for (int column = 0; column < matrix[row].length; column++){
+				json += "{\"x\" : " + row + "," + "\"y\" : " + column + "," + "\"state\" : \""+ matrix[row][column] + "\"}";
+				if (column < matrix[row].length - 1) {
+					json += ",";
+				}
+			}
+			json += "]";
+
+			if (row < matrix.length - 1) {
+				json += ",";
+			}
+		}
+		json += "]";
+		
+		try {
+			arrNode = new ObjectMapper().readTree(json);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arrNode;
 	}
 	
 	
@@ -115,8 +157,10 @@ public class Game extends Controller {
                 			}
                 		}
         				/* send an update */
-        				System.out.println(controllers.get(uuid).getOwnPlaygroundAsString());
-                    	System.out.println(controllers.get(uuid).getEnemyPlaygroundAsString());
+                    	status.put("ownPlayground", MatrixToJson(controller.getOwnPlaygroundAsMatrix()));
+                    	status.put("enemyPlayground", MatrixToJson(controller.getEnemyPlaygroundAsMatrix()));
+              			out.write(status);
+              			return;
             		}
             	}
             	
@@ -131,7 +175,11 @@ public class Game extends Controller {
                     	if (null != event.findPath("newSinglePlayerGame").textValue()) {
                     		System.out.println("newSinglePlayerGame");
                     		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
-                    		return;
+                    		/* send an update */
+                        	status.put("ownPlayground", MatrixToJson(controller.getOwnPlaygroundAsMatrix()));
+                        	status.put("enemyPlayground", MatrixToJson(controller.getEnemyPlaygroundAsMatrix()));
+                  			out.write(status);
+                  			return;
                     	}
                     	
                     	if (controller.gameFinished()) {
@@ -170,10 +218,10 @@ public class Game extends Controller {
     			controller.removeAllObservers();
         		controller.addObserver(new Playground());
             	
-
-            	
-            	status.put("info", "A game is active..");
-    			out.write(status);
+        		System.out.println("A game is active");
+            	status.put("ownPlayground", MatrixToJson(controller.getOwnPlaygroundAsMatrix()));
+            	status.put("enemyPlayground", MatrixToJson(controller.getEnemyPlaygroundAsMatrix()));
+      			out.write(status);
             }
         };
     }

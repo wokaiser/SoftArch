@@ -86,7 +86,6 @@ public class Game extends Controller {
 	
 	
 	public static Result load() {
-		System.out.println("Here I am!");
 		JsonNode json = request().body().asJson();
 		ObjectNode result = Json.newObject();
 		if(json == null) {
@@ -97,7 +96,6 @@ public class Game extends Controller {
 			if(name == null) {
 				return badRequest("Missing parameter [name]");
 			} else {
-				System.out.println("Hallo " + name);
 				result.put("status", "OK");
 				result.put("message", "Hello" + name);
 				return ok(result);
@@ -144,7 +142,12 @@ public class Game extends Controller {
                 		}
             			
                 		if (controller.gameFinished()) {
-                			return;
+                			System.out.println("Info");
+                			status.put("info", controllerStatus.getText());
+                  			out.write(status);
+                  			controller.getStatus().clear();
+                  			status.removeAll();
+                  			return;
                 		}
                 				
                 		if (controller.isAI()) {
@@ -200,15 +203,19 @@ public class Game extends Controller {
                     		target.setRow(x);
                     		target.setColumn(y);
                     		controller.shoot(target);
+                    		return;
                     	}
+                    	
+            			status.put("error", "Illegal call to websocket.");
+            			out.write(status);
+            			return;
                     	
                     }
                 });
                 
-                GameController controller = controllers.get(uuid);
-                
                 // on load of websocket.
                 ObjectNode status = Json.newObject();
+                GameController controller = controllers.get(uuid);
             	
             	if (controller.gameFinished()) {
         			status.put("info", "Creating a new game is required.");

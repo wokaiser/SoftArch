@@ -13,7 +13,7 @@ import javax.swing.*;
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
-import model.playground.GameContent;
+import controller.GameContent;
 import controller.GameController;
 
 /** 

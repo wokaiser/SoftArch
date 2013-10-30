@@ -2,7 +2,6 @@ package view;
 
 import static org.junit.Assert.*;
 import model.general.Constances;
-import model.playground.GameContent;
 import modules.DatabaseModule;
 
 import org.junit.*;
@@ -12,6 +11,7 @@ import view.game.Logger;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import controller.GameContent;
 import controller.GameController;
 
 public class LoggerTest {

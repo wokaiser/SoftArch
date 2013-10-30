@@ -1,4 +1,4 @@
-package model.playground;
+package controller;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +7,8 @@ import com.google.inject.Inject;
 
 import interfaces.IAi;
 import model.general.Status;
+import model.playground.Playground;
+import model.playground.Ship;
 
 public class GameContent {
 

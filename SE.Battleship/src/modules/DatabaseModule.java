@@ -1,8 +1,9 @@
 package modules;
 
-import interfaces.IDatabase;
 import com.google.inject.AbstractModule;
+
 import database.Db4oDatabase;
+import database.IDatabase;
 
 public class DatabaseModule extends AbstractModule {
 

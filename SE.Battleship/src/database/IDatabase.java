@@ -1,8 +1,6 @@
-package interfaces;
+package database;
 
 import java.util.List;
-
-import model.playground.GameContent;
 
 public interface IDatabase {
 	

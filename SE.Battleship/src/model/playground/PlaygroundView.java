@@ -1,8 +1,11 @@
 package model.playground;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.general.Constances;
 
 /** 
@@ -55,6 +58,39 @@ public abstract class PlaygroundView {
 			builder.append('\n');
 		}
 		return builder.toString();
+	}
+	
+	public JsonNode toJson(char matrix[][], int rows, int columns) {
+		JsonNode arrNode = null;
+		StringBuilder builder = new StringBuilder("[");
+		
+		for (int row = 0; row < rows; row++) {
+			builder.append("[");
+			for (int column = 0; column < columns; column++){
+				builder.append("{\"x\" : ");
+				builder.append(row);
+				builder.append(",\"y\" : ");
+				builder.append(column);
+				builder.append(",\"state\" : \"");
+				builder.append(this.getElement(matrix[row][column]));
+				builder.append("\"}");
+				if (column < columns - 1) builder.append(",");
+			}
+			builder.append("]");
+			if (row < rows - 1) builder.append(",");
+		}
+		builder.append("]");
+		
+		try {
+			arrNode = new ObjectMapper().readTree(builder.toString());
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return arrNode;
 	}
 	
 	/**

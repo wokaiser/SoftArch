@@ -1,5 +1,6 @@
 package controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -170,6 +171,13 @@ public class GameController extends Observable {
 		return content.getEnemyPlayground().enemyView();
 	}	
 	/**
+	 * Get the playground of the enemy player as a Json.
+	 * @return Json of the playground
+	 */
+	public JsonNode getEnemyPlaygroundAsJson() {
+		return content.getEnemyPlayground().enemyJsonView();
+	}	
+	/**
 	 * Get the playground of the enemy player (With no ships visible.).
 	 * @return 2 dimensional matrix of the playground
 	 */
@@ -182,6 +190,13 @@ public class GameController extends Observable {
 	 */
 	public char [][] getOwnPlaygroundAsMatrix() {
 		return content.getOwnPlayground().ownView();
+	}	
+	/**
+	 * Get the playground of the active player (With all placed ships visible).
+	 * @return Json of the playground
+	 */
+	public JsonNode getOwnPlaygroundAsJson() {
+		return content.getOwnPlayground().ownJsonView();
 	}	
 	/**
 	 * check if the actual active player is a computer

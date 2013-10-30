@@ -1,5 +1,7 @@
 package model.playground;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import model.general.Constances;
 
 /** 
@@ -124,6 +126,23 @@ public abstract class AbstractPlayground {
 	 */
 	public String enemyStringView() {
 		return new PlaygroundEnemyView().toString(matrix, rows, columns);
+	}
+	
+	/**
+	 * Get the playground with all ships visible on it.
+	 * return The playground as a Json
+	 */
+	public JsonNode ownJsonView() {		
+		return new PlaygroundOwnView().toJson(matrix, rows, columns);
+	}
+	
+	/**
+	 * Get the playground from the view of an enemy, without any visible ships.
+	 * Ships which has been hit are visible.
+	 * return The playground as a Json
+	 */
+	public JsonNode enemyJsonView() {
+		return new PlaygroundEnemyView().toJson(matrix, rows, columns);
 	}
 	
 	/**

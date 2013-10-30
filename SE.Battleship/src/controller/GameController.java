@@ -1,5 +1,6 @@
 package controller;
 
+import interfaces.IAi;
 import interfaces.IDatabase;
 
 import com.google.inject.Guice;
@@ -12,6 +13,7 @@ import model.playground.Coordinates;
 import model.playground.GameContent;
 import modules.AiModule;
 import util.observer.Observable;
+import util.other.AI_Hard;
 
 /** 
  * The GameController manages the game logic. Which is switching between players/playgrounds,
@@ -25,6 +27,10 @@ public class GameController extends Observable {
 		
 	private IDatabase database;
 	private GameContent content;
+	/* AI for player 1 and 2 */
+	private IAi player1AI;
+	private IAi player2AI;
+	private IAi activeAI;
 
 	/**
 	 * Creates a new game	 
@@ -40,6 +46,11 @@ public class GameController extends Observable {
 		Injector inject = Guice.createInjector(new AiModule().setSettings(AiModule.Settings.Hard));
 		content = inject.getInstance(GameContent.class);
 		content.initContent(rows, columns, player1, player2, gameType);
+		player1AI = new AI_Hard();
+		player2AI = new AI_Hard();
+		player1AI.initialize(rows, columns);
+		player2AI.initialize(rows, columns);
+		activeAI = this.player2AI;
 		this.checkGameType();
 	}
 	/**
@@ -106,7 +117,7 @@ public class GameController extends Observable {
 		
 		if (null == target || isAI()) {
 			/* get the target from the AI */
-			target = content.getActiveAI().shoot();
+			target = activeAI.shoot();
 			content.getStatus().addText("AI shoot to: " + target.toString() + ".");
 		}
 		
@@ -118,7 +129,7 @@ public class GameController extends Observable {
 			shootStatus = content.getEnemyPlayground().shoot(target);
 			content.getStatus().moveStatus(content.getEnemyPlayground().getStatus());
 			/* set flags for AI */
-			if(content.getActiveAI().setFlags(shootStatus))
+			if(activeAI.setFlags(shootStatus))
 			{
 				/* no ship hit/destroyed, so switch the user */
 				switchPlayer();
@@ -216,7 +227,7 @@ public class GameController extends Observable {
 			content.setEnemyPlayer(content.getPlayer2());
 			content.setOwnPlayground(content.getPlayground1());
 			content.setActivePlayer(content.getPlayer1());
-			content.setActiveAI(content.getPlayer1AI());
+			activeAI = player1AI;
 		}
 		else
 		{
@@ -224,7 +235,7 @@ public class GameController extends Observable {
 			content.setEnemyPlayer(content.getPlayer1());
 			content.setOwnPlayground(content.getPlayground2());
 			content.setActivePlayer(content.getPlayer2());
-			content.setActiveAI(content.getPlayer2AI());
+			activeAI = player2AI;
 		}
 	}
 	/**

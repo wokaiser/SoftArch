@@ -23,25 +23,21 @@ public class GameContent {
 	/* name of player 1 and 2 */
 	private String player1;
 	private String player2;
-	/* AI for player 1 and 2 */
-	private IAi player1AI;
-	private IAi player2AI;
 	/* the active playground switch after each turn and determine which player turn it is */
 	private Playground enemyPlayground;
 	private String enemyPlayer;
-	private Playground ownPlayground;
-	private IAi activeAI;
+	private Playground ownPlayground;	
 	private String activePlayer;
 	/* the status object log information about important method calls like shoot(..) */
 	private Status status;
 	private boolean switchedPlayer;
 	private int gameType;
 	
-	@Inject
-	public GameContent(IAi player1, IAi player2) {
-		player1AI = player1;
-		player2AI = player2;
-	}
+//	@Inject
+//	public GameContent(IAi player1, IAi player2) {
+//		player1AI = player1;
+//		player2AI = player2;
+//	}
 	/**
 	 * Initialises the content
 	 * @param rows The number of rows of the playground
@@ -59,15 +55,12 @@ public class GameContent {
 		playground2 = new Playground(rows, columns);
 		this.player1 = player1;
 		this.player2 = player2;
-		player1AI.initialize(rows, columns);
-		player2AI.initialize(rows, columns);
 		playground1.placeShipsRandom(fleet1);
 		playground2.placeShipsRandom(fleet2);
 		enemyPlayground = this.playground2;
 		enemyPlayer = this.player2;
 		ownPlayground = this.playground1;
 		activePlayer = this.player1;
-		activeAI = this.player2AI;
 		status.clear();
 		status.addText("Welcome to Battleships");
 		playground1.getStatus().clear();
@@ -123,15 +116,15 @@ public class GameContent {
 	/**
 	 * Gets the AI of player 1
 	 */
-	public IAi getPlayer1AI() {
-		return player1AI;
-	}
+//	public IAi getPlayer1AI() {
+//		return player1AI;
+//	}
 	/**
 	 * Gets the AI of player 2
 	 */
-	public IAi getPlayer2AI() {
-		return player2AI;
-	}
+//	public IAi getPlayer2AI() {
+//		return player2AI;
+//	}
 	/**
 	 * Get the name of the active player
 	 * @return name The name of the active player
@@ -206,15 +199,15 @@ public class GameContent {
 	/**
 	 * Gets the active AI
 	 */
-	public IAi getActiveAI() {
-		return activeAI;
-	}
+//	public IAi getActiveAI() {
+//		return activeAI;
+//	}
 	/**
 	 * Sets the active AI
 	 */
-	public void setActiveAI(IAi ai) {
-		activeAI = ai;
-	}
+//	public void setActiveAI(IAi ai) {
+//		activeAI = ai;
+//	}
 	/**
 	 * Gets the enemy playground
 	 */

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>SE.Battleship</groupId>
   <artifactId>SE.Battleship</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <name>Battleship_Group02</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -18,6 +18,12 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>source.db4o</id>
+      <url>http://source.db4o.com/maven</url>
+    </repository>
+  </repositories>
   <dependencies>
   	<dependency>
   		<groupId>com.google.inject</groupId>
@@ -36,5 +42,10 @@
   		<version>2.16</version>
   		<scope>test</scope>
   	</dependency>
+  	<dependency>
+      <groupId>com.db4o</groupId>
+      <artifactId>db4o-full-java5</artifactId>
+      <version>8.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>

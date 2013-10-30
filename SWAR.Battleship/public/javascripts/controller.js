@@ -1,10 +1,9 @@
 
 var controller = (function () {    
-
     /* try to connect to the websocket */
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    /* TODO: The localhost should be replaced by the IP of the Server, because another device should connect to the server and not to it's localhost.. */
-    var socket = new WS("ws://localhost:9000/connect");
+    var socketAdress = "ws://"+BATTLESHIP_IP+":9000/connect";
+    var socket = new WS(socketAdress);
 
     /* definition of callback lists. A list contains functions, which will be called
        by the callback interface
@@ -83,8 +82,8 @@ var controller = (function () {
         socket.onmessage = websocketReceive;
         eventListener["init"].fire();
         /* check weather an error occurr */
-        socket.onerror = function (msg) {
-            eventListener["updateStatus"].fire({error : msg});
+        socket.onerror = function (event) {
+            eventListener["updateStatus"].fire({error : "Unable to connect websocket at "+socketAdress});
         };
         /* wait until websocket is conntected */
         socket.onopen = function () {

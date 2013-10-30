@@ -8,7 +8,8 @@ import java.util.UUID;
 
 import model.general.Constances;
 import model.playground.Coordinates;
-import modules.SettingsModule;
+import database.GameContent;
+import modules.DatabaseModule;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,10 +37,9 @@ public class Game extends Controller {
 		while (true) {
 			uuid = UUID.randomUUID().toString();
 			if (!controllers.containsKey(uuid)) {
-				SettingsModule settings = new SettingsModule();
-				settings.setSettings(SettingsModule.Settings.Easy);
-				Injector inject = Guice.createInjector(settings);
+				Injector inject = Guice.createInjector(new DatabaseModule());
 				GameController controller = inject.getInstance(GameController.class);
+				controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 				controllers.put(uuid, controller);
 				break;
 			}
@@ -83,30 +83,12 @@ public class Game extends Controller {
 		}
 		return arrNode;
 	}
-	
-	
-	public static Result load() {
-		JsonNode json = request().body().asJson();
-		ObjectNode result = Json.newObject();
-		if(json == null) {
-			return badRequest("Expecting Json data");
-		} else {
-			String name = json.findPath("name").textValue();
-			
-			if(name == null) {
-				return badRequest("Missing parameter [name]");
-			} else {
-				result.put("status", "OK");
-				result.put("message", "Hello" + name);
-				return ok(result);
-			}
-		}
-	}  
-	
 
     public static WebSocket<JsonNode> connect() {
         final String uuid = session("uuid");
-    	
+        System.out.println("Websocket");
+        System.out.println(uuid);
+        
         return new WebSocket<JsonNode>() {
             
             // Called when the Websocket Handshake is done.
@@ -121,7 +103,7 @@ public class Game extends Controller {
             			ObjectNode status = Json.newObject();                            	
                     	GameController controller = controllers.get(uuid);
                
-                		if (controller.switchedPlayer() && controller.getGameType() == GameController.MULTIPLAYER) {
+                		if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
                 			System.out.println(controller.getActivePlayer()+" please select your target");	
                 		}
                 		model.general.Status controllerStatus = controller.getStatus();
@@ -180,7 +162,7 @@ public class Game extends Controller {
                     	                    	
                     	if (null != event.findPath("newSinglePlayerGame").textValue()) {
                     		System.out.println("newSinglePlayerGame");
-                    		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+                    		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
                     		/* send an update */
                         	status.put("ownPlayground", MatrixToJson(controller.getOwnPlaygroundAsMatrix()));
                         	status.put("enemyPlayground", MatrixToJson(controller.getEnemyPlaygroundAsMatrix()));
@@ -215,6 +197,13 @@ public class Game extends Controller {
                 
                 // on load of websocket.
                 ObjectNode status = Json.newObject();
+                
+                if (null == uuid) {
+        			status.put("error", "Enable Cookies and refresh the site to play battleships.");
+        			out.write(status);
+                	return;
+                }
+                
                 GameController controller = controllers.get(uuid);
             	
             	if (controller.gameFinished()) {

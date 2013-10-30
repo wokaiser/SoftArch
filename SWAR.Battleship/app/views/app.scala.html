@@ -1,11 +1,17 @@
+@(serverIP: String)
+
 <!DOCTYPE html>
 
 <html>
   	<head>
         @header()
+        <script type='text/javascript'>
+            var BATTLESHIP_IP = "@serverIP";
+        </script>
   	</head>
     
   	<body>    
+    
         <div class="container">
             <nav class="navbar navbar-default" role="navigation">
               <!-- Brand and toggle get grouped for better mobile display -->

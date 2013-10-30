@@ -2,7 +2,7 @@ package view;
 
 import static org.junit.Assert.*;
 import model.general.Constances;
-import model.general.GameContent;
+import model.playground.GameContent;
 import modules.DatabaseModule;
 
 import org.junit.*;

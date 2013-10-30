@@ -2,7 +2,7 @@ package database;
 
 import java.util.List;
 
-import model.general.GameContent;
+import model.playground.GameContent;
 import interfaces.IDatabase;
 
 public class Db4oDatabase implements IDatabase {

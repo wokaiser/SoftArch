@@ -24,7 +24,7 @@ public class LoggerTest {
 		settings.setSettings(SettingsModule.Settings.Easy);
 		Injector inject = Guice.createInjector(settings);
 		controller = inject.getInstance(GameController.class);
-		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		logger = new Logger(controller);		
 	}
 	

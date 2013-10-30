@@ -87,6 +87,21 @@ public class GameWithGui implements IObserver {
 	}
 	
 	/**
+	 * Creates a new JMenuItem with the specific paramters
+	 * @param text The text of the JMenuItem
+	 * @param keyEvent The KeyEvent combined with Ctrl
+	 * @param listener The listener of this JMenuItem
+	 * @return A new JMenuItem
+	 */
+	private JMenuItem createNewItem(String text, int keyEvent, ActionListener listener) {
+		JMenuItem result = new JMenuItem(text);
+		result.setMnemonic(KeyEvent.VK_Q);
+		result.setAccelerator(KeyStroke.getKeyStroke(keyEvent, KeyEvent.CTRL_MASK));
+		result.addActionListener(listener);		
+		return result;
+	}
+	
+	/**
 	 * Initialize the menu bar (NewGame menu item, Quit menu item,...)
 	 */
 	private void initMenuBar() {
@@ -94,12 +109,25 @@ public class GameWithGui implements IObserver {
 		JMenuItem quit;
 		JMenuItem single;
 		JMenuItem multi;
+		JMenuItem load;
+		JMenuItem save;
 		JMenu menu = new JMenu("Game");
 		
-		single = new JMenuItem("New Single Player Game");
-		single.setMnemonic(KeyEvent.VK_Q);
-		single.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK));
-		single.addActionListener(new ActionListener() {
+		load = createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.loadGame();				
+			}
+		});
+		
+		save = createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.saveGame();				
+			}
+		});
+		
+		single = createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
 			/**
 			 * The action listener to create a new single player game
 			 * @param event The occurred event
@@ -109,10 +137,7 @@ public class GameWithGui implements IObserver {
 			}
 		});
 		
-		multi = new JMenuItem("New Multi Player Game");
-		multi.setMnemonic(KeyEvent.VK_Q);
-		multi.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_MASK));
-		multi.addActionListener(new ActionListener() {
+		multi = createNewItem("New Multi Player Game", KeyEvent.VK_M, new ActionListener() {
 			/**
 			 * The action listener to create a new mulit player game
 			 * @param event The occurred event
@@ -122,10 +147,7 @@ public class GameWithGui implements IObserver {
 			}
 		});
 		
-		quit = new JMenuItem("Quit");
-		quit.setMnemonic(KeyEvent.VK_Q);
-		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
-		quit.addActionListener(new ActionListener() {
+		quit = createNewItem("Quit", KeyEvent.VK_Q, new ActionListener() {
 			/**
 			 * The action listener to exit the game
 			 * @param event The occurred event
@@ -137,6 +159,8 @@ public class GameWithGui implements IObserver {
 		
 		menu.add(single);
 		menu.add(multi);
+		menu.add(save);
+		menu.add(load);
 		menu.add(quit);
 		menuBar.add(menu);
 		mainFrame.setJMenuBar(menuBar);

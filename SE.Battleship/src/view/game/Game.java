@@ -22,7 +22,7 @@ public final class Game {
 		settings.setSettings(SettingsModule.Settings.Easy);
 		Injector inject = Guice.createInjector(settings);
 		GameController controller = inject.getInstance(GameController.class);
-		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		GameWithGui gui = new GameWithGui(controller);
 		Logger logger = new Logger(controller);
 		controller.addObserver(gui);

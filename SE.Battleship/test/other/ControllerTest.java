@@ -23,13 +23,13 @@ public class ControllerTest {
 		settings.setSettings(SettingsModule.Settings.Easy);
 		Injector inject = Guice.createInjector(settings);
 		controller = inject.getInstance(GameController.class);
-		controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 	}
 	
 	@Test
 	public void testGameController() {
 		try {
-			new GameController(null, null);
+			new GameController(null, null, null);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}
@@ -38,7 +38,7 @@ public class ControllerTest {
 	@Test
 	public void testinitController() {
 		try {
-			controller.initController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+			controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}

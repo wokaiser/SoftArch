@@ -1,10 +1,12 @@
 package controller;
 
 import interfaces.IAi;
+import interfaces.IDatabase;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import com.db4o.*;
 import com.google.inject.Inject;
 
 import model.general.Constances;
@@ -46,27 +48,18 @@ public class GameController extends Observable {
 	private Status status;
 	private boolean switchedPlayer;
 	private int gameType;
+	
+	private IDatabase database;
 
 	/**
 	 * Creates a new game	 
 	 */
 	@Inject
-	public GameController(IAi player1Ai, IAi player2Ai) {
+	public GameController(IAi player1Ai, IAi player2Ai, IDatabase database) {
 		player1AI = player1Ai;
-		player2AI = player2Ai;		
-	}
-	/**
-	 * Initialiue this controller
-	 * @param rows The number of rows of the playground
-	 * @param columns The number of columns of the playground
-	 * @param The name of player1 (if it should be a computer player use AI_PLAYER_1)
-	 * @param The name of player2 (if it should be a computer player use AI_PLAYER_2)
-	 * @param The gameType (SINGLEPLAYER or MULITPLAYER)
-	 */
-	public void initController(int rows, int columns, String player1, String player2, int gameType) {
-		newController(rows, columns, player1, player2, gameType);
-	}
-	
+		player2AI = player2Ai;
+		this.database = database;
+	}	
 	/**
 	 * Create a new controller with a whole new playground which have new random placed ships on it.
 	 * @param rows The number of rows of the playground
@@ -100,6 +93,18 @@ public class GameController extends Observable {
 		this.switchedPlayer = false;
 		this.gameType = gameType;
 		this.checkGameType();
+	}
+	/**
+	 * Saves the actual game
+	 */
+	public void saveGame() {
+		
+	}
+	/**
+	 * Loads the actual game
+	 */
+	public void loadGame() {
+
 	}	
 	/**
 	 * check for correct game type

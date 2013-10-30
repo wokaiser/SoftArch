@@ -2,8 +2,11 @@ package modules;
 
 import util.other.*;
 import interfaces.IAi;
+import interfaces.IDatabase;
 
 import com.google.inject.AbstractModule;
+
+import database.Db4oDatabase;
 
 public class SettingsModule extends AbstractModule {
 	
@@ -21,6 +24,7 @@ public class SettingsModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		bind(IDatabase.class).to(Db4oDatabase.class);
 		switch(settings) {
 		case Easy:
 			bind(IAi.class).to(AI_Weak.class);

@@ -2,7 +2,8 @@ package view;
 
 import static org.junit.Assert.*;
 import model.general.Constances;
-import modules.SettingsModule;
+import model.general.GameContent;
+import modules.DatabaseModule;
 
 import org.junit.*;
 
@@ -20,11 +21,9 @@ public class LoggerTest {
 	
 	@Before
 	public void setUp() {
-		SettingsModule settings = new SettingsModule();
-		settings.setSettings(SettingsModule.Settings.Easy);
-		Injector inject = Guice.createInjector(settings);
+		Injector inject = Guice.createInjector(new DatabaseModule());
 		controller = inject.getInstance(GameController.class);
-		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 		logger = new Logger(controller);		
 	}
 	

@@ -1,7 +1,8 @@
 package view.game;
 
 import model.general.Constances;
-import modules.SettingsModule;
+import model.general.GameContent;
+import modules.DatabaseModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -18,11 +19,9 @@ public final class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SettingsModule settings = new SettingsModule();
-		settings.setSettings(SettingsModule.Settings.Easy);
-		Injector inject = Guice.createInjector(settings);
+		Injector inject = Guice.createInjector(new DatabaseModule());
 		GameController controller = inject.getInstance(GameController.class);
-		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 		GameWithGui gui = new GameWithGui(controller);
 		Logger logger = new Logger(controller);
 		controller.addObserver(gui);

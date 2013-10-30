@@ -13,6 +13,7 @@ import javax.swing.*;
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
+import model.general.GameContent;
 import controller.GameController;
 
 /** 
@@ -133,7 +134,7 @@ public class GameWithGui implements IObserver {
 			 * @param event The occurred event
 			 */
 			public void actionPerformed(ActionEvent event) {
-				newGame("Spieler 1", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+				newGame("Spieler 1", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 			}
 		});
 		
@@ -143,7 +144,7 @@ public class GameWithGui implements IObserver {
 			 * @param event The occurred event
 			 */
 			public void actionPerformed(ActionEvent event) {
-				newGame("Spieler 1", "Spieler 2", GameController.MULTIPLAYER);
+				newGame("Spieler 1", "Spieler 2", GameContent.MULTIPLAYER);
 			}
 		});
 		
@@ -173,7 +174,7 @@ public class GameWithGui implements IObserver {
 	public void update() {
 		playgroundsPanel.removeAll();
 		playgroundsPanel.repaint();
-		if (controller.switchedPlayer() && controller.getGameType() == GameController.MULTIPLAYER) {
+		if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
 			JOptionPane.showMessageDialog(mainPanel, controller.getActivePlayer()+" please select your target", "Switched player", JOptionPane.INFORMATION_MESSAGE);	
 		}
 		statusPanel.update(controller.getStatus());

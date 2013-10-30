@@ -2,9 +2,10 @@ package other;
 
 import static org.junit.Assert.*;
 import model.general.Constances;
+import model.general.GameContent;
 import model.general.Status;
 import model.playground.Coordinates;
-import modules.SettingsModule;
+import modules.DatabaseModule;
 
 import org.junit.*;
 
@@ -19,17 +20,15 @@ public class ControllerTest {
 
 	@Before
 	public void setUp() {
-		SettingsModule settings = new SettingsModule();
-		settings.setSettings(SettingsModule.Settings.Easy);
-		Injector inject = Guice.createInjector(settings);
+		Injector inject = Guice.createInjector(new DatabaseModule());
 		controller = inject.getInstance(GameController.class);
-		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 	}
 	
 	@Test
 	public void testGameController() {
 		try {
-			new GameController(null, null, null);
+			new GameController(null);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}
@@ -38,7 +37,7 @@ public class ControllerTest {
 	@Test
 	public void testinitController() {
 		try {
-			controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameController.SINGLEPLAYER);
+			controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}
@@ -46,7 +45,7 @@ public class ControllerTest {
 	
 	@Test
 	public void testgetGameType() {
-		assertTrue(controller.getGameType() == GameController.SINGLEPLAYER);
+		assertTrue(controller.getGameType() == GameContent.SINGLEPLAYER);
 	}
 	
 	@Test

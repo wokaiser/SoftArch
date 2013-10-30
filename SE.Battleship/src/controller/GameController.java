@@ -9,6 +9,7 @@ import com.google.inject.Injector;
 import model.general.Constances;
 import model.general.Status;
 import model.playground.Coordinates;
+import model.playground.GameContent;
 import modules.AiModule;
 import util.observer.Observable;
 

@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.List;
 
-import controller.GameContent;
+import model.playground.GameContent;
 
 public interface IDatabase {
 	

@@ -5,12 +5,12 @@ import model.general.GameContent;
 
 public interface IDatabase {
 	
-	public GameContent load(String name);
+	GameContent load(String name);
 	
-	public List<String> getAll();
+	List<String> getAll();
 	
-	public boolean save(String name, GameContent content);
+	boolean save(String name, GameContent content);
 	
-	public boolean delete(String name);
+	boolean delete(String name);
 	
 }

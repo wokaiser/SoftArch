@@ -46,13 +46,13 @@ public class GameController extends Observable {
 	 * Saves the actual game
 	 */
 	public void saveGame() {
-		
+		database.save("DUMMY", content);
 	}
 	/**
 	 * Loads the actual game
 	 */
 	public void loadGame() {
-
+		database.load("DUMMY");
 	}	
 	/**
 	 * check for correct game type

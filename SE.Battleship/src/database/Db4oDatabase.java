@@ -30,5 +30,4 @@ public class Db4oDatabase implements IDatabase {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

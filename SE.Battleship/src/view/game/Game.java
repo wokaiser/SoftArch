@@ -19,12 +19,17 @@ public final class Game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Injector inject = Guice.createInjector(new DatabaseModule());
-		GameController controller = inject.getInstance(GameController.class);
-		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+		GameController controller = newGameController();
 		GameWithGui gui = new GameWithGui(controller);
 		Logger logger = new Logger(controller);
 		controller.addObserver(gui);
 		controller.addObserver(logger);
+	}
+	
+	public static GameController newGameController() {
+		Injector inject = Guice.createInjector(new DatabaseModule());
+		GameController controller = inject.getInstance(GameController.class);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+		return controller;
 	}
 }

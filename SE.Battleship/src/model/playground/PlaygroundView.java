@@ -1,9 +1,7 @@
 package model.playground;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.general.Constances;
@@ -61,7 +59,6 @@ public abstract class PlaygroundView {
 	}
 	
 	public JsonNode toJson(char matrix[][], int rows, int columns) {
-		JsonNode arrNode = null;
 		StringBuilder builder = new StringBuilder("[");
 		
 		for (int row = 0; row < rows; row++) {
@@ -82,15 +79,10 @@ public abstract class PlaygroundView {
 		builder.append("]");
 		
 		try {
-			arrNode = new ObjectMapper().readTree(builder.toString());
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new ObjectMapper().readTree(builder.toString());
+		} catch (Exception e) {
+			return null;
 		}
-		return arrNode;
 	}
 	
 	/**

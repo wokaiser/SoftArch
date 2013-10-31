@@ -1,7 +1,6 @@
 package controllers;
 
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import play.mvc.Controller;
@@ -14,14 +13,10 @@ public class Application extends Controller {
     	String uuid = session("uuid");
     	String ip = null;
 
-        if ((null == uuid)
-          ||(!Game.validController(uuid))) {
-        	uuid = Game.newGame();
-        	session("uuid", uuid);
-        }    	
+    	/* get a new uuid, if no one is actually available. */
+        if (null == uuid) session("uuid", BattleshipWebSocket.getUuid());
         
         try {
-        	System.out.println(InetAddress.getLocalHost().getHostAddress());
         	ip = Inet4Address.getLocalHost().getHostAddress();
         	ip = "localhost";	//TODO remove
         } catch (UnknownHostException e) {

@@ -23,15 +23,20 @@ public class GameWithWui implements IObserver{
         in.onMessage(new Callback<JsonNode>() {
             public void invoke(JsonNode event) {
             	ObjectNode status = Json.newObject();
-            	                    	
+            	                    
+            	/* new single player game */
             	if (null != event.findPath("newSinglePlayerGame").textValue()) {
-            		System.out.println("newSinglePlayerGame");
             		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
-            		/* send an update */
                 	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
                 	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
           			out.write(status);
           			return;
+            	}
+            	
+            	/* new multi player game */
+            	if (null != event.findPath("newMultiPlayerGame").textValue()) {
+            		System.out.println("newMultiPlayerGame");
+            		return;
             	}
             	
             	if (controller.gameFinished()) {
@@ -42,7 +47,6 @@ public class GameWithWui implements IObserver{
             	
             	if ((event.findPath("shootX").canConvertToInt())
             	  &&(event.findPath("shootY").canConvertToInt())) {
-            		System.out.println("Shot to target");
             		int x = event.findPath("shootX").asInt();
             		int y = event.findPath("shootY").asInt();
             		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());
@@ -91,18 +95,17 @@ public class GameWithWui implements IObserver{
   			return;
 		}
 				
-		if (controller.isAI()) {
-			while (controller.isAI()) {
-				if (controller.gameFinished()) {
-					controllerStatus.getText();
-					return;
-				}
-				int coord = controller.shoot(null);
-				if (Constances.SHOOT_HIT != coord && Constances.SHOOT_DESTROYED != coord) {
-					break;
-				}
+
+		while (controller.isAI()) {
+			if (controller.gameFinished()) {
+				break;
+			}
+			int coord = controller.shoot(null);
+			if (Constances.SHOOT_HIT != coord && Constances.SHOOT_DESTROYED != coord) {
+				break;
 			}
 		}
+
 		/* send an update */
     	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
     	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());

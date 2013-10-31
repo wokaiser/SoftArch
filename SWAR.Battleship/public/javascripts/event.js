@@ -4,7 +4,6 @@ var eventHandle = (function () {
         $( "img.enemyPlaygroundCell" ).on({
             click: function() {
                 controller.shoot($( this ).data());
-                console.log($( this ).data());
             }
         });
     };

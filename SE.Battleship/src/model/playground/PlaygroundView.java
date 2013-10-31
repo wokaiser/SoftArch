@@ -71,10 +71,14 @@ public abstract class PlaygroundView {
 				builder.append(",\"state\" : \"");
 				builder.append(this.getElement(matrix[row][column]));
 				builder.append("\"}");
-				if (column < columns - 1) builder.append(",");
+				if (column < columns - 1) {
+					builder.append(",");
+				}
 			}
 			builder.append("]");
-			if (row < rows - 1) builder.append(",");
+			if (row < rows - 1) {
+				builder.append(",");
+			}
 		}
 		builder.append("]");
 		

@@ -190,19 +190,17 @@ public class GameWithGui implements IObserver {
 			return;
 		}
 				
-		if (controller.isAI()) {
-			while (controller.isAI()) {
-				if (controller.gameFinished()) {
-					playgroundsPanel.removeAll();
-					statusPanel.update(controller.getStatus());
-					return;
-				}
-				int status = controller.shoot(null);
-				ownFrame.update();
-				enemyFrame.update();
-				if (Constances.SHOOT_HIT != status && Constances.SHOOT_DESTROYED != status) {
-					break;
-				}
+		while (controller.isAI()) {
+			if (controller.gameFinished()) {
+				playgroundsPanel.removeAll();
+				statusPanel.update(controller.getStatus());
+				return;
+			}
+			int status = controller.shoot(null);
+			ownFrame.update();
+			enemyFrame.update();
+			if (Constances.SHOOT_HIT != status && Constances.SHOOT_DESTROYED != status) {
+				break;
 			}
 		}
 		

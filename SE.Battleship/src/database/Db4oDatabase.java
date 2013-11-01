@@ -51,11 +51,7 @@ public class Db4oDatabase implements IDatabase {
 			return false;
 		}
 		content.setName(name);
-		try {
-			database.store(content);
-		} catch (Exception exc) {
-			return false;	
-		}
+		database.store(content);
 		return true;
 	}
 

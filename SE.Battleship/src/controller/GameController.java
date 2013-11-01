@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -45,15 +47,21 @@ public class GameController extends Observable {
 	/**
 	 * Saves the actual game
 	 */
-	public void saveGame() {
-		database.save("Spiel 1", content);
+	public boolean saveGame(String name) {
+		return database.save(name, content);
 	}
 	/**
 	 * Loads the actual game
 	 */
-	public void loadGame() {
-		content = database.load("Spiel 1");
-	}	
+	public void loadGame(String name) {
+		content = database.load(name);
+	}
+	/**
+	 * Gets all the stored GameContent names
+	 */
+	public List<String> getStoredGames() {
+		return database.getAll();
+	}
 	/**
 	 * check for correct game type
 	 * @throws exception if gameType is not SINGLEPLAYER or MULTIPLAYER

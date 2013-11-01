@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -24,6 +25,7 @@ public class GameWithGui implements IObserver {
 	
 	private static final int DEFAULT_PANEL_WIDTH = 1200;
 	private static final int DEFAULT_PANEL_HEIGHT = 710;
+	private static final int KEYEVENT_NONE = -1;
 	
 	private GameController controller;
 	private StatusPanel statusPanel;
@@ -32,6 +34,7 @@ public class GameWithGui implements IObserver {
 	private JPanel mainPanel;
 	private JPanel playgroundsPanel;
 	private JFrame mainFrame;
+	private JMenuItem save;
 
 	/**
 	 * Creates a new GameWithGui Object.
@@ -70,6 +73,7 @@ public class GameWithGui implements IObserver {
 		controller.switchPlayer();
 		playgroundsPanel.add(ownFrame.get());
 		playgroundsPanel.add(enemyFrame.get());
+		save.setEnabled(true);
 		initMainFrame();
 	}
 	
@@ -96,10 +100,29 @@ public class GameWithGui implements IObserver {
 	 */
 	private JMenuItem createNewItem(String text, int keyEvent, ActionListener listener) {
 		JMenuItem result = new JMenuItem(text);
-		result.setMnemonic(KeyEvent.VK_Q);
-		result.setAccelerator(KeyStroke.getKeyStroke(keyEvent, KeyEvent.CTRL_MASK));
+		if(keyEvent != KEYEVENT_NONE) {
+			result.setMnemonic(keyEvent);
+		}
 		result.addActionListener(listener);		
 		return result;
+	}
+	
+	/**
+	 * Adds stored games from the database to the Load Menu
+	 * @param loadMenu The JMenu the saved games should be attached to
+	 */
+	private void addStoredGamesToLoadMenu(JMenu loadMenu) {
+		List<String> games = controller.getStoredGames();
+		for (String name : games) {
+			final String tmp = name;
+			JMenuItem item = createNewItem(tmp, KEYEVENT_NONE, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					controller.loadGame(tmp);
+					update();
+				}
+			});
+			loadMenu.add(item);
+		}		
 	}
 	
 	/**
@@ -110,24 +133,29 @@ public class GameWithGui implements IObserver {
 		JMenuItem quit;
 		JMenuItem single;
 		JMenuItem multi;
-		JMenuItem load;
-		JMenuItem save;
-		JMenu menu = new JMenu("Game");
 		
-		load = createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.loadGame();
-				update();
-			}
-		});
+		JMenu menu = new JMenu("Game");
+		menu.setMnemonic(KeyEvent.VK_G);
+		
+		JMenu loadMenu = new JMenu("Load game");
+		loadMenu.setMnemonic(KeyEvent.VK_L);
 		
 		save = createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.saveGame();				
+				while(true) {
+					String name = JOptionPane.showInputDialog("Enter savegame name!");
+					if(name == null || name.isEmpty()) {
+						break;
+					}
+					if (!controller.saveGame(name)) {
+						JOptionPane.showMessageDialog(mainFrame, "Savegame already taken, choose another one!");
+						continue;
+					}
+					break;
+				}
 			}
 		});
+		save.setEnabled(false);
 		
 		single = createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
 			/**
@@ -159,10 +187,12 @@ public class GameWithGui implements IObserver {
 			}
 		});
 		
+		addStoredGamesToLoadMenu(loadMenu);
+		
 		menu.add(single);
 		menu.add(multi);
+		menu.add(loadMenu);
 		menu.add(save);
-		menu.add(load);
 		menu.add(quit);
 		menuBar.add(menu);
 		mainFrame.setJMenuBar(menuBar);

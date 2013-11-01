@@ -10,5 +10,10 @@ public interface IObserver {
 	 * Method which should be implemented by the class which implements IObserver.
 	 */
 	void update();
+	
+	/**
+	 * Method which should be called when a game is loaded
+	 */
+	void updateOnLoaded();
 
 }

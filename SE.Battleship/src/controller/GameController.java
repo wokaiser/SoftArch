@@ -55,6 +55,7 @@ public class GameController extends Observable {
 	 * Loads the actual game
 	 */
 	public void loadGame(String name) {
+		notifyObserversOnLoaded();
 		content = database.load(name);
 		notifyObservers();
 	}

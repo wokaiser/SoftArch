@@ -220,6 +220,7 @@ public class GameWithGui implements IObserver {
 	 */
 	@Override
 	public void update() {
+		
 		playgroundsPanel.removeAll();
 		playgroundsPanel.repaint();
 		if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
@@ -251,6 +252,20 @@ public class GameWithGui implements IObserver {
 		}
 
 		playgroundsPanel.repaint();
+	}
+	
+	@Override
+	public void updateOnLoaded() {
+        initMenuBar(true);
+        playgroundsPanel.removeAll();
+		ownFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
+		controller.switchPlayer();
+		enemyFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
+		controller.switchPlayer();
+		playgroundsPanel.add(ownFrame.get());
+		playgroundsPanel.add(enemyFrame.get());
+		save.setEnabled(true);
+		initMainFrame();
 	}
 }
 

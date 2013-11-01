@@ -67,5 +67,10 @@ public class Logger implements IObserver {
 		printMessage("****************************************");
 		count++;
 	}
+	
+	@Override
+	public void updateOnLoaded() { 
+		initLogger();
+	}
 }
 

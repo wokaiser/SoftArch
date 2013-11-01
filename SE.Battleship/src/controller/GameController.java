@@ -63,7 +63,9 @@ public class GameController extends Observable {
 	public List<String> getStoredGames() {
 		return database.getAll();
 	}
-	
+	/**
+	 * Deletes the specific savegame
+	 */
 	public void deleteGame(String name) {
 		database.delete(name);
 	}

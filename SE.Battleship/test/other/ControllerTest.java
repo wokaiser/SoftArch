@@ -4,12 +4,8 @@ import static org.junit.Assert.*;
 import model.general.Constances;
 import model.general.Status;
 import model.playground.Coordinates;
-import modules.DatabaseModule;
 
 import org.junit.*;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 import controller.GameController;
 import database.GameContent;
@@ -20,8 +16,7 @@ public class ControllerTest {
 
 	@Before
 	public void setUp() {
-		Injector inject = Guice.createInjector(new DatabaseModule());
-		controller = inject.getInstance(GameController.class);
+		controller = new GameController(null);
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 	}
 	

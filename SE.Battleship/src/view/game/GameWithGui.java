@@ -106,12 +106,20 @@ public class GameWithGui implements IObserver {
 		return result;
 	}
 	
+	/**
+	 * Shows a dropdown message box to select something
+	 * @param savedGames A list of the saved games
+	 * @param text The text of the selector pane
+	 * @param title The title of the selctor pane
+	 * @return The selected savegame name
+	 */
 	private String showDropDownSelectorPane(List<String> savedGames, String text, String title) {
 		if (savedGames.isEmpty()) {
 			JOptionPane.showMessageDialog(mainFrame, "No saved games found!", "", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
-		return (String)JOptionPane.showInputDialog(mainFrame, text, title, JOptionPane.QUESTION_MESSAGE, null, savedGames.toArray(), savedGames.toArray()[0]);
+		String[] data = savedGames.toArray(new String[savedGames.size()]);
+		return (String)JOptionPane.showInputDialog(mainFrame, text, title, JOptionPane.QUESTION_MESSAGE, null, data, data[0]);
 	}
 	
 	/**

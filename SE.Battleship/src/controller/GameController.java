@@ -49,8 +49,7 @@ public class GameController extends Observable {
 	 * Saves the actual game
 	 */
 	public boolean saveGame(String name) {
-		boolean result = database.save(name, content);		
-		return result;
+		return database.save(name, content);
 	}
 	/**
 	 * Loads the actual game

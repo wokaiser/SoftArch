@@ -94,17 +94,6 @@ public class GameWithWui implements IObserver{
   			status.removeAll();
   			return;
 		}
-				
-
-		while (controller.isAI()) {
-			if (controller.gameFinished()) {
-				break;
-			}
-			int coord = controller.shoot(null);
-			if (Constances.SHOOT_HIT != coord && Constances.SHOOT_DESTROYED != coord) {
-				break;
-			}
-		}
 
 		/* send an update */
     	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());

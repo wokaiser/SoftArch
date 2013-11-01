@@ -41,6 +41,7 @@ public class GameController extends Observable {
 		content = inject.getInstance(GameContent.class);
 		content.initContent(rows, columns, player1, player2, gameType);
 		this.checkGameType();
+		this.aiShoot();
 	}
 	/**
 	 * Saves the actual game
@@ -125,9 +126,32 @@ public class GameController extends Observable {
 				content.getStatus().addText(content.getActivePlayer() + " please select your target.");
 			}			
 		}
+		
 		notifyObservers();
+		/* if the new player is a AI */
+		if (isAI() && switchedPlayer()) {
+			aiShoot();
+		}
 		return shootStatus;
 	}	
+	
+	/**
+	 * aiShoot, will shoot until the game is finished or the AI did not hit a ship.
+	 * Note that the aiShoot method will call the shoot method, which will notify
+	 * the Observers after every shot.
+	 */
+	private void aiShoot() {
+		while (isAI()) {
+			if (gameFinished()) {
+				break;
+			}
+			int coord = shoot(null);
+			if (Constances.SHOOT_HIT != coord && Constances.SHOOT_DESTROYED != coord) {
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * Get the name of the active player
 	 * @return name The name of the active player

@@ -106,42 +106,12 @@ public class GameWithGui implements IObserver {
 		return result;
 	}
 	
-	/**
-	 * Adds stored games from the database to the load menu
-	 * @param loadMenu The JMenu the saved games should be attached to
-	 */
-	private void addStoredGamesToLoadMenu(JMenu loadMenu) {
-		List<String> games = controller.getStoredGames();
-		for (String name : games) {
-			final String tmp = name;
-			JMenuItem item = createNewItem(tmp, KEYEVENT_NONE, new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					controller.loadGame(tmp);
-				}
-			});
-			loadMenu.add(item);
-		}		
-	}
-	
-	/**
-	 * Adds stored games from the database to the delete menu
-	 * @param deleteMenu The JMenu the saved games should be attached to
-	 */
-	private void addStoredGamesToDeleteMenu(JMenu deleteMenu) {
-		List<String> games = controller.getStoredGames();
-		for (String name : games) {
-			final String tmp = name;
-			JMenuItem item = createNewItem(tmp, KEYEVENT_NONE, new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					int retVal = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to delete " + tmp + " ?", "", JOptionPane.YES_NO_OPTION);
-					if(retVal == JOptionPane.YES_OPTION) {
-						controller.deleteGame(tmp);
-						JOptionPane.showMessageDialog(mainFrame, "Savegame deleted.", "", JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			});
-			deleteMenu.add(item);
-		}		
+	private String showDropDownSelectorPane(List<String> savedGames, String text, String title) {
+		if (savedGames.isEmpty()) {
+			JOptionPane.showMessageDialog(mainFrame, "No saved games found!", "", JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
+		return (String)JOptionPane.showInputDialog(mainFrame, text, title, JOptionPane.QUESTION_MESSAGE, null, savedGames.toArray(), savedGames.toArray()[0]);
 	}
 	
 	/**
@@ -153,17 +123,20 @@ public class GameWithGui implements IObserver {
 		JMenuItem quit;
 		JMenuItem single;
 		JMenuItem multi;
+		JMenuItem load;
+		JMenuItem delete;
 		
 		JMenu menu = new JMenu("Game");
 		menu.setMnemonic(KeyEvent.VK_G);
 		
-		JMenu loadMenu = new JMenu("Load game");
-		loadMenu.setMnemonic(KeyEvent.VK_L);
-		addStoredGamesToLoadMenu(loadMenu);
-		
-		JMenu deleteMenu = new JMenu("Delete game");
-		loadMenu.setMnemonic(KeyEvent.VK_D);
-		addStoredGamesToDeleteMenu(deleteMenu);
+		load = createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the saved game", "Load game");
+				if(game != null) {
+					controller.loadGame(game);
+				}
+			}
+		});
 		
 		save = createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -181,6 +154,18 @@ public class GameWithGui implements IObserver {
 			}
 		});
 		save.setEnabled(isGameRunning);
+		
+		delete = createNewItem("Delete game", KeyEvent.VK_D, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the saved game", "Delete game");
+				if(game != null) {
+					int result = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to delete this savegame?", "", JOptionPane.YES_NO_OPTION);
+					if(result == JOptionPane.YES_OPTION) {
+						controller.deleteGame(game);
+					}
+				}				
+			}
+		});
 		
 		single = createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
 			/**
@@ -214,8 +199,8 @@ public class GameWithGui implements IObserver {
 		
 		menu.add(single);
 		menu.add(multi);
-		menu.add(loadMenu);
-		menu.add(deleteMenu);
+		menu.add(load);
+		menu.add(delete);
 		menu.add(save);
 		menu.add(quit);
 		menuBar.add(menu);

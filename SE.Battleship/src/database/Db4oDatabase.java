@@ -52,6 +52,7 @@ public class Db4oDatabase implements IDatabase {
 		}
 		content.setName(name);
 		database.store(content);
+		database.commit();
 		return true;
 	}
 

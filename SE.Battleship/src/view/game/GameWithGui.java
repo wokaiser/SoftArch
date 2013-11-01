@@ -117,7 +117,8 @@ public class GameWithGui implements IObserver {
 		load = createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.loadGame();				
+				controller.loadGame();
+				update();
 			}
 		});
 		

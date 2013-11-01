@@ -42,7 +42,7 @@ public class GameWithGui implements IObserver {
 	public GameWithGui(final GameController controller) {
 		this.controller = controller;
 		mainFrame = new JFrame();
-        this.initMenuBar();
+        initMenuBar(false);
 
 		JPanel ausgabe = new JPanel();
 		ausgabe.setLayout(new BorderLayout(1, 1));
@@ -143,13 +143,6 @@ public class GameWithGui implements IObserver {
 			});
 			deleteMenu.add(item);
 		}		
-	}
-	
-	/**
-	 * Initialize the menu bar (NewGame menu item, Quit menu item,...)
-	 */
-	private void initMenuBar() {
-		initMenuBar(false);
 	}
 	
 	/**

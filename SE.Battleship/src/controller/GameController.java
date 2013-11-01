@@ -63,6 +63,10 @@ public class GameController extends Observable {
 	public List<String> getStoredGames() {
 		return database.getAll();
 	}
+	
+	public void deleteGame(String name) {
+		database.delete(name);
+	}
 	/**
 	 * check for correct game type
 	 * @throws exception if gameType is not SINGLEPLAYER or MULTIPLAYER

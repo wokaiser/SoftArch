@@ -46,8 +46,7 @@ public class GameWithGui implements IObserver {
 
 		JPanel ausgabe = new JPanel();
 		ausgabe.setLayout(new BorderLayout(1, 1));
-		ausgabe.setBorder(BorderFactory.createTitledBorder("Output"));
-   	
+		ausgabe.setBorder(BorderFactory.createTitledBorder("Output"));   	
 
 		mainPanel = new JPanel(new BorderLayout());
 		statusPanel = new StatusPanel();
@@ -108,7 +107,7 @@ public class GameWithGui implements IObserver {
 	}
 	
 	/**
-	 * Adds stored games from the database to the Load Menu
+	 * Adds stored games from the database to the load menu
 	 * @param loadMenu The JMenu the saved games should be attached to
 	 */
 	private void addStoredGamesToLoadMenu(JMenu loadMenu) {
@@ -126,9 +125,38 @@ public class GameWithGui implements IObserver {
 	}
 	
 	/**
+	 * Adds stored games from the database to the delete menu
+	 * @param deleteMenu The JMenu the saved games should be attached to
+	 */
+	private void addStoredGamesToDeleteMenu(JMenu deleteMenu) {
+		List<String> games = controller.getStoredGames();
+		for (String name : games) {
+			final String tmp = name;
+			JMenuItem item = createNewItem(tmp, KEYEVENT_NONE, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int retVal = JOptionPane.showConfirmDialog(mainFrame, "Are you sure to delete " + tmp + " ?", "", JOptionPane.YES_NO_OPTION);
+					if(retVal == JOptionPane.YES_OPTION) {
+						controller.deleteGame(tmp);
+						JOptionPane.showMessageDialog(mainFrame, "Savegame deleted.", "", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			});
+			deleteMenu.add(item);
+		}		
+	}
+	
+	/**
 	 * Initialize the menu bar (NewGame menu item, Quit menu item,...)
 	 */
 	private void initMenuBar() {
+		initMenuBar(false);
+	}
+	
+	/**
+	 * Initialize the menu bar (NewGame menu item, Quit menu item,...)
+	 * @param isGameRunning Set true when calling this Method while running a game
+	 */
+	private void initMenuBar(boolean isGameRunning) {
         JMenuBar menuBar = new JMenuBar();
 		JMenuItem quit;
 		JMenuItem single;
@@ -139,6 +167,11 @@ public class GameWithGui implements IObserver {
 		
 		JMenu loadMenu = new JMenu("Load game");
 		loadMenu.setMnemonic(KeyEvent.VK_L);
+		addStoredGamesToLoadMenu(loadMenu);
+		
+		JMenu deleteMenu = new JMenu("Delete game");
+		loadMenu.setMnemonic(KeyEvent.VK_D);
+		addStoredGamesToDeleteMenu(deleteMenu);
 		
 		save = createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -148,14 +181,14 @@ public class GameWithGui implements IObserver {
 						break;
 					}
 					if (!controller.saveGame(name)) {
-						JOptionPane.showMessageDialog(mainFrame, "Savegame already taken, choose another one!");
+						JOptionPane.showMessageDialog(mainFrame, "Savegame already taken, choose another one!", "", JOptionPane.WARNING_MESSAGE);
 						continue;
 					}
 					break;
 				}
 			}
 		});
-		save.setEnabled(false);
+		save.setEnabled(isGameRunning);
 		
 		single = createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
 			/**
@@ -185,13 +218,12 @@ public class GameWithGui implements IObserver {
 			public void actionPerformed(ActionEvent event) {
 				System.exit(0);
 			}
-		});
-		
-		addStoredGamesToLoadMenu(loadMenu);
+		});		
 		
 		menu.add(single);
 		menu.add(multi);
 		menu.add(loadMenu);
+		menu.add(deleteMenu);
 		menu.add(save);
 		menu.add(quit);
 		menuBar.add(menu);

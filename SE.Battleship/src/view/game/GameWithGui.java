@@ -117,7 +117,6 @@ public class GameWithGui implements IObserver {
 			JMenuItem item = createNewItem(tmp, KEYEVENT_NONE, new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					controller.loadGame(tmp);
-					update();
 				}
 			});
 			loadMenu.add(item);

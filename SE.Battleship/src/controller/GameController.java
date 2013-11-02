@@ -118,9 +118,14 @@ public class GameController extends Observable {
 	 * from the result of the shot. 
 	 * @return The result of the shot (see Playground class)
 	 */
-	public int shoot(Coordinates t) {
+	public int shoot(String player, Coordinates t) {
 		int shootStatus = Constances.SHOOT_INVALID;
 		Coordinates target = t;
+		/* check if the player try to shoot which has to shoot.*/
+		if (getActivePlayer() != player) {
+			return shootStatus;
+		}
+		
 		content.setSwitchedPlayer(false);
 		
 		if (null == target || isAI()) {
@@ -163,7 +168,7 @@ public class GameController extends Observable {
 			if (gameFinished()) {
 				break;
 			}
-			int coord = shoot(null);
+			int coord = shoot(getActivePlayer(), null);
 			if (Constances.SHOOT_HIT != coord && Constances.SHOOT_DESTROYED != coord) {
 				break;
 			}

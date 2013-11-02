@@ -64,7 +64,7 @@ public class ControllerTest {
 	@Test
 	public void testshoot() {
 		Coordinates tmp = new Coordinates(5 ,5);
-		int result = controller.shoot(tmp);
+		int result = controller.shoot(controller.getActivePlayer(), tmp);
 		assertTrue(result >= Constances.SHOOT_HIT && result <= Constances.SHOOT_INVALID);
 	}
 	

@@ -220,7 +220,6 @@ public class GameWithGui implements IObserver {
 	 */
 	@Override
 	public void update() {
-		
 		playgroundsPanel.removeAll();
 		playgroundsPanel.repaint();
 		if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {

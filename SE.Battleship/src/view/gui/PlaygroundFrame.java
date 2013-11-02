@@ -155,7 +155,7 @@ public class PlaygroundFrame implements ActionListener {
 				if(e.getSource() == enemyCells[row][column]){
 					target.setRow(row);
 					target.setColumn(column);
-					controller.shoot(target);
+					controller.shoot(controller.getActivePlayer(), target);
 					update();
 					controller.gameFinished();
 				}

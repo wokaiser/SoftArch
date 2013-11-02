@@ -1,11 +1,20 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
+
+import model.general.Constances;
+import model.playground.Coordinates;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import controller.GameController;
+import database.GameContent;
 import play.libs.Json;
+import play.libs.F.Callback;
 import play.mvc.*;
 import view.game.Game;
 
@@ -14,6 +23,8 @@ public class BattleshipWebSocket extends Controller {
 	
 	/* this Map holds all controllers, for all players. A play can get his controller with his uuid */
 	private static HashMap<String, OnlineGame> onlineGames = new HashMap<String, OnlineGame>();
+	/* this list holds all open multiplayer games, which mean that one player wait for another player */
+	private static List<String> openGames = new LinkedList<String>();
 	
 	/**
 	 * Generate a unique id to store a own GameController for each player in a Hash Map.
@@ -78,5 +89,53 @@ public class BattleshipWebSocket extends Controller {
       			out.write(status);
             }
         };
+    }
+    
+    public void onMessage(final OnlineGame onlineGame, final WebSocket.In<JsonNode> in, final WebSocket.Out<JsonNode> out) {
+    	final GameController controller = onlineGame.getController();
+		// For each event received on the socket,
+	    in.onMessage(new Callback<JsonNode>() {
+	        public void invoke(JsonNode event) {
+	        	ObjectNode status = Json.newObject();
+	        	                    
+	        	/* new single player game */
+	        	if (null != event.findPath("newSinglePlayerGame").textValue()) {
+	        		onlineGame.setPlayer(GameController.HUMAN_PLAYER_1);
+	        		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+	            	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
+	            	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
+	      			out.write(status);
+	      			return;
+	        	}
+	        	
+	        	/* new multi player game */
+	        	if (null != event.findPath("newMultiPlayerGame").textValue()) {
+	        		System.out.println("newMultiPlayerGame");
+	        		return;
+	        	}
+	        	
+	        	if (controller.gameFinished()) {
+	    			status.put("info", "Creating a new game is required.");
+	    			out.write(status);
+	    			return;
+	        	}
+	        	
+	        	if ((event.findPath("shootX").canConvertToInt())
+	        	  &&(event.findPath("shootY").canConvertToInt())) {
+	        		int x = event.findPath("shootX").asInt();
+	        		int y = event.findPath("shootY").asInt();
+	        		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());
+	        		target.setRow(x);
+	        		target.setColumn(y);
+	        		controller.shoot(onlineGame.getPlayer(), target);
+	        		return;
+	        	}
+	        	
+				status.put("error", "Illegal call to websocket.");
+				out.write(status);
+				return;
+	        	
+	        }
+	    });
     }
 }

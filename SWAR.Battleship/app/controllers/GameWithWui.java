@@ -1,9 +1,6 @@
 package controllers;
 
-import model.general.Constances;
-import model.playground.Coordinates;
 import play.libs.Json;
-import play.libs.F.Callback;
 import play.mvc.WebSocket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,57 +17,11 @@ public class GameWithWui implements IObserver{
 		this.controller = onlineGame.getController();
 		this.player = onlineGame.getPlayer();
 		this.out = out;
-	
-    	// For each event received on the socket,
-        in.onMessage(new Callback<JsonNode>() {
-            public void invoke(JsonNode event) {
-            	ObjectNode status = Json.newObject();
-            	                    
-            	/* new single player game */
-            	if (null != event.findPath("newSinglePlayerGame").textValue()) {
-            		player = GameController.HUMAN_PLAYER_1;
-            		onlineGame.setPlayer(player);
-            		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, player, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
-                	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
-                	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
-          			out.write(status);
-          			return;
-            	}
-            	
-            	/* new multi player game */
-            	if (null != event.findPath("newMultiPlayerGame").textValue()) {
-            		System.out.println("newMultiPlayerGame");
-            		return;
-            	}
-            	
-            	if (controller.gameFinished()) {
-        			status.put("info", "Creating a new game is required.");
-        			out.write(status);
-        			return;
-            	}
-            	
-            	if ((event.findPath("shootX").canConvertToInt())
-            	  &&(event.findPath("shootY").canConvertToInt())) {
-            		int x = event.findPath("shootX").asInt();
-            		int y = event.findPath("shootY").asInt();
-            		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());
-            		target.setRow(x);
-            		target.setColumn(y);
-            		System.out.println(player);
-            		controller.shoot(player, target);
-            		return;
-            	}
-            	
-    			status.put("error", "Illegal call to websocket.");
-    			out.write(status);
-    			return;
-            	
-            }
-        });
 	}
 	
 	@Override
 	public void update() {
+		System.out.println("Update for player: "+player);
 		ObjectNode status = Json.newObject();                            	
    
     	if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {

@@ -24,6 +24,8 @@ public class GameController extends Observable {
 	
 	public static final String AI_PLAYER_1 = "Computer 1";
 	public static final String AI_PLAYER_2 = "Computer 2";
+	public static final String HUMAN_PLAYER_1 = "Player 1";
+	public static final String HUMAN_PLAYER_2 = "Player 2";
 		
 	private IDatabase database;
 	private GameContent content;

@@ -17,7 +17,7 @@ public class ControllerTest {
 	@Before
 	public void setUp() {
 		controller = new GameController(null);
-		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 	}
 	
 	@Test
@@ -32,7 +32,7 @@ public class ControllerTest {
 	@Test
 	public void testinitController() {
 		try {
-			controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+			controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}
@@ -71,7 +71,7 @@ public class ControllerTest {
 	@Test
 	public void testgetActivePlayer() {
 		String player = controller.getActivePlayer();
-		assertEquals(player, "Human");
+		assertEquals(player, GameController.HUMAN_PLAYER_1);
 		String enemy = controller.getEnemyPlayer();
 		assertEquals(enemy, GameController.AI_PLAYER_1);
 	}

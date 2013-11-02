@@ -128,10 +128,9 @@ public class GameController extends Observable {
 	public int shoot(String player, Coordinates t) {
 		int shootStatus = Constances.SHOOT_INVALID;
 		Coordinates target = t;
-		System.out.println("hier");
+
 		/* check if the player try to shoot which has to shoot.*/
 		if (0 != getActivePlayer().compareTo(player)) {
-			System.out.println("nicht"+getActivePlayer()+"  "+player);
 			return shootStatus;
 		}
 		

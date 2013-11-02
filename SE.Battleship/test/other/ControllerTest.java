@@ -90,14 +90,14 @@ public class ControllerTest {
 	
 	@Test
 	public void testgetEnemyPlaygroundAsString() {
-		String playground = controller.getEnemyPlaygroundAsString();
+		String playground = controller.getEnemyPlaygroundAsString(controller.getActivePlayer());
 		assertNotNull(playground);
 		assertTrue(playground.length() > 0);
 	}
 	
 	@Test
 	public void testgetEnemyPlaygroundAsMatrix() {
-		char[][] playground = controller.getEnemyPlaygroundAsMatrix();
+		char[][] playground = controller.getEnemyPlaygroundAsMatrix(controller.getActivePlayer());
 		assertNotNull(playground);
 		assertEquals(playground.length, Constances.DEFAULT_ROWS);
 		assertEquals(playground[0].length, Constances.DEFAULT_COLUMNS);
@@ -105,14 +105,14 @@ public class ControllerTest {
 	
 	@Test
 	public void testgetOwnPlaygroundAsString() {
-		String playground = controller.getOwnPlaygroundAsString();
+		String playground = controller.getOwnPlaygroundAsString(controller.getActivePlayer());
 		assertNotNull(playground);
 		assertTrue(playground.length() > 0);
 	}
 
 	@Test
 	public void testgetOwnPlaygroundAsMatrix() {
-		char[][] playground = controller.getOwnPlaygroundAsMatrix();
+		char[][] playground = controller.getOwnPlaygroundAsMatrix(controller.getActivePlayer());
 		assertNotNull(playground);
 		assertEquals(playground.length, Constances.DEFAULT_ROWS);
 		assertEquals(playground[0].length, Constances.DEFAULT_COLUMNS);

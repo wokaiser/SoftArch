@@ -16,9 +16,8 @@ public class GameContent {
 	public static final int MULTIPLAYER = 1;
 	public static final int SINGLEPLAYER = 2;
 	
-	// Identifier of the savegame
+	/* Identifier of the savegame */
 	private String name;
-	
 	/* playground of player 1 and 2 */
 	private Playground playground1;
 	private Playground playground2;
@@ -28,10 +27,6 @@ public class GameContent {
 	/* AI for player 1 and 2 */
 	private IAi player1AI;
 	private IAi player2AI;
-	/* the active playground switch after each turn and determine which player turn it is */
-	private Playground enemyPlayground;
-	private String enemyPlayer;
-	private Playground ownPlayground;
 	private IAi activeAI;
 	private String activePlayer;
 	/* the status object log information about important method calls like shoot(..) */
@@ -65,9 +60,6 @@ public class GameContent {
 		player2AI.initialize(rows, columns);
 		playground1.placeShipsRandom(fleet1);
 		playground2.placeShipsRandom(fleet2);
-		enemyPlayground = this.playground2;
-		enemyPlayer = this.player2;
-		ownPlayground = this.playground1;
 		activePlayer = this.player1;
 		activeAI = this.player2AI;
 		status.clear();
@@ -135,6 +127,19 @@ public class GameContent {
 		return player2AI;
 	}
 	/**
+	 * Switch player. Will be called if the actual player did not hit a ship.
+	 */
+	public void switchPlayer() {
+		setSwitchedPlayer(true);
+		if (0 == activePlayer.compareTo(player2)) {
+			activePlayer = player1;
+			activeAI = player1AI;
+		} else {
+			activePlayer = player2;
+			activeAI = player2AI;
+		}
+	}
+	/**
 	 * Get the name of the active player
 	 * @return name The name of the active player
 	 */
@@ -142,23 +147,14 @@ public class GameContent {
 		return activePlayer;
 	}
 	/**
-	 * Sets the active player
-	 */
-	public void setActivePlayer(String player) {
-		activePlayer = player;
-	}	
-	/**
 	 * Get the name of the enemy player
 	 * @return name The name of the enemy
 	 */
 	public String getEnemyPlayer() {
-		return enemyPlayer;
-	}
-	/**
-	 * Sets the enemy player
-	 */
-	public void setEnemyPlayer(String player) {
-		enemyPlayer = player;
+		if (0 == activePlayer.compareTo(player2)) {
+			return player1;
+		}
+		return player2;
 	}
 	/**
 	 * Gets player 1
@@ -220,26 +216,20 @@ public class GameContent {
 	/**
 	 * Gets the enemy playground
 	 */
-	public Playground getEnemyPlayground() {
-		return enemyPlayground;
-	}
-	/**
-	 * Sets the enemy playground
-	 */
-	public void setEnemyPlayground(Playground playground) {
-		enemyPlayground = playground;
+	public Playground getEnemyPlayground(String activePlayer) {
+		if (this.player1 == activePlayer) {
+			return playground2;
+		}
+		return playground1;
 	}
 	/**
 	 * Gets the own playground
 	 */
-	public Playground getOwnPlayground() {
-		return ownPlayground;
-	}
-	/**
-	 * Sets the own playground
-	 */
-	public void setOwnPlayground(Playground playground) {
-		ownPlayground = playground;
+	public Playground getOwnPlayground(String activePlayer) {
+		if (this.player1 == activePlayer) {
+			return playground1;
+		}
+		return playground2;
 	}
 	/**
 	 * Gets the playground 2

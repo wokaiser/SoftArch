@@ -102,10 +102,10 @@ public class GameController extends Observable {
 	 * @return false The game is not finished.
 	 */
 	public boolean gameFinished() {
-		if (null == content.getEnemyPlayground()) {
+		if (null == content.getEnemyPlayground(content.getActivePlayer())) {
 			return true;
 		}
-		if (0 == content.getEnemyPlayground().getNumberOfExistingShips()) {
+		if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
 			content.getStatus().addText(content.getActivePlayer() + " won.");
 			return true;
 		}
@@ -142,18 +142,18 @@ public class GameController extends Observable {
 			content.getStatus().addText("AI shoot to: " + target.toString() + ".");
 		}
 		
-		if (content.getEnemyPlayground().alreadyShot(target)) {
+		if (content.getEnemyPlayground(player).alreadyShot(target)) {
 			content.getStatus().addError("Already shot to this target. Try again.");	
 		}
 		else
 		{
-			shootStatus = content.getEnemyPlayground().shoot(target);
-			content.getStatus().moveStatus(content.getEnemyPlayground().getStatus());
+			shootStatus = content.getEnemyPlayground(player).shoot(target);
+			content.getStatus().moveStatus(content.getEnemyPlayground(player).getStatus());
 			/* set flags for AI */
 			if(content.getActiveAI().setFlags(shootStatus))
 			{
 				/* no ship hit/destroyed, so switch the user */
-				switchPlayer();
+				content.switchPlayer();
 				content.getStatus().addText(content.getActivePlayer() + " please select your target.");
 			}			
 		}
@@ -215,43 +215,43 @@ public class GameController extends Observable {
 	 * Get the playground of the active player as a String.
 	 * @return Formatted String of the playground
 	 */
-	public String getEnemyPlaygroundAsString() {
-		return content.getEnemyPlayground().enemyStringView();
+	public String getEnemyPlaygroundAsString(String activePlayer) {
+		return content.getEnemyPlayground(activePlayer).enemyStringView();
 	}	
 	/**
 	 * Get the playground of the enemy player as a String.
 	 * @return Formatted String of the playground
 	 */
-	public char [][] getEnemyPlaygroundAsMatrix() {
-		return content.getEnemyPlayground().enemyView();
+	public char [][] getEnemyPlaygroundAsMatrix(String activePlayer) {
+		return content.getEnemyPlayground(activePlayer).enemyView();
 	}	
 	/**
 	 * Get the playground of the enemy player as a Json.
 	 * @return Json of the playground
 	 */
-	public JsonNode getEnemyPlaygroundAsJson() {
-		return content.getEnemyPlayground().enemyJsonView();
+	public JsonNode getEnemyPlaygroundAsJson(String activePlayer) {
+		return content.getEnemyPlayground(activePlayer).enemyJsonView();
 	}	
 	/**
 	 * Get the playground of the enemy player (With no ships visible.).
 	 * @return 2 dimensional matrix of the playground
 	 */
-	public String getOwnPlaygroundAsString() {
-		return content.getOwnPlayground().ownStringView();
+	public String getOwnPlaygroundAsString(String activePlayer) {
+		return content.getOwnPlayground(activePlayer).ownStringView();
 	}	
 	/**
 	 * Get the playground of the active player (With all placed ships visible).
 	 * @return 2 dimensional matrix of the playground
 	 */
-	public char [][] getOwnPlaygroundAsMatrix() {
-		return content.getOwnPlayground().ownView();
+	public char [][] getOwnPlaygroundAsMatrix(String activePlayer) {
+		return content.getOwnPlayground(activePlayer).ownView();
 	}	
 	/**
 	 * Get the playground of the active player (With all placed ships visible).
 	 * @return Json of the playground
 	 */
-	public JsonNode getOwnPlaygroundAsJson() {
-		return content.getOwnPlayground().ownJsonView();
+	public JsonNode getOwnPlaygroundAsJson(String activePlayer) {
+		return content.getOwnPlayground(activePlayer).ownJsonView();
 	}
 	/**
 	 * check if a player is a computer
@@ -264,25 +264,6 @@ public class GameController extends Observable {
 		}
 		return false;
 	}	
-	/**
-	 * Switch player. Will be called if the actual player did not hit a ship.
-	 */
-	public void switchPlayer() {
-		content.setSwitchedPlayer(true);
-		if (content.getPlayground1().equals(content.getEnemyPlayground())) {
-			content.setEnemyPlayground(content.getPlayground2());
-			content.setEnemyPlayer(content.getPlayer2());
-			content.setOwnPlayground(content.getPlayground1());
-			content.setActivePlayer(content.getPlayer1());
-			content.setActiveAI(content.getPlayer1AI());
-		} else {
-			content.setEnemyPlayground(content.getPlayground1());
-			content.setEnemyPlayer(content.getPlayer1());
-			content.setOwnPlayground(content.getPlayground2());
-			content.setActivePlayer(content.getPlayer2());
-			content.setActiveAI(content.getPlayer2AI());
-		}
-	}
 	/**
 	 * Check if a player switched after a shot
 	 * @return true if player switched, false if not

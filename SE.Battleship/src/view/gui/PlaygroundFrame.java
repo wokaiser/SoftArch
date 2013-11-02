@@ -134,9 +134,9 @@ public class PlaygroundFrame implements ActionListener {
 	 */
 	private char [][] getActivePlayground() {
 		if (controller.getActivePlayer() == this.player) {
-			return this.controller.getOwnPlaygroundAsMatrix();
+			return this.controller.getOwnPlaygroundAsMatrix(controller.getActivePlayer());
 		}
-		return this.controller.getEnemyPlaygroundAsMatrix();
+		return this.controller.getEnemyPlaygroundAsMatrix(controller.getActivePlayer());
 	}
 
 	/**

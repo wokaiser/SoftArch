@@ -61,9 +61,9 @@ public class Logger implements IObserver {
 		}
 		printMessage("****************************************");
 		printMessage("Own playground (" + controller.getActivePlayer() + ")");
-		printMessage(controller.getOwnPlaygroundAsString());
+		printMessage(controller.getOwnPlaygroundAsString(controller.getActivePlayer()));
 		printMessage("Enemy playground (" + controller.getEnemyPlayer() + ")");
-		printMessage(controller.getEnemyPlaygroundAsString());
+		printMessage(controller.getEnemyPlaygroundAsString(controller.getActivePlayer()));
 		printMessage("****************************************");
 		count++;
 	}

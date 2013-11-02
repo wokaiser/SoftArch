@@ -3,6 +3,7 @@ package util.observer;
 import interfaces.IObserver;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /** 
@@ -10,7 +11,7 @@ import java.util.UUID;
  * @author Dennis Parlak
  */
 public class Observable  {
-	private static HashMap<String, IObserver> subscribers = new HashMap<String, IObserver>();
+	private Map<String, IObserver> subscribers = new HashMap<String, IObserver>();
 
 	/** 
 	 * The method adds a class, which implements IObserver, to the observer. The uuid for this

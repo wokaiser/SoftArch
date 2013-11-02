@@ -147,15 +147,25 @@ public class PlaygroundFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	    for (int row = 0; row < this.controller.getRows(); row++) {
 	    	for (int column = 0; column < this.controller.getColumns(); column++) {
-				/* find cell which was clicked */
-				if(e.getSource() == enemyCells[row][column]){
-					target.setRow(row);
-					target.setColumn(column);
-					controller.shoot(controller.getActivePlayer(), target);
-					update();
-					controller.gameFinished();
-				}
+	    		clickEvent(e, row, column);
 	    	}
+		}
+	}
+	
+	/**
+	 * Handle a click event to an playground cell
+	 * @param e Event which was clicked
+	 * @param row of the playground
+	 * @param column of the playground
+	 */
+	private void clickEvent(ActionEvent e, int row, int column) {
+		/* find cell which was clicked */
+		if(e.getSource() == enemyCells[row][column]){
+			target.setRow(row);
+			target.setColumn(column);
+			controller.shoot(controller.getActivePlayer(), target);
+			update();
+			controller.gameFinished();
 		}
 	}
 }

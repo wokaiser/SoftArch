@@ -83,7 +83,7 @@ public class BattleshipWebSocket extends Controller {
         			out.write(status);
         			return;
             	}
-               	/* write the playgroud to the client */
+               	/* write the playground to the client */
             	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
             	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
       			out.write(status);
@@ -108,7 +108,7 @@ public class BattleshipWebSocket extends Controller {
 	      			return;
 	        	}
 	        	
-	        	/* new multi player game */
+	        	/* new multiplayer game */
 	        	if (null != event.findPath("newMultiPlayerGame").textValue()) {
 	        		System.out.println("newMultiPlayerGame");
 	        		return;

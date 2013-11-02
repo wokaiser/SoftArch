@@ -55,7 +55,11 @@ public class GameController extends Observable {
 	 * Saves the actual game
 	 */
 	public boolean saveGame(String name) {
-		return database.save(name, content);
+		boolean retVal = database.save(name, content);
+		if(!retVal) {
+			content.getStatus().addError("Savegame already taken, choose another one!");
+		}
+		return retVal; 
 	}
 	/**
 	 * Loads the actual game

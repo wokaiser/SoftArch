@@ -14,6 +14,7 @@ import interfaces.IObserver;
 public class GameWithWui implements IObserver{
 	private final WebSocket.Out<JsonNode> out;
 	private final GameController controller;
+	private String player;
 	
 	public GameWithWui(final GameController controller, final WebSocket.In<JsonNode> in, final WebSocket.Out<JsonNode> out) {
 		this.controller = controller;
@@ -26,7 +27,8 @@ public class GameWithWui implements IObserver{
             	                    
             	/* new single player game */
             	if (null != event.findPath("newSinglePlayerGame").textValue()) {
-            		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, "Human", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+            		player = GameController.HUMAN_PLAYER_1;
+            		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, player, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
                 	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
                 	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
           			out.write(status);
@@ -52,7 +54,7 @@ public class GameWithWui implements IObserver{
             		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());
             		target.setRow(x);
             		target.setColumn(y);
-            		controller.shoot(target);
+            		controller.shoot(player, target);
             		return;
             	}
             	
@@ -64,6 +66,10 @@ public class GameWithWui implements IObserver{
         });
 	}
 	
+    @Override
+    public void updateOnLoaded() {
+
+    }
 	
 	@Override
 	public void update() {

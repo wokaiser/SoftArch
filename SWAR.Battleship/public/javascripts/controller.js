@@ -75,6 +75,12 @@ var controller = (function () {
         } else if (data.info) {
             eventListener["updateStatus"].fire(data); 
         }
+        
+        if (data.multiPlayerWait) {
+            console.log("wait for multi player game");
+        } else if (data.multiPlayerStart) {
+            console.log("start multi player game");
+        }
     };
     
     var run = function () {
@@ -93,6 +99,10 @@ var controller = (function () {
     
     var newSinglePlayerGame = function () {
         websocketSend({newSinglePlayerGame : "Creates a new single play game"});
+    };
+    
+    var newMultiPlayerGame = function () {
+        websocketSend({newMultiPlayerGame : "Creates a multi player game, or join an existing game."});
     };
     
     var shoot = function (coord) {

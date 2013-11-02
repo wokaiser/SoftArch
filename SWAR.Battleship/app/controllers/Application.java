@@ -23,6 +23,7 @@ public class Application extends Controller {
 			ip = "NOT_AVAILABLE";
 			e.printStackTrace();
 		}
+
     	return ok(app.render(ip));
     }
 }

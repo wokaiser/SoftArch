@@ -14,6 +14,12 @@ var eventHandle = (function () {
         }
     });
     
+    $( "a.newMultiPlayerGame" ).on({
+        click: function() {
+            controller.newMultiPlayerGame();
+        }
+    });
+    
     /* Public methods and variables */
     return {      
         clickablePlayground  : clickablePlayground,

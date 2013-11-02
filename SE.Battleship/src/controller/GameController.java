@@ -45,8 +45,12 @@ public class GameController extends Observable {
 		content = inject.getInstance(GameContent.class);
 		content.initContent(rows, columns, player1, player2, gameType);
 		this.checkGameType();
+	}
+	
+	public void startGame() {
 		this.aiShoot();
 	}
+	
 	/**
 	 * Saves the actual game
 	 */
@@ -57,7 +61,6 @@ public class GameController extends Observable {
 	 * Loads the actual game
 	 */
 	public void loadGame(String name) {
-		notifyObserversOnLoaded();
 		content = database.load(name);
 		notifyObservers();
 	}
@@ -121,14 +124,16 @@ public class GameController extends Observable {
 	public int shoot(String player, Coordinates t) {
 		int shootStatus = Constances.SHOOT_INVALID;
 		Coordinates target = t;
+		System.out.println("hier");
 		/* check if the player try to shoot which has to shoot.*/
 		if (0 != getActivePlayer().compareTo(player)) {
+			System.out.println("nicht"+getActivePlayer()+"  "+player);
 			return shootStatus;
 		}
 		
 		content.setSwitchedPlayer(false);
 		
-		if (null == target || isAI()) {
+		if (null == target || isAI(content.getActivePlayer())) {
 			/* get the target from the AI */
 			target = content.getActiveAI().shoot();
 			content.getStatus().addText("AI shoot to: " + target.toString() + ".");
@@ -152,7 +157,7 @@ public class GameController extends Observable {
 		
 		notifyObservers();
 		/* if the new player is a AI */
-		if (isAI() && switchedPlayer()) {
+		if (isAI(content.getActivePlayer()) && switchedPlayer()) {
 			aiShoot();
 		}
 		return shootStatus;
@@ -164,7 +169,7 @@ public class GameController extends Observable {
 	 * the Observers after every shot.
 	 */
 	private void aiShoot() {
-		while (isAI()) {
+		while (isAI(content.getActivePlayer())) {
 			if (gameFinished()) {
 				break;
 			}
@@ -244,25 +249,14 @@ public class GameController extends Observable {
 	 */
 	public JsonNode getOwnPlaygroundAsJson() {
 		return content.getOwnPlayground().ownJsonView();
-	}	
+	}
 	/**
-	 * check if the actual active player is a computer
-	 * @return true if the actual player is a computer, false if not
+	 * check if a player is a computer
+	 * @return true if the player is a computer, false if not
 	 */
-	public boolean isAI() {
-		if (content.getActivePlayer().equals(AI_PLAYER_1)
-		  || content.getActivePlayer().equals(AI_PLAYER_2)) {
-			return true;
-		}
-		return false;
-	}	
-	/**
-	 * check if the enemy is a computer
-	 * @return true if the enemy is a computer, false if not
-	 */
-	public boolean isEnemyAI() {
-		if (content.getEnemyPlayer().equals(AI_PLAYER_1)
-		  || content.getEnemyPlayer().equals(AI_PLAYER_2)) {
+	public boolean isAI(String player) {
+		if (player.equals(AI_PLAYER_1)
+		  ||player.equals(AI_PLAYER_2)) {
 			return true;
 		}
 		return false;
@@ -278,9 +272,7 @@ public class GameController extends Observable {
 			content.setOwnPlayground(content.getPlayground1());
 			content.setActivePlayer(content.getPlayer1());
 			content.setActiveAI(content.getPlayer1AI());
-		}
-		else
-		{
+		} else {
 			content.setEnemyPlayground(content.getPlayground1());
 			content.setEnemyPlayer(content.getPlayer1());
 			content.setOwnPlayground(content.getPlayground2());

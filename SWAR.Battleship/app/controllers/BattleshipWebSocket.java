@@ -13,7 +13,7 @@ import view.game.Game;
 public class BattleshipWebSocket extends Controller {
 	
 	/* this Map holds all controllers, for all players. A play can get his controller with his uuid */
-	private static HashMap<String, GameController> controllers = new HashMap<String, GameController>();
+	private static HashMap<String, OnlineGame> onlineGames = new HashMap<String, OnlineGame>();
 	
 	/**
 	 * Generate a unique id to store a own GameController for each player in a Hash Map.
@@ -21,10 +21,10 @@ public class BattleshipWebSocket extends Controller {
 	 */
 	public static String getUuid() {
 		String uuid = UUID.randomUUID().toString();
-		while (controllers.containsKey(uuid)) {
+		while (onlineGames.containsKey(uuid)) {
 			uuid = UUID.randomUUID().toString();
 		}
-		controllers.put(uuid, null);
+		onlineGames.put(uuid, null);
 		return uuid;
 	}
 	
@@ -32,14 +32,14 @@ public class BattleshipWebSocket extends Controller {
 	 * Get the controller by uuid. If the controller is not initialised a new controller will be created.
 	 * @return The GameController
 	 */
-	public static GameController getController(String uuid) {
-		if ((!controllers.containsKey(uuid))
-		  ||(null == controllers.get(uuid))){
-			GameController controller = Game.newGameController();
-			controllers.put(uuid, controller);
+	public static OnlineGame getOnlineGame(String uuid) {
+		if ((!onlineGames.containsKey(uuid))
+		  ||(null == onlineGames.get(uuid))){
+			OnlineGame controller = new OnlineGame(GameController.HUMAN_PLAYER_1, Game.newGameController());
+			onlineGames.put(uuid, controller);
 			return controller;
 		}
-		return controllers.get(uuid);
+		return onlineGames.get(uuid);
 	}
 
 	/**
@@ -61,10 +61,11 @@ public class BattleshipWebSocket extends Controller {
                 	return;
                 }
                 /* get the controller with the uuid */
-                GameController controller = getController(uuid);
+                OnlineGame onlineGame = getOnlineGame(uuid);
+                GameController controller = onlineGame.getController();
             	/* we have to remove all possible Observers and set them again, because old references may exist */
-    			controller.removeAllObservers();
-        		controller.addObserver(new GameWithWui(controller, in, out));
+                controller.removeAllObservers();
+                controller.addObserver(new GameWithWui(onlineGame, in, out));
             	
             	if (controller.gameFinished()) {
         			status.put("info", "Welcome to Battleship. Create a new Game to get started.");

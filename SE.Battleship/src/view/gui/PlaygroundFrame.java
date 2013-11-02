@@ -67,11 +67,7 @@ public class PlaygroundFrame implements ActionListener {
 	private void initCells(char [][] playground, int row, int column) {		
 		ownCells[row][column] = new JButton(getCellIcon(playground[row][column], Resources.CELL_SHIP_ICON));
 		enemyCells[row][column] = new JButton(getCellIcon(playground[row][column], Resources.CELL_INIT_ICON));
-		
-		/* Action listener is only for NOT AI player */
-		if (!controller.isEnemyAI()) {
-    		enemyCells[row][column].addActionListener(this);	
-		}
+    	enemyCells[row][column].addActionListener(this);	
 		ownCells[row][column].setPreferredSize(new Dimension(Resources.ICON_WIDTH, Resources.ICON_HEIGHT));
 		enemyCells[row][column].setPreferredSize(new Dimension(Resources.ICON_WIDTH, Resources.ICON_HEIGHT));
 		ownPanel.add(ownCells[row][column]);

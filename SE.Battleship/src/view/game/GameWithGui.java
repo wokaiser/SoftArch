@@ -39,7 +39,7 @@ public class GameWithGui implements IObserver {
 	public GameWithGui(final GameController controller) {
 		this.controller = controller;
 		mainFrame = new JFrame();
-        initMenuBar(false);
+        initMenuBar();
 
 		JPanel ausgabe = new JPanel();
 		ausgabe.setLayout(new BorderLayout(1, 1));
@@ -64,13 +64,12 @@ public class GameWithGui implements IObserver {
 		playgroundsPanel.removeAll();
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, player1, player2, gameType);
 		ownFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
-		controller.switchPlayer();
-		enemyFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
-		controller.switchPlayer();
+		enemyFrame = new PlaygroundFrame(controller, controller.getEnemyPlayer());
 		playgroundsPanel.add(ownFrame.get());
 		playgroundsPanel.add(enemyFrame.get());
 		save.setEnabled(true);
 		initMainFrame();
+		controller.startGame();
 	}
 	
 	/**
@@ -123,7 +122,7 @@ public class GameWithGui implements IObserver {
 	 * Initialize the menu bar (NewGame menu item, Quit menu item,...)
 	 * @param isGameRunning Set true when calling this Method while running a game
 	 */
-	private void initMenuBar(boolean isGameRunning) {
+	private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 		JMenuItem quit;
 		JMenuItem single;
@@ -158,7 +157,7 @@ public class GameWithGui implements IObserver {
 				}
 			}
 		});
-		save.setEnabled(isGameRunning);
+		save.setEnabled(controller.gameFinished());
 		
 		delete = createNewItem("Delete game", KeyEvent.VK_D, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,7 +177,7 @@ public class GameWithGui implements IObserver {
 			 * @param event The occurred event
 			 */
 			public void actionPerformed(ActionEvent event) {
-				newGame("Spieler 1", GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+				newGame(GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 			}
 		});
 		
@@ -188,7 +187,7 @@ public class GameWithGui implements IObserver {
 			 * @param event The occurred event
 			 */
 			public void actionPerformed(ActionEvent event) {
-				newGame("Spieler 1", "Spieler 2", GameContent.MULTIPLAYER);
+				newGame(GameController.HUMAN_PLAYER_1, GameController.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
 			}
 		});
 		
@@ -248,20 +247,6 @@ public class GameWithGui implements IObserver {
 		}
 
 		playgroundsPanel.repaint();
-	}
-	
-	@Override
-	public void updateOnLoaded() {
-        initMenuBar(true);
-        playgroundsPanel.removeAll();
-		ownFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
-		controller.switchPlayer();
-		enemyFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
-		controller.switchPlayer();
-		playgroundsPanel.add(ownFrame.get());
-		playgroundsPanel.add(enemyFrame.get());
-		save.setEnabled(true);
-		initMainFrame();
 	}
 }
 

@@ -117,26 +117,4 @@ public class ControllerTest {
 		assertEquals(playground.length, Constances.DEFAULT_ROWS);
 		assertEquals(playground[0].length, Constances.DEFAULT_COLUMNS);
 	}
-	
-	@Test
-	public void testisAI() {
-		assertFalse(controller.isAI());
-	}
-	
-	@Test
-	public void testisEnemyAI() {
-		assertTrue(controller.isEnemyAI());
-	}
-	
-	@Test
-	public void testswitchPlayer() {
-		controller.switchPlayer();
-		assertTrue(controller.isAI());
-	}
-	
-	@Test
-	public void testswitchedPlayer() {
-		controller.switchPlayer();
-		assertTrue(controller.switchedPlayer());
-	}
 }

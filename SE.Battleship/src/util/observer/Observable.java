@@ -46,14 +46,4 @@ public class Observable  {
 			observer.update();
 		}
 	}
-	
-	/** 
-	 * The method notifies all classes which are registered at the observer 
-	 */
-	public void notifyObserversOnLoaded() {
-		for ( Iterator<IObserver> iter = subscribers.iterator(); iter.hasNext();) {
-			IObserver observer = iter.next();
-			observer.updateOnLoaded();
-		}
-	}
 }

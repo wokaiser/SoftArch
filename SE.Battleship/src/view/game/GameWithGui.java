@@ -151,7 +151,8 @@ public class GameWithGui implements IObserver {
 						break;
 					}
 					if (!controller.saveGame(name)) {
-						JOptionPane.showMessageDialog(mainFrame, "Savegame already taken, choose another one!", "", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(mainFrame, controller.getStatus().getError(), "", JOptionPane.WARNING_MESSAGE);
+						controller.getStatus().clearError();
 						continue;
 					}
 					break;

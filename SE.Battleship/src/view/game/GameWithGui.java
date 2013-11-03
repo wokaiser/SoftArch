@@ -223,11 +223,9 @@ public class GameWithGui implements IObserver {
 			JOptionPane.showMessageDialog(mainPanel, controller.getActivePlayer()+" please select your target", "Switched player", JOptionPane.INFORMATION_MESSAGE);	
 		}
 		statusPanel.update(controller.getStatus());
-		controller.getStatus().clear();
 		
 		if (controller.gameFinished()) {
 			String winner = controller.getStatus().getText();
-			controller.getStatus().clear();
 			controller.getStatus().addText("Select a new Game in the Menu.");
 			statusPanel.update(controller.getStatus());
 			JOptionPane.showMessageDialog(mainFrame, winner, "Game Finished", JOptionPane.INFORMATION_MESSAGE);

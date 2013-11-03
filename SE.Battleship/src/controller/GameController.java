@@ -31,6 +31,14 @@ public class GameController extends Observable {
 	private GameContent content;
 
 	/**
+	 * Override the Observable, to notify the Observers and clear the status after that.
+	 */
+	@Override
+	public void notifyObservers() {
+		super.notifyObservers();
+		content.getStatus().clear();	
+	}	
+	/**
 	 * Creates a new game	 
 	 */
 	@Inject
@@ -143,7 +151,7 @@ public class GameController extends Observable {
 		Coordinates target = t;
 		
 		if (!content.gameStarted()) {
-			content.getStatus().addError("Wait for another player. Please wait until all players are ready.");
+			content.getStatus().addError("Wait for another player to get started.");
 			notifyObservers();
 			return shootStatus;
 		}

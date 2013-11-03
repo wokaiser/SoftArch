@@ -44,11 +44,8 @@ public class BattleshipWebSocket extends Controller {
 	 * @return The GameController
 	 */
 	public static OnlineGame getOnlineGame(String uuid) {
-		if ((!onlineGames.containsKey(uuid))
-		  ||(null == onlineGames.get(uuid))){
-			OnlineGame controller = new OnlineGame(GameController.HUMAN_PLAYER_1, Game.newGameController());
-			onlineGames.put(uuid, controller);
-			return controller;
+		if (!onlineGames.containsKey(uuid)) {
+			onlineGames.put(uuid, new OnlineGame(null, null));
 		}
 		return onlineGames.get(uuid);
 	}
@@ -60,7 +57,9 @@ public class BattleshipWebSocket extends Controller {
 	 */
 	public static OnlineGame getNewOnlineGame(String uuid) {
 		onlineGames.remove(uuid);
-		return getOnlineGame(uuid);
+		OnlineGame controller = new OnlineGame(GameController.HUMAN_PLAYER_1, Game.newGameController());
+		onlineGames.put(uuid, controller);
+		return controller;
 	}
 	
 	public static OnlineGame joinOnlineGame(String joinUuuid, String ownUuid) {
@@ -87,20 +86,17 @@ public class BattleshipWebSocket extends Controller {
         			out.write(status);
                 	return;
                 }
-                System.out.println("1");
                 /* get the controller with the uuid */
                 OnlineGame onlineGame = getOnlineGame(uuid);
                 GameController controller = onlineGame.getController();
             	/* we have to remove all possible Observers and set them again, because old references may exist */
                 onMessage(uuid, in, out);
-                System.out.println("2");
                 /* check if no controller is active */
                 if (null == controller) {
         			status.put("info", "Welcome to Battleship. Create a new Game to get started.");
         			out.write(status);
         			return;
                 }
-                System.out.println("3");
             	
                 /* check if a game is still active */
             	if (controller.gameFinished()) {
@@ -108,10 +104,10 @@ public class BattleshipWebSocket extends Controller {
         			out.write(status);
         			return;
             	}
-            	 System.out.println("4");
                 controller.removeObserver(onlineGame.getPlayer());
                 controller.addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
                	/* write the playground to the client */
+                status.put("player", onlineGame.getPlayer());
             	status.put("ownPlayground", controller.getOwnPlaygroundAsJson(onlineGame.getPlayer()));
             	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
       			out.write(status);
@@ -123,11 +119,10 @@ public class BattleshipWebSocket extends Controller {
 		// For each event received on the socket,
 	    in.onMessage(new Callback<JsonNode>() {
 	        public void invoke(JsonNode event) {
-	        	System.out.println("call to websocket");
 	        	OnlineGame onlineGame = getOnlineGame(uuid);
 	        	GameController controller = onlineGame.getController();
 	        	ObjectNode status = Json.newObject();
-	        	                    
+	        		        	                    
 	        	/* new single player game */
 	        	if (null != event.findPath("newSinglePlayerGame").textValue()) {
 	        		/* remove the own uuid, if a game is already open with this uuid */
@@ -136,6 +131,7 @@ public class BattleshipWebSocket extends Controller {
 	        		onlineGame = getNewOnlineGame(uuid);
 	        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 	        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+	        		status.put("player", onlineGame.getPlayer());
 	        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
 	            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
 	      			out.write(status);
@@ -152,6 +148,7 @@ public class BattleshipWebSocket extends Controller {
 	        			System.out.println("JOIN MultiPlayerGame");	
 		        		onlineGame = joinOnlineGame(openGames.get(0), uuid);
 		        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+		        		status.put("player", onlineGame.getPlayer());
 		        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
 		            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
 		      			out.write(status);
@@ -163,11 +160,19 @@ public class BattleshipWebSocket extends Controller {
 		        		onlineGame = getNewOnlineGame(uuid);
 		        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
 		        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+		        		status.put("player", onlineGame.getPlayer());
 		        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
 		            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
 		      			out.write(status);
 		      			return;
 	        		}
+	        	}
+	       
+	        	/* check if no controller is ready */
+	        	if (null == controller) {
+	        		status.put("info", "Create a new game to start with Battleship.");
+	        		out.write(status);
+	        		return;
 	        	}
 	        	
 	        	if (controller.gameFinished()) {

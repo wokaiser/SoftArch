@@ -32,20 +32,17 @@ public class GameWithWui implements IObserver{
 		if (controllerStatus.errorExist()) {
 			status.put("error", controllerStatus.getError());
   			out.write(status);
-  			controller.getStatus().clear();
   			return;
 		}
 		if (controllerStatus.textExist()) {
 			status.put("info", controllerStatus.getText());
   			out.write(status);
-  			controller.getStatus().clear();
   			status.removeAll();
 		}
 		
 		if (controller.gameFinished()) {
 			status.put("info", controllerStatus.getText());
   			out.write(status);
-  			controller.getStatus().clear();
   			status.removeAll();
   			return;
 		}

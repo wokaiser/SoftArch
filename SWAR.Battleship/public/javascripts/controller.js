@@ -114,6 +114,7 @@ var controller = (function () {
         addEventListener    : addEventListener,
         run                 : run,
         newSinglePlayerGame : newSinglePlayerGame,
+        newMultiPlayerGame  : newMultiPlayerGame,
         shoot               : shoot,
     };
 })();

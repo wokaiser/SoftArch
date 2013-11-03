@@ -33,6 +33,7 @@ public class GameContent {
 	private Status status;
 	private boolean switchedPlayer;
 	private int gameType;
+	private boolean gameStarted;
 	
 	@Inject
 	public GameContent(IAi player1, IAi player2) {
@@ -67,8 +68,21 @@ public class GameContent {
 		playground1.getStatus().clear();
 		playground2.getStatus().clear();
 		switchedPlayer = false;
+		gameStarted = false;
 		this.gameType = gameType;
 		checkGameType();
+	}
+	/**
+	 * Set the flag, to indicate that the game started
+	 */
+	public void startGame() {
+		gameStarted = true;
+	}
+	/**
+	 * get the flag to check if the game started.
+	 */
+	public boolean gameStarted() {
+		return gameStarted;
 	}
 	/**
 	 * Sets the name of this content

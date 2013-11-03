@@ -46,8 +46,20 @@ public class GameController extends Observable {
 		content.initContent(rows, columns, player1, player2, gameType);
 		this.checkGameType();
 	}
-	
+	/**
+	 * Start the game now. In a single player game this method can be called directly. In a distributed
+	 * multi player game, the second player has to call this method.
+	 */
 	public void startGame() {
+		if (null == content) {
+			throw new IllegalAccessError("newController was not called before.");
+		}
+		if (content.gameStarted()) {
+			throw new IllegalAccessError("Called startGame twice.");
+		}
+		content.getStatus().addText("Game started. "+content.getActivePlayer()+" please select your target.");
+		content.startGame();
+		notifyObservers();
 		this.aiShoot();
 	}
 	
@@ -103,6 +115,7 @@ public class GameController extends Observable {
 	 */
 	public boolean gameFinished() {
 		if (null == content.getEnemyPlayground(content.getActivePlayer())) {
+			content.getStatus().addText(content.getActivePlayer() + " won.");
 			return true;
 		}
 		if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
@@ -128,9 +141,23 @@ public class GameController extends Observable {
 	public int shoot(String player, Coordinates t) {
 		int shootStatus = Constances.SHOOT_INVALID;
 		Coordinates target = t;
+		
+		if (!content.gameStarted()) {
+			content.getStatus().addError("Wait for another player. Please wait until all players are ready.");
+			notifyObservers();
+			return shootStatus;
+		}
 
+		/* check if the game finished */
+		if (gameFinished()) {
+			notifyObservers();
+			return shootStatus;
+		}
+		
 		/* check if the player try to shoot which has to shoot.*/
 		if (0 != getActivePlayer().compareTo(player)) {
+			content.getStatus().addError(content.getActivePlayer()+" can shoot to the playground now.");
+			notifyObservers();
 			return shootStatus;
 		}
 		
@@ -143,7 +170,7 @@ public class GameController extends Observable {
 		}
 		
 		if (content.getEnemyPlayground(player).alreadyShot(target)) {
-			content.getStatus().addError("Already shot to this target. Try again.");	
+			content.getStatus().addError(content.getActivePlayer()+" already shot to this target. Try again.");	
 		}
 		else
 		{
@@ -257,9 +284,11 @@ public class GameController extends Observable {
 	 * check if a player is a computer
 	 * @return true if the player is a computer, false if not
 	 */
-	public boolean isAI(String player) {
-		if (player.equals(AI_PLAYER_1)
-		  ||player.equals(AI_PLAYER_2)) {
+	private boolean isAI(String player) {
+		if (player.equals(AI_PLAYER_1)) {
+			return true;
+		}
+		if (player.equals(AI_PLAYER_2)) {
 			return true;
 		}
 		return false;

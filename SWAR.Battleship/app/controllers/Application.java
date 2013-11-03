@@ -14,7 +14,9 @@ public class Application extends Controller {
     	String ip = null;
 
     	/* get a new uuid, if no one is actually available. */
-        if (null == uuid) session("uuid", BattleshipWebSocket.getUuid());
+        if (null == uuid) {
+        	session("uuid", BattleshipWebSocket.getUuid());
+        }
         
         try {
         	ip = Inet4Address.getLocalHost().getHostAddress();

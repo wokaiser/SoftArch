@@ -51,8 +51,8 @@ public class GameWithWui implements IObserver{
 		}
 
 		/* send an update */
-    	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
-    	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
+    	status.put("ownPlayground", controller.getOwnPlaygroundAsJson(player));
+    	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson(player));
 		out.write(status);
 		return;
 	}

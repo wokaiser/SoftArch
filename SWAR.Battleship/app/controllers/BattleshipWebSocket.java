@@ -40,7 +40,7 @@ public class BattleshipWebSocket extends Controller {
 	}
 	
 	/**
-	 * Get the controller by uuid. If the controller is not initialised a new controller will be created.
+	 * Get the OnlineGame by uuid. If the controller of the OnlineGame is not initialized a new controller will be created.
 	 * @return The GameController
 	 */
 	public static OnlineGame getOnlineGame(String uuid) {
@@ -51,6 +51,22 @@ public class BattleshipWebSocket extends Controller {
 			return controller;
 		}
 		return onlineGames.get(uuid);
+	}
+	/**
+	 * Get the a new OnlineGame by uuid. If a controller already exist, it will be removed an replaced with a new one.
+	 * This will be done, because a second player also can own a reference to this object and so we avoid that the
+	 * second player see the same game.
+	 * @return The GameController
+	 */
+	public static OnlineGame getNewOnlineGame(String uuid) {
+		onlineGames.remove(uuid);
+		return getOnlineGame(uuid);
+	}
+	
+	public static OnlineGame joinOnlineGame(String joinUuuid, String ownUuid) {
+		OnlineGame controller = new OnlineGame(GameController.HUMAN_PLAYER_2, onlineGames.get(joinUuuid).getController());
+		onlineGames.put(ownUuid, controller);
+		return controller;
 	}
 
 	/**
@@ -71,47 +87,87 @@ public class BattleshipWebSocket extends Controller {
         			out.write(status);
                 	return;
                 }
+                System.out.println("1");
                 /* get the controller with the uuid */
                 OnlineGame onlineGame = getOnlineGame(uuid);
                 GameController controller = onlineGame.getController();
             	/* we have to remove all possible Observers and set them again, because old references may exist */
-                controller.removeAllObservers();
-                controller.addObserver(new GameWithWui(onlineGame, in, out));
+                onMessage(uuid, in, out);
+                System.out.println("2");
+                /* check if no controller is active */
+                if (null == controller) {
+        			status.put("info", "Welcome to Battleship. Create a new Game to get started.");
+        			out.write(status);
+        			return;
+                }
+                System.out.println("3");
             	
+                /* check if a game is still active */
             	if (controller.gameFinished()) {
         			status.put("info", "Welcome to Battleship. Create a new Game to get started.");
         			out.write(status);
         			return;
             	}
+            	 System.out.println("4");
+                controller.removeObserver(onlineGame.getPlayer());
+                controller.addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
                	/* write the playground to the client */
-            	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
-            	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
+            	status.put("ownPlayground", controller.getOwnPlaygroundAsJson(onlineGame.getPlayer()));
+            	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
       			out.write(status);
             }
         };
     }
     
-    public void onMessage(final OnlineGame onlineGame, final WebSocket.In<JsonNode> in, final WebSocket.Out<JsonNode> out) {
-    	final GameController controller = onlineGame.getController();
+    private static void onMessage(final String uuid, final WebSocket.In<JsonNode> in, final WebSocket.Out<JsonNode> out) {
 		// For each event received on the socket,
 	    in.onMessage(new Callback<JsonNode>() {
 	        public void invoke(JsonNode event) {
+	        	System.out.println("call to websocket");
+	        	OnlineGame onlineGame = getOnlineGame(uuid);
+	        	GameController controller = onlineGame.getController();
 	        	ObjectNode status = Json.newObject();
 	        	                    
 	        	/* new single player game */
 	        	if (null != event.findPath("newSinglePlayerGame").textValue()) {
-	        		onlineGame.setPlayer(GameController.HUMAN_PLAYER_1);
-	        		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
-	            	status.put("ownPlayground", controller.getOwnPlaygroundAsJson());
-	            	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson());
+	        		/* remove the own uuid, if a game is already open with this uuid */
+	        		openGames.remove(uuid);
+	        		System.out.println("newSinglePlayerGame");
+	        		onlineGame = getNewOnlineGame(uuid);
+	        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+	        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+	        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
+	            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
 	      			out.write(status);
+	        		onlineGame.getController().startGame();
 	      			return;
 	        	}
 	        	
 	        	/* new multiplayer game */
 	        	if (null != event.findPath("newMultiPlayerGame").textValue()) {
-	        		System.out.println("newMultiPlayerGame");
-	        		return;
+	        		/* remove the own uuid, if a game is already open with this uuid */
+	        		openGames.remove(uuid);
+	        		/* check if a game is already open, than join the game */
+	        		if (0 < openGames.size()) {
+	        			System.out.println("JOIN MultiPlayerGame");	
+		        		onlineGame = joinOnlineGame(openGames.get(0), uuid);
+		        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+		        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
+		            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
+		      			out.write(status);
+		        		onlineGame.getController().startGame();
+		      			return;
+	        		} else {
+		        		System.out.println("newMultiPlayerGame");
+		        		openGames.add(uuid);
+		        		onlineGame = getNewOnlineGame(uuid);
+		        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
+		        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+		        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
+		            	status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
+		      			out.write(status);
+		      			return;
+	        		}
 	        	}
 	        	
 	        	if (controller.gameFinished()) {
@@ -122,6 +178,7 @@ public class BattleshipWebSocket extends Controller {
 	        	
 	        	if ((event.findPath("shootX").canConvertToInt())
 	        	  &&(event.findPath("shootY").canConvertToInt())) {
+	        		System.out.println("shoot from "+onlineGame.getPlayer());
 	        		int x = event.findPath("shootX").asInt();
 	        		int y = event.findPath("shootY").asInt();
 	        		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());

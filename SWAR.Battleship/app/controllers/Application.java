@@ -1,6 +1,8 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 import play.mvc.Controller;
@@ -20,12 +22,29 @@ public class Application extends Controller {
         
         try {
         	ip = Inet4Address.getLocalHost().getHostAddress();
-        	ip = "localhost";	//TODO remove
+        	ip = getActiveNetConnectionLocalHostIP();
         } catch (UnknownHostException e) {
 			ip = "NOT_AVAILABLE";
 			e.printStackTrace();
 		}
 
     	return ok(app.render(ip));
+    }
+    
+    /**
+     * Gets the IP Adress of the local host regarding the active Internet adapter
+     * @return The IP of the local host
+     */
+    private static String getActiveNetConnectionLocalHostIP() {
+    	Socket s;
+    	String result = "localhost";
+		try {
+			s = new Socket("google.com", 80);
+	    	result = s.getLocalAddress().getHostAddress();
+	    	s.close();
+		} catch (IOException e) {
+			//TODO
+		}
+		return result;
     }
 }

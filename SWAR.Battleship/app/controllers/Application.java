@@ -1,9 +1,7 @@
 package controllers;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,13 +18,7 @@ public class Application extends Controller {
         	session("uuid", BattleshipWebSocket.getUuid());
         }
         
-        try {
-        	ip = Inet4Address.getLocalHost().getHostAddress();
-        	ip = getActiveNetConnectionLocalHostIP();
-        } catch (UnknownHostException e) {
-			ip = "NOT_AVAILABLE";
-			e.printStackTrace();
-		}
+        ip = getActiveNetConnectionLocalHostIP();
 
     	return ok(app.render(ip));
     }
@@ -37,13 +29,13 @@ public class Application extends Controller {
      */
     private static String getActiveNetConnectionLocalHostIP() {
     	Socket s;
-    	String result = "localhost";
+    	String result;
 		try {
 			s = new Socket("google.com", 80);
 	    	result = s.getLocalAddress().getHostAddress();
 	    	s.close();
 		} catch (IOException e) {
-			//TODO
+			result = "localhost";
 		}
 		return result;
     }

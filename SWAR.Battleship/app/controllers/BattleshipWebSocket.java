@@ -44,9 +44,12 @@ public class BattleshipWebSocket extends Controller {
 	 * @return The GameController
 	 */
 	public static OnlineGame getOnlineGame(String uuid) {
+		System.out.println(uuid);
 		if (!onlineGames.containsKey(uuid)) {
+			System.out.println("not exist");
 			onlineGames.put(uuid, new OnlineGame(null, null));
 		}
+		System.out.println(onlineGames.get(uuid));
 		return onlineGames.get(uuid);
 	}
 	/**

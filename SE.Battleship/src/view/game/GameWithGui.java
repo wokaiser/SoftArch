@@ -61,15 +61,22 @@ public class GameWithGui implements IObserver {
 	 * @param The name of player2 (To use AI set to GameController.AI_PLAYER_2)
 	 */
 	private void newGame(String player1, String player2, int gameType) {
-		playgroundsPanel.removeAll();
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, player1, player2, gameType);
+		initPlaygroundFrame();
+		controller.startGame();
+	}
+	
+	/**
+	 * Initialize the playground frame.
+	 */
+	private void initPlaygroundFrame() {
+		initMainFrame();
+		playgroundsPanel.removeAll();
 		ownFrame = new PlaygroundFrame(controller, controller.getActivePlayer()); 
 		enemyFrame = new PlaygroundFrame(controller, controller.getEnemyPlayer());
 		playgroundsPanel.add(ownFrame.get());
 		playgroundsPanel.add(enemyFrame.get());
 		save.setEnabled(true);
-		initMainFrame();
-		controller.startGame();
 	}
 	
 	/**
@@ -217,9 +224,13 @@ public class GameWithGui implements IObserver {
 	 */
 	@Override
 	public void update() {
+		if (controller.loadedGame()) {
+			initPlaygroundFrame();
+		}
+		
 		playgroundsPanel.removeAll();
 		playgroundsPanel.repaint();
-		if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
+		if (!controller.loadedGame() && controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
 			JOptionPane.showMessageDialog(mainPanel, controller.getActivePlayer()+" please select your target", "Switched player", JOptionPane.INFORMATION_MESSAGE);	
 		}
 		statusPanel.update(controller.getStatus());

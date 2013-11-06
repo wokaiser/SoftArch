@@ -27,8 +27,9 @@ public class GameController extends Observable {
 	public static final String HUMAN_PLAYER_1 = "Player 1";
 	public static final String HUMAN_PLAYER_2 = "Player 2";
 		
-	private IDatabase database;
-	private GameContent content;
+	private boolean loadedGame = false;
+	private IDatabase database = null;
+	private GameContent content = null;
 
 	/**
 	 * Override the Observable, to notify the Observers and clear the status after that.
@@ -68,7 +69,7 @@ public class GameController extends Observable {
 		content.getStatus().addText("Game started. "+content.getActivePlayer()+" please select your target.");
 		content.startGame();
 		notifyObservers();
-		this.aiShoot();
+		aiShoot();
 	}
 	
 	/**
@@ -82,11 +83,27 @@ public class GameController extends Observable {
 		return retVal; 
 	}
 	/**
+	 * To check if a game was loaded. The status will be set to true if a game was loaded and
+	 * it will be set to false, after all observables were notified.
+	 * @return true if a game was loaded and false if not.
+	 */
+	public boolean loadedGame() {
+		return loadedGame;
+	}
+	/**
 	 * Loads the actual game
 	 */
 	public void loadGame(String name) {
 		content = database.load(name);
+		loadedGame = true;
+		/* TODO: fix this hotfix. If we do not double switchPlayer, we see an incorrect playground.
+		 * switchPlayer() just change "activePlayer" and "activeAI" internally in content...*/
+		content.switchPlayer();
+		content.switchPlayer();
+		content.getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
 		notifyObservers();
+		aiShoot();
+		loadedGame = false;
 	}
 	/**
 	 * Gets all the stored GameContent names
@@ -199,7 +216,7 @@ public class GameController extends Observable {
 			aiShoot();
 		}
 		return shootStatus;
-	}	
+	}
 	
 	/**
 	 * aiShoot, will shoot until the game is finished or the AI did not hit a ship.

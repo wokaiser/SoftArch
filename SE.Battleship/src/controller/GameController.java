@@ -254,14 +254,14 @@ public class GameController extends Observable {
 	 * @return rows The number of columns 
 	 */
 	public int getRows() {
-		return content.getPlayground1().getRows();
+		return content.getRows();
 	}	
 	/**
 	 * Get the columns of the playground
 	 * @return columns The number of columns 
 	 */
 	public int getColumns() {
-		return content.getPlayground1().getColumns();
+		return content.getColumns();
 	}	
 	/**
 	 * Get the playground of the active player as a String.

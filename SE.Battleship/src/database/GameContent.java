@@ -134,18 +134,6 @@ public class GameContent {
 		return gameType;
 	}
 	/**
-	 * Gets the AI of player 1
-	 */
-	public IAi getPlayer1AI() {
-		return player1AI;
-	}
-	/**
-	 * Gets the AI of player 2
-	 */
-	public IAi getPlayer2AI() {
-		return player2AI;
-	}
-	/**
 	 * Switch player. Will be called if the actual player did not hit a ship.
 	 */
 	public void switchPlayer() {
@@ -176,25 +164,12 @@ public class GameContent {
 		return player2;
 	}
 	/**
-	 * Gets player 1
-	 */
-	public String getPlayer1() {
-		return player1;
-	}
-	/**
-	 * Gets player 2
-	 */
-	public String getPlayer2() {
-		return player2;
-	}	
-	/**
 	 * Get the rows of the playground
 	 * @return rows The number of columns 
 	 */
 	public int getRows() {
 		return playground1.getRows();
 	}
-	
 	/**
 	 * Get the columns of the playground
 	 * @return columns The number of columns 
@@ -227,12 +202,6 @@ public class GameContent {
 		return activeAI;
 	}
 	/**
-	 * Sets the active AI
-	 */
-	public void setActiveAI(IAi ai) {
-		activeAI = ai;
-	}
-	/**
 	 * Gets the enemy playground
 	 */
 	public Playground getEnemyPlayground(String activePlayer) {
@@ -248,18 +217,6 @@ public class GameContent {
 		if (this.player1 == activePlayer) {
 			return playground1;
 		}
-		return playground2;
-	}
-	/**
-	 * Gets the playground 2
-	 */
-	public Playground getPlayground1() {
-		return playground1;
-	}
-	/**
-	 * Gets the playground 2
-	 */
-	public Playground getPlayground2() {
 		return playground2;
 	}
 }

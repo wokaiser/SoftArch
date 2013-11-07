@@ -37,12 +37,10 @@ public class StatusPanel extends JPanel {
 		if (status.errorExist()) {
 			statusLabel.setText(status.getError());
 			this.setBackground(Color.RED);
-		}
-		else if (status.textExist()) {
+		} else if (status.textExist()) {
 			statusLabel.setText(status.getText());
 			this.setBackground(Color.WHITE);
-		}
-		else {
+		} else {
 			statusLabel.setText("");
 		}
 	}

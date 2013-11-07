@@ -29,19 +29,6 @@ public class Coordinates {
 	}
 	
 	/**
-	 * Create a Coordinates object with no default row and column (default is 0).
-	 * @param maxRow The maximum number of row to use (from 0 - (maxRow-1)).
-	 * @param maxColumn The maximum number of column to use (from 0 - (maxColumn-1)).
-	 * @param defaultRow The default row to set
-	 * @param defaultColumn The default colunmn to set
-	 */
-	public Coordinates(int maxRow, int maxColumn, int defaultRow, int defaultColumn) {
-		this(maxRow, maxColumn);
-		this.row = defaultRow;
-		this.column = defaultColumn;
-	}
-	
-	/**
 	 * Return the saved row.
 	 * @return the row, which is bigger as 0 and smaller as maxRow
 	 */
@@ -83,19 +70,6 @@ public class Coordinates {
 		}
 		this.column = column;
 		return true;
-	}
-	
-	/**
-	 * Set row and column, equal to a other Coordinate object
-	 * @param other Coordinates object
-	 * @return true Coordinates successfully set
-	 * @return false Coordinates could not be set
-	 */
-	public boolean set(Coordinates other) {
-		if (!this.setRow(other.getRow())) {
-			return false;
-		}
-		return this.setColumn(other.getColumn());
 	}
 	
 	/**

@@ -47,7 +47,6 @@ public class AI_Weak extends AI_Base implements IAi {
 		if (shootStatus == Constances.SHOOT_HIT || shootStatus == Constances.SHOOT_DESTROYED) {
 			return false;
 		}
-			
 		return true;
 	}	
 	/**

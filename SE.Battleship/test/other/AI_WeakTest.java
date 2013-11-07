@@ -20,7 +20,13 @@ public class AI_WeakTest {
 	@Test
 	public void initialize() {
 		try {
-			ai.initialize(0, 0);
+			ai.initialize(0, Constances.DEFAULT_COLUMNS);
+			fail("Should have thrown an IllegalArgumentException!");
+		} catch (Exception exc) {
+			
+		}
+		try {
+			ai.initialize(Constances.DEFAULT_ROWS, 0);
 			fail("Should have thrown an IllegalArgumentException!");
 		} catch (Exception exc) {
 			
@@ -59,5 +65,6 @@ public class AI_WeakTest {
 	public void testsetFlags() {
 		assertTrue(ai.setFlags(Constances.SHOOT_MISS));
 		assertFalse(ai.setFlags(Constances.SHOOT_HIT));
+		assertFalse(ai.setFlags(Constances.SHOOT_DESTROYED));
 	}
 }

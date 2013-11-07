@@ -20,7 +20,13 @@ public class AI_HardTest {
 	@Test
 	public void initialize() {
 		try {
-			ai.initialize(0, 0);
+			ai.initialize(0, Constances.DEFAULT_COLUMNS);
+			fail("Should have thrown an IllegalArgumentException!");
+		} catch (Exception exc) {
+			
+		}
+		try {
+			ai.initialize(Constances.DEFAULT_ROWS, 0);
 			fail("Should have thrown an IllegalArgumentException!");
 		} catch (Exception exc) {
 			

@@ -4,7 +4,7 @@ package model.general;
  * The Class Constances provide often used constants.
  * @author Dennis Parlak
  */
-public class Constances {
+public final class Constances {
 	
 	/**
 	 * Singleton to prevent creation of this class

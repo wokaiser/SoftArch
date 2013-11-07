@@ -19,7 +19,6 @@ public class Application extends Controller {
         }
         
         ip = getActiveNetConnectionLocalHostIP();
-
     	return ok(app.render(ip));
     }
     

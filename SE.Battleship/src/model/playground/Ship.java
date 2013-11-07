@@ -38,12 +38,20 @@ public class Ship {
 		this.id = id;
 	}
 	
+	/**
+	 * Check the length of the name of the ship
+	 * @param name Name of ship
+	 */
 	private void checkName(String name) {
 		if (MIN_SHIP_NAME_LENGTH > name.length()) {
 			throw new IllegalArgumentException("Ships must have a name!");
 		}	
 	}
 	
+	/**
+	 * Check the length of a ship
+	 * @param length of ship
+	 */
 	private void checkLength(int length) {
 		if (MIN_SHIP_SIZE > length || MAX_SHIP_SIZE < length)
 		{

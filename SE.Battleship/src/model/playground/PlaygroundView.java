@@ -58,6 +58,14 @@ public abstract class PlaygroundView {
 		return builder.toString();
 	}
 	
+	/**
+	 * Return a playground as a Json Node. By Overwriting the getElement(..) method in subclasses,
+	 * the appearance of one element should be defined. 
+	 * @matrix The Playground as a 2d character array
+	 * @rows The number of rows of the matrix
+	 * @columns The number of columns of the matrix
+	 * @return The Json appearance of the playground.
+	 */
 	public JsonNode toJson(char matrix[][], int rows, int columns) {
 		StringBuilder builder = new StringBuilder("[");
 		

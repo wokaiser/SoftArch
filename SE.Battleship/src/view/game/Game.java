@@ -25,7 +25,11 @@ public final class Game {
 		controller.addObserver(gui);
 		controller.addObserver(logger);
 	}
-	
+
+	/**
+	 * Create a new GameConroller, where the classes will be injected, which are defined in the modules package.
+	 * @return A GameController
+	 */
 	public static GameController newGameController() {
 		Injector inject = Guice.createInjector(new DatabaseModule());
 		GameController controller = inject.getInstance(GameController.class);

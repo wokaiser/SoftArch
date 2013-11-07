@@ -23,6 +23,11 @@ public class Db4oDatabase implements IDatabase {
 		database = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), FILENAME);
 	}
 
+	/**
+	 * Load a game from the database
+	 * @param name of the game
+	 * @return a GameContent
+	 */
 	@Override
 	public GameContent load(String name) {
 		Query query = database.query();
@@ -35,6 +40,10 @@ public class Db4oDatabase implements IDatabase {
 		return result.get(FIRST);
 	}
 
+	/**
+	 * Load the name of all games from the database and return it as a list.
+	 * @return A list of Strings with the names
+	 */
 	@Override
 	public List<String> getAll() {		
 		List<String> result = new ArrayList<String>();
@@ -45,6 +54,12 @@ public class Db4oDatabase implements IDatabase {
 		return result;
 	}
 
+	/**
+	 * Save a game to the database
+	 * @param name of the game
+	 * @param the GameContent to save
+	 * @return true if save was successful, otherwise false
+	 */
 	@Override
 	public boolean save(String name, GameContent content) {
 		if(isNameAlreadyUsed(name)) {
@@ -55,6 +70,11 @@ public class Db4oDatabase implements IDatabase {
 		return true;
 	}
 
+	/**
+	 * Delete a game from the database
+	 * @param name of the game
+	 * @return true if delete was successful, otherwise false
+	 */
 	@Override
 	public boolean delete(String name) {
 		try {

@@ -35,6 +35,11 @@ public class GameContent {
 	private int gameType;
 	private boolean gameStarted;
 	
+	/**
+	 * Constructor to create a new game content
+	 * @param the AI of the first player, which will be injected
+	 * @param the AI of the second player, which will be injected
+	 */
 	@Inject
 	public GameContent(IAi player1, IAi player2) {
 		player1AI = player1;

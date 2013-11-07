@@ -19,6 +19,9 @@ public class AiModule extends AbstractModule {
 		return this;
 	}
 
+	/**
+	 * Override of the configure method, which bind a concrete AI class.
+	 */
 	@Override
 	protected void configure() {
 		switch(settings) {

@@ -6,10 +6,10 @@ package model.general;
  */
 public class Constances {
 	
-	protected Constances() {
-        // prevents calls from subclass
-        throw new UnsupportedOperationException();
-    }
+	/**
+	 * Singleton to prevent creation of this class
+	 */
+	private Constances() { }
 	
 	public static final char MATRIX_MISS = '-';
 	public static final char MATRIX_HIT = 'X';

@@ -10,7 +10,7 @@ public class DatabaseModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(IDatabase.class).to(Db4oDatabase.class).in(Singleton.class);		
+		bind(IDatabase.class).to(Db4oDatabase.class).in(Singleton.class);
 	}
 
 }

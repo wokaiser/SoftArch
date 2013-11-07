@@ -13,7 +13,7 @@ public final class Game {
 	/**
 	 * Made this a singleton to please Sonar :)
 	 */
-	private Game() { }
+	private Game() {}
 	/**
 	 * Starts a new GUI game with an Console logger
 	 * @param args
@@ -27,10 +27,8 @@ public final class Game {
 	}
 	
 	public static GameController newGameController() {
-		//TODO fix bug database problem and replace new wih injection.
-		//GameController controller = new GameController(null);
 		Injector inject = Guice.createInjector(new DatabaseModule());
-		GameController controller = inject.getInstance(GameController.class);		
+		GameController controller = inject.getInstance(GameController.class);
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
 		return controller;
 	}

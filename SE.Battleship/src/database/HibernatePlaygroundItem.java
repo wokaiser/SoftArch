@@ -14,51 +14,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "cell")
 public class HibernatePlaygroundItem implements Serializable {
-
 	private static final long serialVersionUID = 3184225396652683648L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer id;
 
-	public Integer value = 0;
-
 	@Column(name = "rowcell")
-	public Integer row = 0;
+	public Integer rowcell = 0;
 
 	@Column(name = "columncell")
-	public Integer column = 0;
-
-	public Boolean given = false;
+	public Integer columncell = 0;
 
 	@ManyToOne
 	@JoinColumn(name = "gridid")
 	public HibernateGameContent grid;
 	
-	
-
 	public HibernatePlaygroundItem(Integer column, Integer row) {
-		this.column = column;
-		this.row = row;
+		this.columncell = column;
+		this.rowcell = row;
 	}
 	public HibernatePlaygroundItem() {
+		
 	}
-	public Integer getRow() {
-		return row;
-	}
-
-	public void setRow(Integer row) {
-		this.row = row;
-	}
-
-	public Integer getColumn() {
-		return column;
-	}
-
-	public void setColumn(Integer column) {
-		this.column = column;
-	}
-
+	
 	public HibernateGameContent getGrid() {
 		return grid;
 	}
@@ -66,38 +45,21 @@ public class HibernatePlaygroundItem implements Serializable {
 	public void setGrid(HibernateGameContent grid) {
 		this.grid = grid;
 	}
-
-
-	public Integer getValue() {
-		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-
+	
 	public Integer getRowcell() {
-		return row;
+		return rowcell;
 	}
 
 	public void setRowcell(Integer rowcell) {
-		this.row = rowcell;
+		this.rowcell = rowcell;
 	}
 
 	public Integer getColumncell() {
-		return column;
+		return columncell;
 	}
 
 	public void setColumncell(Integer columncell) {
-		this.column = columncell;
-	}
-
-	public Boolean getGiven() {
-		return given;
-	}
-
-	public void setGiven(Boolean given) {
-		this.given = given;
+		this.columncell = columncell;
 	}
 
 	public Integer getId() {

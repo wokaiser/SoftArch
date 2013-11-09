@@ -88,10 +88,10 @@ public class GameContent {
 	 * @param playground1 of player1
 	 * @param playground2 of player2
 	 */
-	public void initContent(int rows, int columns, String player1, String player2, int gameType, char playground1[][], char playground2[][]) {
+	public void initContent(int rows, int columns, String player1, String player2, int gameType, char playground1Input[][], char playground2Input[][]) {
 		status = new Status();
-		this.playground1 = new Playground(playground1);
-		this.playground2 = new Playground(playground2);
+		this.playground1 = new Playground(playground1Input);
+		this.playground2 = new Playground(playground2Input);
 		this.player1 = player1;
 		this.player2 = player2;
 		player1AI.initialize(rows, columns);

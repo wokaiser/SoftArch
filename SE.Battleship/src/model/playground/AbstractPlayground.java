@@ -38,16 +38,16 @@ public abstract class AbstractPlayground {
 	    }
 	    this.rows = matrix.length;
 	    this.checkRows(rows);
-	    
-	    this.matrix = new char[matrix.length][];
 	    this.columns = matrix[0].length;
 	    this.checkColumns(this.columns);
 	    
+	    this.matrix = new char[rows][columns];
+	    
 	    for (int r = 0; r < matrix.length; r++) {
-	    	if (this.columns != matrix[r].length) {
+	    	if (columns != matrix[r].length) {
 	    		throw new IllegalArgumentException("Matrix has different column length.");
 	    	}
-	    	this.matrix[r] = matrix[r].clone();
+	    	System.arraycopy(matrix[r], 0, this.matrix[r], 0, columns);
 	    }
 	}
 	

@@ -3,9 +3,14 @@ package database;
 import java.util.LinkedList;
 import java.util.List;
 
+import modules.AiModule;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 import database.hibernate.HibernateGameContent;
 import database.hibernate.HibernatePlaygroundItem;
@@ -22,19 +27,22 @@ public class HibernateDatabase implements IDatabase {
 			session = HibernateUtil.getInstance().getCurrentSession();
 			tx = session.beginTransaction();
 			@SuppressWarnings("unchecked")
-			List<GameContent> gameContent = session.createCriteria(GameContent.class).list();
+			List<HibernateGameContent> gameContent = session.createCriteria(HibernateGameContent.class).list();
 			for (int index = 0; index < gameContent.size(); index++) {
-				if (0 == name.compareTo(gameContent.get(index).getName())) {
-					return gameContent.get(index);
+				if (0 == name.compareTo(gameContent.get(index).getId())) {
+					HibernateGameContent saved = gameContent.get(index);
+					Injector inject = Guice.createInjector(new AiModule().setSettings(saved.getPlayer1()), new AiModule().setSettings(saved.getPlayer2()));
+					GameContent content = inject.getInstance(GameContent.class);
+					content.initContent(saved.getRows(), saved.getColumns(), saved.getPlayer1(), saved.getPlayer2(), saved.getGameType());
+					content.startGame();
+					return content;
 				}
 			}
 			tx.commit();
 		} catch (HibernateException ex) {
 			if (tx != null)
 				tx.rollback();
-		} finally {
-		       session.close(); 
-	    }
+		}
 		return null;
 	}
 

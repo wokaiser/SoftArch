@@ -32,7 +32,7 @@ public class HibernateGameContent implements Serializable {
 	private int gameType;
 	private String player1;
 	private String player2;
-	
+
 	public HibernateGameContent() {
 	}
 

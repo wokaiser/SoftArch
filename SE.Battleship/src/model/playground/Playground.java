@@ -32,6 +32,17 @@ public class Playground extends AbstractPlayground {
 	}
 	
 	/**
+	 * Create a Playground object.
+	 * @param rows The number of columns of the playground
+	 * @param columns The number of rows of the playground
+	 */
+	public Playground(char[][] matrix) {
+		super(matrix);
+		this.ships = new LinkedList<Ship>();
+		this.status = new Status();
+	}
+	
+	/**
 	 * Return the status object, which log information about the program flow after
 	 * calling e.g. shoot(..)  method.
 	 * @return status The Status object.

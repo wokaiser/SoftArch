@@ -14,36 +14,70 @@ import com.google.inject.Injector;
 
 import database.hibernate.HibernateGameContent;
 import database.hibernate.HibernatePlaygroundItem;
-import util.Hibernate.HibernateUtil;
+import database.hibernate.HibernateUtil;
 
 public class HibernateDatabase implements IDatabase {
 
 	@Override
 	public GameContent load(String name) {
-		Transaction tx = null;
-		Session session = null;
+		 Session session = HibernateUtil.getInstance().getCurrentSession();
 
-		try {
-			session = HibernateUtil.getInstance().getCurrentSession();
-			tx = session.beginTransaction();
-			@SuppressWarnings("unchecked")
-			List<HibernateGameContent> gameContent = session.createCriteria(HibernateGameContent.class).list();
-			for (int index = 0; index < gameContent.size(); index++) {
-				if (0 == name.compareTo(gameContent.get(index).getId())) {
-					HibernateGameContent saved = gameContent.get(index);
-					Injector inject = Guice.createInjector(new AiModule().setSettings(saved.getPlayer1()), new AiModule().setSettings(saved.getPlayer2()));
-					GameContent content = inject.getInstance(GameContent.class);
-					content.initContent(saved.getRows(), saved.getColumns(), saved.getPlayer1(), saved.getPlayer2(), saved.getGameType());
-					content.startGame();
-					return content;
-				}
+		@SuppressWarnings("unchecked")
+		List<HibernateGameContent> gameContent = session.createCriteria(HibernateGameContent.class).list();
+		for (int index = 0; index < gameContent.size(); index++) {
+			if (0 == name.compareTo(gameContent.get(index).getId())) {
+				return loadGame(gameContent.get(index));
 			}
-			tx.commit();
-		} catch (HibernateException ex) {
-			if (tx != null)
-				tx.rollback();
 		}
+
 		return null;
+	}
+	
+	private GameContent loadGame(HibernateGameContent savedGame) {
+		char[][] matrixPlayground1 = loadPlayground(1, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());		
+		if (null == matrixPlayground1) {
+			return null;
+		}
+		
+		char[][] matrixPlayground2 = loadPlayground(2, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());
+		if (null == matrixPlayground2) {
+			return null;
+		}
+		
+		Injector inject = Guice.createInjector(new AiModule().setSettings(savedGame.getPlayer1()), new AiModule().setSettings(savedGame.getPlayer2()));
+		GameContent content = inject.getInstance(GameContent.class);
+		content.initContent(savedGame.getRows(), savedGame.getColumns(), savedGame.getPlayer1(), savedGame.getPlayer2(), savedGame.getGameType(), matrixPlayground1, matrixPlayground2);
+		content.startGame();
+		
+		return content;
+	}
+	
+	private char[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
+		Session session = HibernateUtil.getInstance().getCurrentSession();
+
+		char[][] matrix = new char[rows][columns]; 
+		
+		@SuppressWarnings("unchecked")
+		List<HibernatePlaygroundItem> playgroundItem = session.createCriteria(HibernatePlaygroundItem.class).list();
+		for (int index = 0; index < playgroundItem.size(); index++) {
+			if (0 == gameContentid.compareTo(playgroundItem.get(index).getGameContent().getId())) {
+				if (playgroundItem.get(index).getPlayground() != playground) {
+					continue;
+				}
+				
+				/* invalid element in database, because out of range */
+				if (rows <= playgroundItem.get(index).getRowcell()) {
+					return null;
+				}
+				if (columns <= playgroundItem.get(index).getColumncell()) {
+					return null;
+				}
+				
+				matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = playgroundItem.get(index).getStatus();
+			}
+		}
+
+		return matrix;
 	}
 
 	@Override
@@ -116,7 +150,6 @@ public class HibernateDatabase implements IDatabase {
 				playground2.add(new HibernatePlaygroundItem(hContent, 2, row, column, playground2Raw[row][column]));
 			}
 		}
-		
 		hContent.setPlayground1(playground1);
 		hContent.setPlayground2(playground2);
 		

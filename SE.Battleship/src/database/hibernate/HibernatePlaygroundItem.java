@@ -1,8 +1,6 @@
 package database.hibernate;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,29 +16,22 @@ public class HibernatePlaygroundItem implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Integer id;
-
-	@Column(name = "playground")
-	public Integer playground = 0;
+	private int id;
 	
-	@Column(name = "rowcell")
-	public Integer rowcell = 0;
-
-	@Column(name = "columncell")
-	public Integer columncell = 0;
-	
-	@Column(name = "status")
-	public char status;
+	private int playground;
+	private int rowcell;
+	private int columncell;
+	private char status;
 
 	@ManyToOne
 	@JoinColumn(name = "gameContentid")
 	public HibernateGameContent gameContent;
 	
-	public HibernatePlaygroundItem(HibernateGameContent gameContent, Integer playground, Integer column, Integer row, char status) {
+	public HibernatePlaygroundItem(HibernateGameContent gameContent, int playground, int rowcell, int columncell, char status) {
 		this.gameContent = gameContent;
 		this.playground = playground;
-		this.columncell = column;
-		this.rowcell = row;
+		this.rowcell = rowcell;
+		this.columncell = columncell;
 		this.status = status;
 	}
 	public HibernatePlaygroundItem() {
@@ -55,19 +46,19 @@ public class HibernatePlaygroundItem implements Serializable {
 		this.gameContent = gameContent;
 	}
 	
-	public Integer getRowcell() {
+	public int getRowcell() {
 		return rowcell;
 	}
 
-	public void setRowcell(Integer rowcell) {
+	public void setRowcell(int rowcell) {
 		this.rowcell = rowcell;
 	}
 
-	public Integer getColumncell() {
+	public int getColumncell() {
 		return columncell;
 	}
 
-	public void setColumncell(Integer columncell) {
+	public void setColumncell(int columncell) {
 		this.columncell = columncell;
 	}
 	
@@ -79,19 +70,19 @@ public class HibernatePlaygroundItem implements Serializable {
 		this.status = status;
 	}
 	
-	public Integer getPlayground() {
+	public int getPlayground() {
 		return playground;
 	}
 
-	public void setPlayground(Integer playground) {
+	public void setPlayground(int playground) {
 		this.playground = playground;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}	
 }

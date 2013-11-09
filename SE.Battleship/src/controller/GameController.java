@@ -143,7 +143,8 @@ public class GameController extends Observable {
 			content.getStatus().addText(content.getActivePlayer() + " won.");
 			return true;
 		}
-		if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
+		//TODO set -1 to 0. This was set to test the database funcitonality and should be set back ASAP
+		if (-1 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
 			content.getStatus().addText(content.getActivePlayer() + " won.");
 			return true;
 		}

@@ -30,6 +30,17 @@ public abstract class AbstractPlayground {
 	}
 	
 	/**
+	 * Creates a Playground with an given matrix.
+	 */
+	public AbstractPlayground(char[][] matrix) {
+		this.rows = matrix.length;
+		this.columns = matrix[0].length;
+		this.checkRows(rows);
+		this.checkColumns(columns);
+		this.matrix = matrix;
+	}
+	
+	/**
 	 * Check if rows parameter is in range.
 	 * @throws IllegalArgumentException if the rows parameter is out of range
 	 */

@@ -77,6 +77,37 @@ public class GameContent {
 		this.gameType = gameType;
 		checkGameType();
 	}
+
+	/**
+	 * Initialises the content and set the playgrounds. This method can be useful to load an saved playground.
+	 * @param rows The number of rows of the playground
+	 * @param columns The number of columns of the playground
+	 * @param player1 The name of player1 (if it should be a computer player use AI_PLAYER_1)
+	 * @param player2 The name of player2 (if it should be a computer player use AI_PLAYER_2)
+	 * @param gameType The gameType (SINGLEPLAYER or MULITPLAYER)
+	 * @param playground1 of player1
+	 * @param playground2 of player2
+	 */
+	public void initContent(int rows, int columns, String player1, String player2, int gameType, char playground1[][], char playground2[][]) {
+		status = new Status();
+		this.playground1 = new Playground(playground1);
+		this.playground2 = new Playground(playground2);
+		this.player1 = player1;
+		this.player2 = player2;
+		player1AI.initialize(rows, columns);
+		player2AI.initialize(rows, columns);
+		activePlayer = this.player1;
+		activeAI = this.player2AI;
+		status.clear();
+		status.addText("Welcome to Battleships");
+		this.playground1.getStatus().clear();
+		this.playground2.getStatus().clear();
+		switchedPlayer = false;
+		gameStarted = false;
+		this.gameType = gameType;
+		checkGameType();
+	}
+	
 	/**
 	 * Set the flag, to indicate that the game started
 	 */

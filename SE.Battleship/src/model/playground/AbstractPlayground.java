@@ -32,22 +32,22 @@ public abstract class AbstractPlayground {
 	/**
 	 * Creates a Playground with an given matrix.
 	 */
-	public AbstractPlayground(char[][] matrix) {
-	    if (matrix == null) {
+	public AbstractPlayground(char[][] matrixInput) {
+	    if (matrixInput == null) {
 	    	throw new IllegalArgumentException("Null matrix for playground");
 	    }
-	    this.rows = matrix.length;
-	    this.checkRows(rows);
-	    this.columns = matrix[0].length;
-	    this.checkColumns(this.columns);
+	    rows = matrixInput.length;
+	    checkRows(rows);
+	    columns = matrixInput[0].length;
+	    checkColumns(columns);
 	    
-	    this.matrix = new char[rows][columns];
+	    matrix = new char[rows][columns];
 	    
-	    for (int r = 0; r < matrix.length; r++) {
-	    	if (columns != matrix[r].length) {
+	    for (int r = 0; r < matrixInput.length; r++) {
+	    	if (columns != matrixInput[r].length) {
 	    		throw new IllegalArgumentException("Matrix has different column length.");
 	    	}
-	    	System.arraycopy(matrix[r], 0, this.matrix[r], 0, columns);
+	    	System.arraycopy(matrixInput[r], 0, matrix[r], 0, columns);
 	    }
 	}
 	

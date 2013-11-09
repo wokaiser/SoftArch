@@ -12,7 +12,7 @@
       <property name="current_session_context_class">thread</property>
       <property name="hibernate.hbm2ddl.auto">update</property>
       <property name="show_sql">false</property>
-      <mapping class="database.HibernateGameContent" />
-      <mapping class="database.HibernatePlaygroundItem" />
+      <mapping class="database.hibernate.HibernateGameContent" />
+      <mapping class="database.hibernate.HibernatePlaygroundItem" />
    </session-factory>
 </hibernate-configuration>

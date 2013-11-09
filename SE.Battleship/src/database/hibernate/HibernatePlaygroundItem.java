@@ -1,4 +1,4 @@
-package database;
+package database.hibernate;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cell")
+@Table(name = "playgroundItem")
 public class HibernatePlaygroundItem implements Serializable {
 	private static final long serialVersionUID = 3184225396652683648L;
 	
@@ -20,6 +20,9 @@ public class HibernatePlaygroundItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer id;
 
+	@Column(name = "playground")
+	public Integer playground = 0;
+	
 	@Column(name = "rowcell")
 	public Integer rowcell = 0;
 
@@ -27,10 +30,12 @@ public class HibernatePlaygroundItem implements Serializable {
 	public Integer columncell = 0;
 
 	@ManyToOne
-	@JoinColumn(name = "gridid")
-	public HibernateGameContent grid;
+	@JoinColumn(name = "gameContentid")
+	public HibernateGameContent gameContent;
 	
-	public HibernatePlaygroundItem(Integer column, Integer row) {
+	public HibernatePlaygroundItem(HibernateGameContent gameContent, Integer playground, Integer column, Integer row) {
+		this.gameContent = gameContent;
+		this.playground = playground;
 		this.columncell = column;
 		this.rowcell = row;
 	}
@@ -38,12 +43,12 @@ public class HibernatePlaygroundItem implements Serializable {
 		
 	}
 	
-	public HibernateGameContent getGrid() {
-		return grid;
+	public HibernateGameContent getGameContent() {
+		return gameContent;
 	}
 
-	public void setGrid(HibernateGameContent grid) {
-		this.grid = grid;
+	public void setGameContent(HibernateGameContent gameContent) {
+		this.gameContent = gameContent;
 	}
 	
 	public Integer getRowcell() {
@@ -60,6 +65,14 @@ public class HibernatePlaygroundItem implements Serializable {
 
 	public void setColumncell(Integer columncell) {
 		this.columncell = columncell;
+	}
+	
+	public Integer getPlayground() {
+		return playground;
+	}
+
+	public void setPlayground(Integer playground) {
+		this.playground = playground;
 	}
 
 	public Integer getId() {

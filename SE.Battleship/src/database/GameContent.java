@@ -219,4 +219,16 @@ public class GameContent {
 		}
 		return playground2;
 	}
+	/**
+	 * Gets the name of player1
+	 */
+	public String getPlayer1() {
+		return player1;
+	}
+	/**
+	 * Gets the name of player2
+	 */
+	public String getPlayer2() {
+		return player2;
+	}
 }

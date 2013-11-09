@@ -25,7 +25,7 @@ public class HibernatePlaygroundItem implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "gameContentid")
-	public HibernateGameContent gameContent;
+	private HibernateGameContent gameContent;
 	
 	public HibernatePlaygroundItem(HibernateGameContent gameContent, int playground, int rowcell, int columncell, char status) {
 		this.gameContent = gameContent;

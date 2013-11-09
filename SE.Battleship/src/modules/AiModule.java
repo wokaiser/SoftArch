@@ -5,14 +5,14 @@ import interfaces.IAi;
 import com.google.inject.AbstractModule;
 
 public class AiModule extends AbstractModule {
-	String AI = null;
+	private String usedAI = null;
 	
 	/**
 	 * Set the game settings
 	 * @param settings The settings
 	 */
-	public AiModule setSettings(String AI) {
-		this.AI = AI;
+	public AiModule setSettings(String usedAI) {
+		this.usedAI = usedAI;
 		return this;
 	}
 
@@ -21,20 +21,20 @@ public class AiModule extends AbstractModule {
 	 */
 	@Override
 	protected void configure() {
-		if (0 == AI.compareTo("Computer 1 Weak")) {
+		if (0 == usedAI.compareTo("Computer 1 Weak")) {
 			bind(IAi.class).to(AI_Weak.class);
 			return;
 		}
-		if (0 == AI.compareTo("Computer 1 Hard")) {
+		if (0 == usedAI.compareTo("Computer 1 Hard")) {
 			bind(IAi.class).to(AI_Weak.class);
 			return;
 		}
 
-		if (0 == AI.compareTo("Computer 2 Weak")) {
+		if (0 == usedAI.compareTo("Computer 2 Weak")) {
 			bind(IAi.class).to(AI_Weak.class);
 			return;
 		}
-		if (0 == AI.compareTo("Computer 2 Hard")) {
+		if (0 == usedAI.compareTo("Computer 2 Hard")) {
 			bind(IAi.class).to(AI_Weak.class);
 			return;
 		}	

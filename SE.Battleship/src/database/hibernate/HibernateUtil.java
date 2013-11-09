@@ -3,17 +3,17 @@ package database.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-public class HibernateUtil {
-	private static final SessionFactory sessionFactory;
+public final class HibernateUtil {
+	private static final SessionFactory FACTORY;
 
 	static {
-		   sessionFactory = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
+		FACTORY = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();
 	}
 	
 	private HibernateUtil() {
 	}
 	
 	public static SessionFactory getInstance() {
-		return sessionFactory;
+		return FACTORY;
 	}
 }

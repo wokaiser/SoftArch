@@ -114,10 +114,10 @@ public class HibernateDatabase implements IDatabase {
 			}
 			tx.commit();
 		} catch (HibernateException ex) {
-			System.out.println(ex.getMessage());
-			if (tx != null)
+			if (tx != null) {
 				tx.rollback();
-				return false;
+			}
+			return false;
 		}
 		return true;
 	}

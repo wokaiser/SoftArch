@@ -21,9 +21,8 @@ import util.observer.Observable;
  * @author Dennis Parlak
  */
 public class GameController extends Observable {
-	
-	public static final String AI_PLAYER_1 = "Computer 1";
-	public static final String AI_PLAYER_2 = "Computer 2";
+	public static final String AI_PLAYER_1 = "Computer 1 Weak";
+	public static final String AI_PLAYER_2 = "Computer 2 Hard";
 	public static final String HUMAN_PLAYER_1 = "Player 1";
 	public static final String HUMAN_PLAYER_2 = "Player 2";
 		
@@ -50,7 +49,7 @@ public class GameController extends Observable {
 	 * Create a new controller with a whole new playground which have new random placed ships on it.
 	 */
 	public final void newController(int rows, int columns, String player1, String player2, int gameType) {
-		Injector inject = Guice.createInjector(new AiModule().setSettings(AiModule.Settings.Hard));
+		Injector inject = Guice.createInjector(new AiModule().setSettings(player1), new AiModule().setSettings(player2));
 		content = inject.getInstance(GameContent.class);
 		content.initContent(rows, columns, player1, player2, gameType);
 		this.checkGameType();
@@ -76,6 +75,7 @@ public class GameController extends Observable {
 	 * Saves the actual game
 	 */
 	public boolean saveGame(String name) {
+		content.setName(name);
 		boolean retVal = database.save(name, content);
 		if(!retVal) {
 			content.getStatus().addError("Savegame already taken, choose another one!");

@@ -3,7 +3,7 @@ package modules;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
-import database.Db4oDatabase;
+import database.HibernateDatabase;
 import database.IDatabase;
 
 public class DatabaseModule extends AbstractModule {
@@ -12,7 +12,8 @@ public class DatabaseModule extends AbstractModule {
 	 */
 	@Override
 	protected void configure() {
-		bind(IDatabase.class).to(Db4oDatabase.class).in(Singleton.class);
+		//bind(IDatabase.class).to(Db4oDatabase.class).in(Singleton.class);
+		bind(IDatabase.class).to(HibernateDatabase.class).in(Singleton.class);
 	}
 
 }

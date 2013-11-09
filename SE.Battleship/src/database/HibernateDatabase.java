@@ -40,25 +40,17 @@ public class HibernateDatabase implements IDatabase {
 
 	@Override
 	public List<String> getAll() {
-		Transaction tx = null;
 		Session session = null;
 		List<String> list = new LinkedList<String>();
 
-		try {
-			session = HibernateUtil.getInstance().getCurrentSession();
-			tx = session.beginTransaction();
-			@SuppressWarnings("unchecked")
-			List<GameContent> gameContent = session.createCriteria(GameContent.class).list();
-			for (int index = 0; index < gameContent.size(); index++) {
-				list.add(gameContent.get(index).getName());
-			}
-			tx.commit();
-		} catch (HibernateException ex) {
-			if (tx != null)
-				tx.rollback();
-		} finally {
-		       session.close(); 
-	    }
+		session = HibernateUtil.getInstance().getCurrentSession();
+		session.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<HibernateGameContent> gameContent = session.createCriteria(HibernateGameContent.class).list();
+		for (int index = 0; index < gameContent.size(); index++) {
+			list.add(gameContent.get(index).getId());
+		}
+
 		return list;
 	}
 
@@ -106,11 +98,18 @@ public class HibernateDatabase implements IDatabase {
 		
 		/* copy playground information to Hibernate required format */
 		List<HibernatePlaygroundItem> playground1 = new LinkedList<HibernatePlaygroundItem>();
-		playground1.add(new HibernatePlaygroundItem(hContent, 1, 91, 1));
-		hContent.setPlayground1(playground1);
-		
 		List<HibernatePlaygroundItem> playground2 = new LinkedList<HibernatePlaygroundItem>();
-		playground2.add(new HibernatePlaygroundItem(hContent, 2, 12, 1));
+		
+		char[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
+		char[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
+		for (int row = 0; row < content.getRows(); row++) {
+			for (int column = 0; column < content.getColumns(); column++){
+				playground1.add(new HibernatePlaygroundItem(hContent, 1, row, column, playground1Raw[row][column]));
+				playground2.add(new HibernatePlaygroundItem(hContent, 2, row, column, playground2Raw[row][column]));
+			}
+		}
+		
+		hContent.setPlayground1(playground1);
 		hContent.setPlayground2(playground2);
 		
 		return hContent;

@@ -28,16 +28,20 @@ public class HibernatePlaygroundItem implements Serializable {
 
 	@Column(name = "columncell")
 	public Integer columncell = 0;
+	
+	@Column(name = "status")
+	public char status;
 
 	@ManyToOne
 	@JoinColumn(name = "gameContentid")
 	public HibernateGameContent gameContent;
 	
-	public HibernatePlaygroundItem(HibernateGameContent gameContent, Integer playground, Integer column, Integer row) {
+	public HibernatePlaygroundItem(HibernateGameContent gameContent, Integer playground, Integer column, Integer row, char status) {
 		this.gameContent = gameContent;
 		this.playground = playground;
 		this.columncell = column;
 		this.rowcell = row;
+		this.status = status;
 	}
 	public HibernatePlaygroundItem() {
 		
@@ -65,6 +69,14 @@ public class HibernatePlaygroundItem implements Serializable {
 
 	public void setColumncell(Integer columncell) {
 		this.columncell = columncell;
+	}
+	
+	public char getStatus() {
+		return status;
+	}
+
+	public void setStatus(char status) {
+		this.status = status;
 	}
 	
 	public Integer getPlayground() {

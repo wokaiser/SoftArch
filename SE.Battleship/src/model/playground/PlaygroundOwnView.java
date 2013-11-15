@@ -9,16 +9,16 @@ import model.general.Constances;
  */
 public class PlaygroundOwnView extends PlaygroundView {
 
-	/**
-	 * Method return the appearance of one element of the playground.
-	 * @return If a ship is placed on the playground, the DEFAULT_SHIP_ID will
-	 * be returned, otherwise the status of the element (hit, miss, init) 
-	 */
-	@Override
-	protected char getElement(char element) {
-		if (NO_SHIP.contains(element)) {
-			return element;
-		} 
-		return Constances.DEFAULT_SHIP_ID;
-	}
+    /**
+     * Method return the appearance of one element of the playground.
+     * @return If a ship is placed on the playground, the DEFAULT_SHIP_ID will
+     * be returned, otherwise the status of the element (hit, miss, init) 
+     */
+    @Override
+    protected char getElement(char element) {
+        if (NO_SHIP.contains(element)) {
+            return element;
+        } 
+        return Constances.DEFAULT_SHIP_ID;
+    }
 }

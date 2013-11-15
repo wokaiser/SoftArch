@@ -144,7 +144,7 @@ public class GameController extends Observable {
 			return true;
 		}
 		//TODO set -1 to 0. This was set to test the database funcitonality and should be set back ASAP
-		if (-1 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
+		if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
 			content.getStatus().addText(content.getActivePlayer() + " won.");
 			return true;
 		}
@@ -191,7 +191,7 @@ public class GameController extends Observable {
 		
 		if (null == target || isAI(content.getActivePlayer())) {
 			/* get the target from the AI */
-			target = content.getActiveAI().shoot();
+			target = content.getActiveAI().getCoordinates();
 			content.getStatus().addText("AI shoot to: " + target.toString() + ".");
 		}
 		
@@ -203,7 +203,7 @@ public class GameController extends Observable {
 			shootStatus = content.getEnemyPlayground(player).shoot(target);
 			content.getStatus().moveStatus(content.getEnemyPlayground(player).getStatus());
 			/* set flags for AI */
-			if(content.getActiveAI().setFlags(shootStatus))
+			if(Constances.SHOOT_MISS == shootStatus)
 			{
 				/* no ship hit/destroyed, so switch the user */
 				content.switchPlayer();

@@ -5,9 +5,9 @@ package interfaces;
  * @author Dennis Parlak
  */
 public interface IObserver {
-	
-	/** 
-	 * Method which should be implemented by the class which implements IObserver.
-	 */
-	void update();
+    
+    /** 
+     * Method which should be implemented by the class which implements IObserver.
+     */
+    void update();
 }

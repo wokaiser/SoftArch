@@ -34,7 +34,7 @@ public abstract class PlaygroundView {
      * @columns The number of columns of the matrix
      * @return The String appearance of the playground.
      */
-    public String toString(char matrix[][], int rows, int columns) {
+    public String toString(char[][] matrix, int rows, int columns) {
         int maxRowFreespaces = numberOfDigits(rows);
         int maxColumnFreespaces = numberOfDigits(columns);
         String columnFreespacesAsString = getString(maxColumnFreespaces, ' ');
@@ -66,7 +66,7 @@ public abstract class PlaygroundView {
      * @columns The number of columns of the matrix
      * @return The Json appearance of the playground.
      */
-    public JsonNode toJson(char matrix[][], int rows, int columns) {
+    public JsonNode toJson(char[][] matrix, int rows, int columns) {
         StringBuilder builder = new StringBuilder("[");
         
         for (int row = 0; row < rows; row++) {
@@ -105,7 +105,7 @@ public abstract class PlaygroundView {
      * @columns The number of columns of the matrix
      * @return The Playground as a 2d character array
      */
-    public char [][] get(char matrix[][], int rows, int columns) {
+    public char[][] get(char[][] matrix, int rows, int columns) {
         char[][] returnMatrix = new char[rows][columns]; 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++){

@@ -12,10 +12,6 @@ import model.general.Status;
  * @author Dennis Parlak
  */
 public class Playground extends AbstractPlayground {
-    public static final int DIRECTION_UP = 0;
-    public static final int DIRECTION_DOWN = 1;
-    public static final int DIRECTION_LEFT = 2;
-    public static final int DIRECTION_RIGHT = 3;
     private List<Ship> ships;
     private int numberOfDestroyedShips;
     private Status status;
@@ -59,7 +55,7 @@ public class Playground extends AbstractPlayground {
      * @return true if the ship could be placed.
      * @return false if the ship could not be placed.
      */
-    public boolean placeShip(Coordinates target, Ship ship, int direction) {
+    private boolean placeShip(Coordinates target, Ship ship, int vertical, int horizontal) {
         Coordinates coords = target;
         
         //loop until the ship is complete placed
@@ -74,59 +70,45 @@ public class Playground extends AbstractPlayground {
             if (0 != checkForNearShips(coords)) {
                 return false;
             }   
-            coords = new Coordinates(coords.getRow() + updateVerticalDirection(direction), coords.getColumn() + updateHorizontalDirection(direction));
+            coords = new Coordinates(coords.getRow() + vertical, coords.getColumn() + horizontal);
         }
         //try to add the ship and check if it failed
-        if (!this.addShip(ship)) {
+        if (!addShip(ship)) {
             return false;
         }
         //place the ship on the playground
-        this.placeShipOnPlayground(target, ship, direction);
+        placeShipOnPlayground(target, ship, vertical, horizontal);
         return true;
-    }
-    
-    private int updateVerticalDirection(int direction) {
-        if (DIRECTION_UP == direction) {
-            return -1;
-        }
-        else if (DIRECTION_DOWN == direction) {
-            return +1;
-        }
-        /* default not moved into any direction */
-        return 0;
-    }
-    
-    private int updateHorizontalDirection(int direction) {
-        if (DIRECTION_LEFT == direction) {
-            return -1;
-        }
-        else if (DIRECTION_RIGHT == direction) {
-            return +1;
-        }
-        /* default not moved into any direction */
-        return 0;
     }
         
     /**
      * Method to shoot on given Coordinates
      * @param target The Coordinates which where to shoot.
-     * @return true if a ship was hit
-     * @return false if no ship was hit
+     * @return status of shot
      */
     public int shoot(Coordinates target) {
-        int row = target.getRow();
-        int column = target.getColumn();
-        if (alreadyShot(target)) {
-            throw new IllegalArgumentException("Already shot to target.");
-        }
-        //check if something was hit
-        if (Constances.MATRIX_INIT != this.get(new Coordinates(row, column))) {
-            char shipId = this.get(new Coordinates(row, column));
-            this.set(new Coordinates(row, column), Constances.MATRIX_HIT);
-            return this.updateShipsAfterHit(shipId);
-        }
+        return (Constances.MATRIX_INIT != this.get(target)) ? validShot(target) : invalidShot(target);
+    }
+   
+    /**
+     * Method to save a valid shot
+     * @param target The Coordinates which where to shoot.
+     * @return the status of the ship which was hit
+     */
+    private int validShot(Coordinates target) {
+        char shipId = get(target);
+        set(target, Constances.MATRIX_HIT);
+        return updateShipsAfterHit(shipId);  
+    }
+   
+    /**
+     * Method to save an invalid shot
+     * @param target The Coordinates which where to shoot.
+     * @return the status of an invalid shot
+     */
+    private int invalidShot(Coordinates target) {
         status.addText("No ship was hit.");    
-        this.set(new Coordinates(row, column), Constances.MATRIX_MISS);
+        set(target, Constances.MATRIX_MISS);
         return Constances.SHOOT_MISS;
     }
     
@@ -137,21 +119,7 @@ public class Playground extends AbstractPlayground {
      * @return false if there was not shot to the Coordinates
      */
     public boolean alreadyShot(Coordinates target) {
-        int row = target.getRow();
-        int column = target.getColumn();
-        if (!checkCoordinates(new Coordinates(row, column))) {
-            throw new IllegalArgumentException("Invalid Coordinates.");
-        }
-        return ((Constances.MATRIX_HIT == this.get(new Coordinates(row, column)))
-              ||(Constances.MATRIX_MISS == this.get(new Coordinates(row, column))));
-    }
-        
-    /**
-     * Return the number of ships which has been destroyed.
-     * @return number of ships
-     */
-    public int getNumberOfDestroyedShips() {
-        return this.numberOfDestroyedShips;
+        return Constances.MATRIX_HIT == get(target) || Constances.MATRIX_MISS == get(target);
     }
     
     /**
@@ -159,16 +127,9 @@ public class Playground extends AbstractPlayground {
      * @return number of ships
      */
     public int getNumberOfExistingShips() {
-        return this.ships.size() - this.numberOfDestroyedShips;
+        return this.ships.size() - numberOfDestroyedShips;
     }
-    
-    /**
-     * Return the number of ships which ever has been placed on the playground.
-     * @return number of ships
-     */
-    public int getNumberOfPlacedShips() {
-        return this.ships.size();
-    }    
+     
     
     /**
      * Helper Method to place a ship with the given Coordinates on the playground.
@@ -178,20 +139,10 @@ public class Playground extends AbstractPlayground {
      * @param ship The ship which to place
      * @param direction The direction into which to place the ship
      */
-    private void placeShipOnPlayground(Coordinates target, Ship ship, int direction) {
-        //get column and row, from where to start with placing the ship
-        int row = target.getRow();
-        int column = target.getColumn();
-        
+    private void placeShipOnPlayground(Coordinates target, Ship ship, int vertical, int horizontal) {
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
-            //set ship id to playground
-            this.set(new Coordinates(row, column), ship.getId());
-            //check if coordinates where to place the ship where completely checked
-            if (0 == shipSize) {
-                return;
-            }
-            row += updateVerticalDirection(direction);
-            column += updateHorizontalDirection(direction);
+            set(target, ship.getId());
+            target = new Coordinates(target.getRow() + vertical, target.getColumn() + horizontal);
         }
     }
     
@@ -202,13 +153,11 @@ public class Playground extends AbstractPlayground {
      * @return false if a ship already exist with the same id. The ship was not add.
      */
     private boolean addShip(Ship ship) {
-        for (Ship s: this.ships) {
-            if (s.getId() == ship.getId()) {
-                status.addError("Cannot add ship, because a ship with the id '"+ship.getId()+"' does already exist.");
-                return false;
-            }
+        if (ships.contains(ship)) {
+            status.addError("Cannot add ship, because a ship with the id '"+ship.getId()+"' does already exist.");
+            return false;
         }
-        this.ships.add(ship);
+        ships.add(ship);
         return true;
     }
     
@@ -234,7 +183,7 @@ public class Playground extends AbstractPlayground {
         s.setDamage();
         if (s.isDestroyed()) {
             status.addText("Destroyed ship: "+s.getName());
-            this.numberOfDestroyedShips++;
+            numberOfDestroyedShips++;
             return Constances.SHOOT_DESTROYED;
         }
         status.addText("A ship was hit.");    
@@ -266,8 +215,8 @@ public class Playground extends AbstractPlayground {
      * @return The number of near ships (0 if no ship is near)
      */
     private int checkForNearShips(Coordinates target) {
-        int checkRows[] = {0, 1, -1, 0, 0, 1, 1, -1, -1};
-        int checkColumns[] = {0, 0, 0, -1, 1, -1, 1, 1, -1};
+        int[] checkRows = {0, 1, -1, 0, 0, 1, 1, -1, -1};
+        int[] checkColumns = {0, 0, 0, -1, 1, -1, 1, 1, -1};
         int nearShipsCount = 0;
         
         for (int i = 0; i < checkRows.length; i++) {
@@ -281,16 +230,13 @@ public class Playground extends AbstractPlayground {
      * @param ships A list with the ships
      */
     public void placeShipsRandom(List<Ship> ships) {
-        for (Ship s : ships) {
-            Coordinates coords;
-            int direction = 0;
-            while (true) {
-                coords = randomCoords();
-                direction = randomDirection();
-                if (this.placeShip(coords, s, direction))
-                {
-                    break;
-                }
+        while (!ships.isEmpty()) {
+            Ship s = ships.get(0);
+            Coordinates coords = randomCoords();
+            int vertical = random(-1, +1);
+            int horizontal = (vertical == 0) ? -1 : 0;
+            if (placeShip(coords, s, vertical, horizontal)) {
+                ships.remove(0);
             }
         }
     }
@@ -301,14 +247,6 @@ public class Playground extends AbstractPlayground {
      */
     private Coordinates randomCoords() {
         return new Coordinates(random(0, this.getRows()), random(0, this.getColumns()));
-    }
-    
-    /**
-     * Generates a random direction
-     * @return Direction of ship
-     */
-    private int randomDirection() {
-        return random(DIRECTION_UP, DIRECTION_RIGHT);
     }
     
     /**

@@ -97,4 +97,13 @@ public class Coordinates {
         }
         return 1;
     }
+    
+    /**
+     * Overwritten hashCode(..) method
+     * @return The hash of the object
+     */
+    @Override
+    public int hashCode() {
+        return row * column;
+    }
 }

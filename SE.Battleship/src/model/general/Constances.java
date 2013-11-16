@@ -9,7 +9,9 @@ public final class Constances {
     /**
      * Singleton to prevent creation of this class
      */
-    private Constances() { }
+    private Constances() {
+        
+    }
     
     public static final char MATRIX_MISS = '-';
     public static final char MATRIX_HIT = 'X';

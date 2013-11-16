@@ -1,5 +1,7 @@
 package database;
 
+import interfaces.IDatabase;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,10 +69,10 @@ public class HibernateDatabase implements IDatabase {
                 
                 /* invalid element in database, because out of range */
                 if (rows <= playgroundItem.get(index).getRowcell()) {
-                    return null;
+                    return matrix;
                 }
                 if (columns <= playgroundItem.get(index).getColumncell()) {
-                    return null;
+                    return matrix;
                 }
                 
                 matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = playgroundItem.get(index).getStatus();

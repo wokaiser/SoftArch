@@ -35,7 +35,7 @@ public final class Game {
     public static GameController newGameController() {
         Injector inject = Guice.createInjector(new DatabaseModule());
         GameController controller = inject.getInstance(GameController.class);
-        controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+        controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_HARD, GameContent.SINGLEPLAYER);
         return controller;
     }
 }

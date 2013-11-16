@@ -2,7 +2,10 @@ package modules;
 
 import util.other.*;
 import interfaces.IAi;
+
 import com.google.inject.AbstractModule;
+
+import database.GameContent;
 
 public class AiModule extends AbstractModule {
     private String usedAI = null;
@@ -21,15 +24,14 @@ public class AiModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        if (0 == usedAI.compareTo("Computer 1 Weak")) {
+        if (0 == usedAI.compareTo(GameContent.AI_PLAYER_1_EASY)) {
             bind(IAi.class).to(AiEasy.class);
-            return;
-        }
-        if (0 == usedAI.compareTo("Computer 2 Weak")) {
+        } else if (0 == usedAI.compareTo(GameContent.AI_PLAYER_2_EASY)) {
             bind(IAi.class).to(AiEasy.class);
-            return;
+        } else if (0 == usedAI.compareTo(GameContent.AI_PLAYER_1_HARD)) {
+            bind(IAi.class).to(AiHard.class);
+        } else if (0 == usedAI.compareTo(GameContent.AI_PLAYER_2_HARD)) {
+            bind(IAi.class).to(AiHard.class);
         }
-
-        bind(IAi.class).to(AiEasy.class);
     }
 }

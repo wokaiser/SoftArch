@@ -53,8 +53,7 @@ public class Ship {
      * @param length of ship
      */
     private void checkLength(int length) {
-        if (MIN_SHIP_SIZE > length || MAX_SHIP_SIZE < length)
-        {
+        if (MIN_SHIP_SIZE > length || MAX_SHIP_SIZE < length) {
             throw new IllegalArgumentException("Ships can only have lengths between 2 and 5!");
         }
     }
@@ -85,7 +84,7 @@ public class Ship {
      * @return true, if ship is destroyed; false if not
      */
     public boolean isDestroyed() {
-        return (SUNKEN == health);
+        return SUNKEN == health;
     }
     /**
      * This Method is used to Damage the ship by 1.
@@ -96,5 +95,32 @@ public class Ship {
         } else {
             throw new IllegalStateException("Ships cannot have a negativ health!");
         }
-    }    
+    }
+
+    /**
+     * Overwritten equals(..) method which returns true if a object is at the same coordinates
+     * @param a Coordinates object.
+     * @return true if coordinates are the same and false if not
+     */
+    @Override
+    public boolean equals (Object obj) {
+        if (obj == null) {
+            return false;        
+        }
+
+        Ship coord = (Ship) obj;
+        if (id != coord.getId()) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Overwritten hashCode(..) method
+     * @return The hash of the object
+     */
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

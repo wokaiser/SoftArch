@@ -7,7 +7,9 @@ public final class Resources {
     /**
      * Singleton to prevent creation of this class
      */
-    private Resources() { }
+    private Resources() {
+        
+    }
     
     public static final int ICON_WIDTH = 50;
     public static final int ICON_HEIGHT = 50;

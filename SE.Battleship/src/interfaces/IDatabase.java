@@ -1,6 +1,8 @@
-package database;
+package interfaces;
 
 import java.util.List;
+
+import database.GameContent;
 
 public interface IDatabase {
     /**

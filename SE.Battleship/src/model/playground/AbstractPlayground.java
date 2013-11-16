@@ -1,5 +1,7 @@
 package model.playground;
 
+import interfaces.IPlayground;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import model.general.Constances;
@@ -9,13 +11,27 @@ import model.general.Constances;
  * basic functionality like get/set and view of playground.
  * @author Dennis Parlak
  */
-public abstract class AbstractPlayground {
+public abstract class AbstractPlayground implements IPlayground {
     public static final int MIN_ROWS = 12;
     public static final int MIN_COLUMNS = 12;
     
     private int rows;
     private int columns;
     private char[][] matrix;
+    
+    public static final char[][] copyPlayground(char[][] matrixInput) {
+        int rows = matrixInput.length;
+        int columns = matrixInput[0].length;
+        char[][] matrix = new char[rows][columns];
+        
+        for (int r = 0; r < matrixInput.length; r++) {
+            if (columns != matrixInput[r].length) {
+                throw new IllegalArgumentException("Matrix has different column length.");
+            }
+            System.arraycopy(matrixInput[r], 0, matrix[r], 0, columns);
+        }
+        return matrix;
+    }
     
     /**
      * Creates a Playground.
@@ -40,15 +56,8 @@ public abstract class AbstractPlayground {
         checkRows(rows);
         columns = matrixInput[0].length;
         checkColumns(columns);
-        
         matrix = new char[rows][columns];
-        
-        for (int r = 0; r < matrixInput.length; r++) {
-            if (columns != matrixInput[r].length) {
-                throw new IllegalArgumentException("Matrix has different column length.");
-            }
-            System.arraycopy(matrixInput[r], 0, matrix[r], 0, columns);
-        }
+        matrix = copyPlayground(matrixInput);
     }
     
     /**
@@ -104,7 +113,7 @@ public abstract class AbstractPlayground {
     
     /**
      * Get number of rows of the playground
-     * return The number of rows
+     * @return The number of rows
      */
     public int getRows() {
         return this.rows;
@@ -112,7 +121,7 @@ public abstract class AbstractPlayground {
     
     /**
      * Get number of columns of the playground
-     * return The number of columns
+     * @return The number of columns
      */
     public int getColumns() {
         return this.columns;
@@ -136,7 +145,7 @@ public abstract class AbstractPlayground {
     
     /**
      * Get the playground with all ships visible on it.
-     * return The playground as a String
+     * @return The playground as a String
      */
     public String ownStringView() {        
         return new PlaygroundOwnView().toString(matrix, rows, columns);
@@ -145,7 +154,7 @@ public abstract class AbstractPlayground {
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
-     * return The playground as a String
+     * @return The playground as a String
      */
     public String enemyStringView() {
         return new PlaygroundEnemyView().toString(matrix, rows, columns);
@@ -153,7 +162,7 @@ public abstract class AbstractPlayground {
     
     /**
      * Get the playground with all ships visible on it.
-     * return The playground as a Json
+     * @return The playground as a Json
      */
     public JsonNode ownJsonView() {        
         return new PlaygroundOwnView().toJson(matrix, rows, columns);
@@ -162,7 +171,7 @@ public abstract class AbstractPlayground {
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
-     * return The playground as a Json
+     * @return The playground as a Json
      */
     public JsonNode enemyJsonView() {
         return new PlaygroundEnemyView().toJson(matrix, rows, columns);
@@ -170,7 +179,7 @@ public abstract class AbstractPlayground {
     
     /**
      * Get the playground with all ships visible on it.
-     * return The playground
+     * @return The playground
      */
     public char[][] ownView() {        
         return new PlaygroundOwnView().get(matrix, rows, columns);
@@ -179,7 +188,7 @@ public abstract class AbstractPlayground {
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
-     * return The playground
+     * @return The playground
      */
     public char[][] enemyView() {        
         return new PlaygroundEnemyView().get(matrix, rows, columns);

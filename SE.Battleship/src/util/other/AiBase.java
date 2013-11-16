@@ -30,6 +30,14 @@ public abstract class AiBase implements IAi {
     }
     
     /**
+     * Remove the given coordinate from the range list
+     * @return true if the coordinates where in the range list and else false.
+     */
+    protected boolean removeCoordinates(Coordinates coord) {
+        return range.remove(coord);
+    }
+    
+    /**
      * Chooses a random coordinate
      * @return A coordinate
      */

@@ -1,5 +1,8 @@
 package database;
 
+import interfaces.IDatabase;
+
+import java.util.LinkedList;
 import java.util.List;
 
 public class DummyDatabase implements IDatabase{
@@ -20,7 +23,7 @@ public class DummyDatabase implements IDatabase{
      */
     @Override
     public List<String> getAll() {
-        return null;
+        return new LinkedList<String>();
     }
 
     /**

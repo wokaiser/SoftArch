@@ -7,11 +7,19 @@ import com.google.inject.Inject;
 
 import interfaces.IAi;
 import model.general.Status;
+import model.playground.AbstractPlayground;
 import model.playground.Playground;
 import model.playground.Ship;
 
 public class GameContent {
-
+    /* valid player types */
+    private static final String WELCOME = "Welcome to Battleships";
+    public static final String AI_PLAYER_1_EASY = "Computer 1 Easy";
+    public static final String AI_PLAYER_1_HARD = "Computer 1 Hard";
+    public static final String AI_PLAYER_2_EASY = "Computer 2 Easy";
+    public static final String AI_PLAYER_2_HARD = "Computer 2 Hard";
+    public static final String HUMAN_PLAYER_1 = "Player 1";
+    public static final String HUMAN_PLAYER_2 = "Player 2";
     /* game types */
     public static final int MULTIPLAYER = 1;
     public static final int SINGLEPLAYER = 2;
@@ -69,7 +77,7 @@ public class GameContent {
         activePlayer = this.player1;
         activeAI = this.player2AI;
         status.clear();
-        status.addText("Welcome to Battleships");
+        status.addText(WELCOME);
         playground1.getStatus().clear();
         playground2.getStatus().clear();
         switchedPlayer = false;
@@ -88,10 +96,10 @@ public class GameContent {
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    public void initContent(int rows, int columns, String player1, String player2, int gameType, char playground1Input[][], char playground2Input[][]) {
+    public void initContent(int rows, int columns, String player1, String player2, int gameType, char[][] playground1Input, char[][] playground2Input) {
         status = new Status();
-        this.playground1 = new Playground(playground1Input);
-        this.playground2 = new Playground(playground2Input);
+        this.playground1 = new Playground(AbstractPlayground.copyPlayground(playground1Input));
+        this.playground2 = new Playground(AbstractPlayground.copyPlayground(playground2Input));
         this.player1 = player1;
         this.player2 = player2;
         player1AI.initialize(rows, columns);
@@ -99,7 +107,7 @@ public class GameContent {
         activePlayer = this.player1;
         activeAI = this.player2AI;
         status.clear();
-        status.addText("Welcome to Battleships");
+        status.addText(WELCOME);
         this.playground1.getStatus().clear();
         this.playground2.getStatus().clear();
         switchedPlayer = false;
@@ -107,7 +115,6 @@ public class GameContent {
         this.gameType = gameType;
         checkGameType();
     }
-    
     /**
      * Set the flag, to indicate that the game started
      */
@@ -176,6 +183,25 @@ public class GameContent {
             activePlayer = player2;
             activeAI = player2AI;
         }
+    }
+    /**
+     * check if a player is a computer
+     * @return true if the player is a computer, false if not
+     */
+    public boolean aiIsActive() {
+        if (activePlayer.equals(AI_PLAYER_1_EASY)) {
+            return true;
+        }
+        if (activePlayer.equals(AI_PLAYER_2_EASY)) {
+            return true;
+        }
+        if (activePlayer.equals(AI_PLAYER_1_HARD)) {
+            return true;
+        }
+        if (activePlayer.equals(AI_PLAYER_2_HARD)) {
+            return true;
+        }
+        return false;
     }
     /**
      * Get the name of the active player

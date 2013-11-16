@@ -11,7 +11,7 @@ import controller.GameController;
  * @author Wolfgang Kaiser
  */
 public class Logger implements IObserver {
-    
+    private static final String SEPERATOR = "****************************************";
     private static final String FILENAME = "log.txt";
     
     private GameController controller;
@@ -44,7 +44,7 @@ public class Logger implements IObserver {
             printWriter = new PrintWriter(new BufferedWriter(new FileWriter(FILENAME, true)));
             printWriter.println(message);
         } catch (Exception exc) {
-
+            printWriter.println(exc);
         } finally {
             if(printWriter != null) {
                 printWriter.close();
@@ -59,12 +59,12 @@ public class Logger implements IObserver {
         if(count > 0) {
             printMessage(String.format("%der Zug.", count));
         }
-        printMessage("****************************************");
+        printMessage(SEPERATOR);
         printMessage("Own playground (" + controller.getActivePlayer() + ")");
         printMessage(controller.getOwnPlaygroundAsString(controller.getActivePlayer()));
         printMessage("Enemy playground (" + controller.getEnemyPlayer() + ")");
         printMessage(controller.getEnemyPlaygroundAsString(controller.getActivePlayer()));
-        printMessage("****************************************");
+        printMessage(SEPERATOR);
         count++;
     }
 }

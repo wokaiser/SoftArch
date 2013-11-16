@@ -1,13 +1,16 @@
 package view.game;
 
 import interfaces.IObserver;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 import javax.swing.*;
+
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
@@ -130,46 +133,63 @@ public class GameWithGui implements IObserver {
      * @param isGameRunning Set true when calling this Method while running a game
      */
     private void initMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenuItem quit;
-        JMenuItem single;
-        JMenuItem multi;
-        JMenuItem load;
-        JMenuItem delete;
-        
+        JMenuBar menuBar = new JMenuBar();        
         JMenu menu = new JMenu("Game");
         menu.setMnemonic(KeyEvent.VK_G);
-        
-        load = createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
+        save = saveMenu();
+        save.setEnabled(controller.gameFinished());
+        menu.add(newSinglePlayerMenu());
+        menu.add(newMultiPlayerMenu());
+        menu.add(loadMenu());
+        menu.add(deleteMenu());
+        menu.add(saveMenu());
+        menu.add(quitMenu());
+        menuBar.add(menu);
+        mainFrame.setJMenuBar(menuBar);
+    }
+    
+    /**
+     * Create the menu entry to load a game
+     * @param JMenuItem
+     */
+    private JMenuItem loadMenu() {
+        return createNewItem("Load game", KeyEvent.VK_L, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the saved game", "Load game");
+                String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the game to load", "Load");
                 if(game != null) {
                     controller.loadGame(game);
                 }
             }
         });
-        
-        save = createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
+    }
+    
+    /**
+     * Create the menu entry to save a game
+     * @param JMenuItem
+     */
+    private JMenuItem saveMenu() {
+        return createNewItem("Save game", KeyEvent.VK_S, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 while(true) {
                     String name = JOptionPane.showInputDialog("Enter savegame name!");
-                    if(name == null || name.isEmpty()) {
+                    if(name == null || name.isEmpty() || controller.saveGame(name)) {
                         break;
                     }
-                    if (!controller.saveGame(name)) {
-                        JOptionPane.showMessageDialog(mainFrame, controller.getStatus().getError(), "", JOptionPane.WARNING_MESSAGE);
-                        controller.getStatus().clearError();
-                        continue;
-                    }
-                    break;
+                    JOptionPane.showMessageDialog(mainFrame, controller.getStatus().getError(), "", JOptionPane.WARNING_MESSAGE);
+                    controller.getStatus().clearError();
                 }
             }
         });
-        save.setEnabled(controller.gameFinished());
-        
-        delete = createNewItem("Delete game", KeyEvent.VK_D, new ActionListener() {
+    }
+    
+    /**
+     * Create the menu entry to delete a saved game
+     * @param JMenuItem
+     */
+    private JMenuItem deleteMenu() {
+        return createNewItem("Delete game", KeyEvent.VK_D, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the saved game", "Delete game");
+                String game = showDropDownSelectorPane(controller.getStoredGames(), "Select the saved game to delete", "Delete");
                 if(game != null) {
                     int result = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to delete this savegame?", "", JOptionPane.YES_NO_OPTION);
                     if(result == JOptionPane.YES_OPTION) {
@@ -178,28 +198,46 @@ public class GameWithGui implements IObserver {
                 }                
             }
         });
-        
-        single = createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
+    }
+    
+    /**
+     * Create the menu entry to create a single player game
+     * @param JMenuItem
+     */
+    private JMenuItem newSinglePlayerMenu() {
+        return createNewItem("New Single Player Game", KeyEvent.VK_N, new ActionListener() {
             /**
              * The action listener to create a new single player game
              * @param event The occurred event
              */
             public void actionPerformed(ActionEvent event) {
-                newGame(GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+                newGame(GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_HARD, GameContent.SINGLEPLAYER);
             }
         });
-        
-        multi = createNewItem("New Multi Player Game", KeyEvent.VK_M, new ActionListener() {
+    }
+    
+    /**
+     * Create the menu entry to create a mulitplayer game
+     * @param JMenuItem
+     */
+    private JMenuItem newMultiPlayerMenu() {
+        return createNewItem("New Multi Player Game", KeyEvent.VK_M, new ActionListener() {
             /**
              * The action listener to create a new mulit player game
              * @param event The occurred event
              */
             public void actionPerformed(ActionEvent event) {
-                newGame(GameController.HUMAN_PLAYER_1, GameController.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
+                newGame(GameContent.HUMAN_PLAYER_1, GameContent.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
             }
         });
-        
-        quit = createNewItem("Quit", KeyEvent.VK_Q, new ActionListener() {
+    }
+    
+    /**
+     * Create the menu entry to quit the gui
+     * @param JMenuItem
+     */
+    private JMenuItem quitMenu() {
+        return createNewItem("Quit", KeyEvent.VK_Q, new ActionListener() {
             /**
              * The action listener to exit the game
              * @param event The occurred event
@@ -207,16 +245,7 @@ public class GameWithGui implements IObserver {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
-        });        
-        
-        menu.add(single);
-        menu.add(multi);
-        menu.add(load);
-        menu.add(delete);
-        menu.add(save);
-        menu.add(quit);
-        menuBar.add(menu);
-        mainFrame.setJMenuBar(menuBar);
+        });   
     }
 
     /**
@@ -225,6 +254,7 @@ public class GameWithGui implements IObserver {
     @Override
     public void update() {
         if (controller.loadedGame()) {
+            controller.startGame();
             initPlaygroundFrame();
         }
         
@@ -250,8 +280,7 @@ public class GameWithGui implements IObserver {
         if (controller.getActivePlayer() == ownFrame.getPlayer()) {
             playgroundsPanel.add(ownFrame.get());
             playgroundsPanel.add(enemyFrame.get());    
-        }
-        else {
+        } else {
             playgroundsPanel.add(enemyFrame.get());    
             playgroundsPanel.add(ownFrame.get());
         }

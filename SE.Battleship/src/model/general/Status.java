@@ -122,10 +122,7 @@ public class Status {
      * @return true if text was logged and false if not
      */
     public boolean textExist() {
-        if (0 < textCount) {
-            return true;
-        }
-        return false;
+        return (0 < textCount) ? true : false;
     }
     
     /**
@@ -133,9 +130,6 @@ public class Status {
      * @return true if errors was logged and false if not
      */
     public boolean errorExist() {
-        if (0 < errorCount) {
-            return true;
-        }
-        return false;
+        return (0 < errorCount) ? true : false;
     }
 }

@@ -1,10 +1,11 @@
 package modules;
 
+import interfaces.IDatabase;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
-import database.HibernateDatabase;
-import database.IDatabase;
+import database.DummyDatabase;
 
 public class DatabaseModule extends AbstractModule {
     /**
@@ -12,7 +13,7 @@ public class DatabaseModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bind(IDatabase.class).to(HibernateDatabase.class).in(Singleton.class);
+        bind(IDatabase.class).to(DummyDatabase.class).in(Singleton.class);
     }
 
 }

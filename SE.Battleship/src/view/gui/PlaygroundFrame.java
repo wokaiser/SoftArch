@@ -23,8 +23,8 @@ import controller.GameController;
 public class PlaygroundFrame implements ActionListener {
     
     private GameController controller;
-    private JButton [][] ownCells;
-    private JButton [][] enemyCells;
+    private JButton[][] ownCells;
+    private JButton[][] enemyCells;
     private JPanel ownPanel;
     private JPanel enemyPanel;
     private String player;    
@@ -48,7 +48,7 @@ public class PlaygroundFrame implements ActionListener {
      * Initialize the frame, which contains the playground
      * @param playground The playground to save.
      */
-    private void initFrame(char [][] playground) {
+    private void initFrame(char[][] playground) {
         for (int row = 0; row < this.controller.getRows(); row++) {
             for (int column = 0; column < this.controller.getColumns(); column++) {
                 initCells(playground, row, column);
@@ -62,7 +62,7 @@ public class PlaygroundFrame implements ActionListener {
      * @param row The number of rows of the playground
      * @param column The number of column of the playground
      */
-    private void initCells(char [][] playground, int row, int column) {        
+    private void initCells(char[][] playground, int row, int column) {        
         ownCells[row][column] = new JButton(getCellIcon(playground[row][column], Resources.CELL_SHIP_ICON));
         enemyCells[row][column] = new JButton(getCellIcon(playground[row][column], Resources.CELL_INIT_ICON));
         enemyCells[row][column].addActionListener(this);    
@@ -79,8 +79,8 @@ public class PlaygroundFrame implements ActionListener {
      * @param column The number of column of the playground
      */
     private ImageIcon getCellIcon(char cell, ImageIcon defaultIcon) {
-        int [] states = {Constances.MATRIX_INIT, Constances.MATRIX_HIT, Constances.MATRIX_MISS};
-        ImageIcon [] icons = {Resources.CELL_INIT_ICON, Resources.CELL_HIT_ICON, Resources.CELL_MISS_ICON};
+        int[] states = {Constances.MATRIX_INIT, Constances.MATRIX_HIT, Constances.MATRIX_MISS};
+        ImageIcon[] icons = {Resources.CELL_INIT_ICON, Resources.CELL_HIT_ICON, Resources.CELL_MISS_ICON};
         for (int i = 0; i < states.length; i++) {
             if (states[i] == cell) {
                 return icons[i];
@@ -116,7 +116,7 @@ public class PlaygroundFrame implements ActionListener {
      * with the playground from the controller.
      */
     public void update() {
-        char [][] playground = getActivePlayground();
+        char[][] playground = getActivePlayground();
 
         for (int row = 0; row < this.controller.getRows(); row++) {
             for (int column = 0; column < this.controller.getColumns(); column++) {
@@ -130,7 +130,7 @@ public class PlaygroundFrame implements ActionListener {
      * Get the actual active playground as a matrix from the controller
      * @param playground matrix
      */
-    private char [][] getActivePlayground() {
+    private char[][] getActivePlayground() {
         if (controller.getActivePlayer() == this.player) {
             return this.controller.getOwnPlaygroundAsMatrix(controller.getActivePlayer());
         }

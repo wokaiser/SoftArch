@@ -1,5 +1,7 @@
 package database;
 
+import interfaces.IDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 

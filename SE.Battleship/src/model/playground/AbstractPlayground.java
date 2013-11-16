@@ -84,21 +84,22 @@ public abstract class AbstractPlayground {
     
     /**
      * Get the element at specified position
-     * @param row The row of the playground
-     * @param column The column of the playground
+     * @param The coordinates from which to get the element
      * @return The element on the specified position
      */
-    protected char get(int row, int column) {
-        return this.matrix[row][column];
+    protected char get(Coordinates coords) {
+        checkCoordinates(coords);
+        return this.matrix[coords.getRow()][coords.getColumn()];
     }
     
     /**
      * Set the element at specified position
-     * @param row The row of the playground
-     * @param column The column of the playground
+     * @param The coordinates at which to set the element
+     * @param The element to set.
      */
-    protected void set(int row, int column, char element) {
-        this.matrix[row][column] = element;
+    protected void set(Coordinates coords, char element) {
+        checkCoordinates(coords);
+        this.matrix[coords.getRow()][coords.getColumn()] = element;
     }
     
     /**
@@ -123,11 +124,11 @@ public abstract class AbstractPlayground {
      * @param column The column to check
      * @return true if the coordinates are in range and false if not
      */
-    protected boolean checkCoordinates(int row, int column) {
-        if (row >= this.rows || row < 0) {
+    protected boolean checkCoordinates(Coordinates target) {
+        if (target.getRow() >= this.rows || target.getRow() < 0) {
             return false;
         }
-        if (column >= this.columns || column < 0) {
+        if (target.getColumn() >= this.columns || target.getColumn() < 0) {
             return false;
         }
         return true;

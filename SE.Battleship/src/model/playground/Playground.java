@@ -60,24 +60,21 @@ public class Playground extends AbstractPlayground {
      * @return false if the ship could not be placed.
      */
     public boolean placeShip(Coordinates target, Ship ship, int direction) {
-        //get column and row, from where to start with placing the ship
-        int row = target.getRow();
-        int column = target.getColumn();
+        Coordinates coords = target;
         
         //loop until the ship is complete placed
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
             //check if the row and column is not in range
-            if (!this.checkCoordinates(row, column)) {
+            if (!this.checkCoordinates(new Coordinates(coords))) {
                 status.addError("Ship cannot be placed, because Coordinates are invalid.");
                 return false;
             }
             
             //check if a ship is too near
-            if (0 != checkForNearShips(row, column)) {
+            if (0 != checkForNearShips(coords)) {
                 return false;
-            }    
-            row += updateVerticalDirection(direction);
-            column += updateHorizontalDirection(direction);
+            }   
+            coords = new Coordinates(coords.getRow() + updateVerticalDirection(direction), coords.getColumn() + updateHorizontalDirection(direction));
         }
         //try to add the ship and check if it failed
         if (!this.addShip(ship)) {
@@ -123,13 +120,13 @@ public class Playground extends AbstractPlayground {
             throw new IllegalArgumentException("Already shot to target.");
         }
         //check if something was hit
-        if (Constances.MATRIX_INIT != this.get(row, column)) {
-            char shipId = this.get(row, column);
-            this.set(row, column, Constances.MATRIX_HIT);
+        if (Constances.MATRIX_INIT != this.get(new Coordinates(row, column))) {
+            char shipId = this.get(new Coordinates(row, column));
+            this.set(new Coordinates(row, column), Constances.MATRIX_HIT);
             return this.updateShipsAfterHit(shipId);
         }
         status.addText("No ship was hit.");    
-        this.set(row, column, Constances.MATRIX_MISS);
+        this.set(new Coordinates(row, column), Constances.MATRIX_MISS);
         return Constances.SHOOT_MISS;
     }
     
@@ -142,11 +139,11 @@ public class Playground extends AbstractPlayground {
     public boolean alreadyShot(Coordinates target) {
         int row = target.getRow();
         int column = target.getColumn();
-        if (!checkCoordinates(row, column)) {
+        if (!checkCoordinates(new Coordinates(row, column))) {
             throw new IllegalArgumentException("Invalid Coordinates.");
         }
-        return ((Constances.MATRIX_HIT == this.get(row, column))
-              ||(Constances.MATRIX_MISS == this.get(row, column)));
+        return ((Constances.MATRIX_HIT == this.get(new Coordinates(row, column)))
+              ||(Constances.MATRIX_MISS == this.get(new Coordinates(row, column))));
     }
         
     /**
@@ -188,7 +185,7 @@ public class Playground extends AbstractPlayground {
         
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
             //set ship id to playground
-            this.set(row, column, ship.getId());
+            this.set(new Coordinates(row, column), ship.getId());
             //check if coordinates where to place the ship where completely checked
             if (0 == shipSize) {
                 return;
@@ -252,11 +249,11 @@ public class Playground extends AbstractPlayground {
      * @return true if at the coordinates can be placed a ship
      * @return false if at the coordinates can no ship be placed
      */
-    private int checkCoord(int row, int column) {
-        if (!checkCoordinates(row, column)) {
+    private int checkCoord(Coordinates target) {
+        if (!checkCoordinates(target)) {
             return 0;
         }
-        if (Constances.MATRIX_INIT != this.get(row, column)) {
+        if (Constances.MATRIX_INIT != this.get(target)) {
             return 1;
         }
         return 0;
@@ -268,13 +265,13 @@ public class Playground extends AbstractPlayground {
      * @param column The column coordinate
      * @return The number of near ships (0 if no ship is near)
      */
-    private int checkForNearShips(int row, int column) {
+    private int checkForNearShips(Coordinates target) {
         int checkRows[] = {0, 1, -1, 0, 0, 1, 1, -1, -1};
         int checkColumns[] = {0, 0, 0, -1, 1, -1, 1, 1, -1};
         int nearShipsCount = 0;
         
         for (int i = 0; i < checkRows.length; i++) {
-            nearShipsCount += checkCoord(row + checkRows[i], column + checkColumns[i]);
+            nearShipsCount += checkCoord(new Coordinates(target.getRow() + checkRows[i], target.getColumn() + checkColumns[i]));
         }
         return nearShipsCount;
     }

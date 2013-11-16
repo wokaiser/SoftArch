@@ -19,6 +19,16 @@ public class Coordinates {
     }
     
     /**
+     * Create a copy of a coordinates object
+     * @param row of the coordinates
+     * @param column of the coordinates
+     */
+    public Coordinates(Coordinates coords) {
+        this.row = coords.getRow();
+        this.column = coords.getColumn();
+    }  
+    
+    /**
      * Return the saved row.
      * @return the row, which is bigger as 0 and smaller as maxRow
      */

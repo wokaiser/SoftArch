@@ -29,8 +29,6 @@ public abstract class LoadableGameController extends AbstractGameController {
     public void loadGame(String name) {
         content = database.load(name);
         loadedGame = true;
-        /* TODO: fix this hotfix. If we do not double switchPlayer, we see an incorrect playground.
-         * switchPlayer() just change "activePlayer" and "activeAI" internally in content...*/
         notifyObservers();
         loadedGame = false;
     }

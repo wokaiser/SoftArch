@@ -14,7 +14,8 @@ public class DummyDatabase extends AbstractDatabase {
      * @return null
      */
     @Override
-    public GameContent load(String name) {
+    public GameContent load(String name) {       
+        status.addText("Dummy database load was called.");
         return null;
     }
 
@@ -34,7 +35,7 @@ public class DummyDatabase extends AbstractDatabase {
      */
     @Override
     public void save(String name, GameContent content) {
-        
+        status.addText("Dummy database save was called.");
     }
 
     /**
@@ -43,7 +44,7 @@ public class DummyDatabase extends AbstractDatabase {
      */
     @Override
     public void delete(String name) {
-
+        status.addText("Dummy database delete was called.");
     }
 
 }

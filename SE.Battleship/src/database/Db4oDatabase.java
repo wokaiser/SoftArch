@@ -81,7 +81,10 @@ public class Db4oDatabase extends AbstractDatabase {
      */
     @Override
     public void delete(String name) {
-        database.delete(load(name));
+        GameContent content = load(name);
+        if (null != content) {
+            database.delete(content);
+        }
     }    
     /**
      * Determines if name is already used

@@ -37,6 +37,14 @@ public class Playground extends AbstractPlayground {
         this.ships = new LinkedList<Ship>();
         this.status = new Status();
     }
+    /**
+     * Return the ships which are on the playground
+     * @return List with ships
+     */
+    @Override
+    public List<Ship> getShips() {
+        return ships;
+    }
     
     /**
      * Return the status object, which log information about the program flow after

@@ -118,6 +118,11 @@ public interface IGameController {
      */
     JsonNode getOwnPlaygroundAsJson(String activePlayer);
     /**
+     * Get the playground of the active player (With all placed ships visible).
+     * @return 
+     */
+    PlaygroundCell[][] getOwnPlayground(String activePlayer);
+    /**
      * Check if a player switched after a shot
      * @return true if player switched, false if not
      */

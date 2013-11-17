@@ -1,5 +1,6 @@
 package controller;
 
+import model.playground.PlaygroundCell;
 import interfaces.IDatabase;
 import interfaces.IGameController;
 
@@ -61,7 +62,7 @@ public abstract class AbstractGameController extends Observable implements IGame
      * @return Formatted String of the playground
      */
     public char [][] getEnemyPlaygroundAsMatrix(String activePlayer) {
-        return content.getEnemyPlayground(activePlayer).enemyView();
+        return content.getEnemyPlayground(activePlayer).enemyMatrixView();
     }   
     /**
      * Get the playground of the enemy player as a Json.
@@ -82,7 +83,7 @@ public abstract class AbstractGameController extends Observable implements IGame
      * @return 2 dimensional matrix of the playground
      */
     public char [][] getOwnPlaygroundAsMatrix(String activePlayer) {
-        return content.getOwnPlayground(activePlayer).ownView();
+        return content.getOwnPlayground(activePlayer).ownMatrixView();
     }   
     /**
      * Get the playground of the active player (With all placed ships visible).
@@ -91,6 +92,13 @@ public abstract class AbstractGameController extends Observable implements IGame
     public JsonNode getOwnPlaygroundAsJson(String activePlayer) {
         return content.getOwnPlayground(activePlayer).ownJsonView();
     }   
+    /**
+     * Get the playground of the active player (With all placed ships visible).
+     * @return 
+     */
+    public PlaygroundCell[][] getOwnPlayground(String activePlayer) {
+        return content.getOwnPlayground(activePlayer).ownView();
+    }
     /**
      * Check if a player switched after a shot
      * @return true if player switched, false if not

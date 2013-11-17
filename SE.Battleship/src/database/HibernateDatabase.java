@@ -76,7 +76,7 @@ public class HibernateDatabase implements IDatabase {
                     return matrix;
                 }
                 
-                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()].set(playgroundItem.get(index).getStatus());
+                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = new PlaygroundCell(playgroundItem.get(index).getStatus());
             }
         }
 
@@ -145,8 +145,8 @@ public class HibernateDatabase implements IDatabase {
         List<HibernatePlaygroundItem> playground1 = new LinkedList<HibernatePlaygroundItem>();
         List<HibernatePlaygroundItem> playground2 = new LinkedList<HibernatePlaygroundItem>();
         
-        char[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
-        char[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
+        char[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownMatrixView();
+        char[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownMatrixView();
         for (int row = 0; row < content.getRows(); row++) {
             for (int column = 0; column < content.getColumns(); column++){
                 playground1.add(new HibernatePlaygroundItem(hContent, 1, row, column, playground1Raw[row][column]));

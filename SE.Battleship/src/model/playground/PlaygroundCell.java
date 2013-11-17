@@ -7,6 +7,11 @@ public class PlaygroundCell {
     private char element = Constances.MATRIX_INIT;
     
     public PlaygroundCell() {
+
+    }
+    
+    public PlaygroundCell(char stat) {
+        element = stat;
     }
     
     public char get() {

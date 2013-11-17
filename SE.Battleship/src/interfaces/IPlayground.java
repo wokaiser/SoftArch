@@ -46,7 +46,7 @@ public interface IPlayground {
      * Return the ships which are on the playground
      * @return List with ships
      */
-    public List<Ship> getShips();
+    List<Ship> getShips();
     /**
      * Return the status object, which log information about the program flow after
      * calling e.g. shoot(..)  method.
@@ -81,12 +81,12 @@ public interface IPlayground {
      * Get the playground with all ships visible on it.
      * return The playground
      */
-    char[][] ownView();
+    char[][] ownMatrixView();
     
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
      * return The playground
      */
-    char[][] enemyView();
+    char[][] enemyMatrixView();
 }

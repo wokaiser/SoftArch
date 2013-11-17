@@ -118,7 +118,7 @@ public abstract class AbstractPlayground implements IPlayground {
      */
     protected void setShip(Coordinates coords, char id) {
         checkCoordinates(coords);
-        this.matrix[coords.getRow()][coords.getColumn()].setShip(id);;
+        this.matrix[coords.getRow()][coords.getColumn()].setShip(id);
     }
     
     /**
@@ -191,7 +191,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * Get the playground with all ships visible on it.
      * @return The playground
      */
-    public char[][] ownView() {        
+    public char[][] ownMatrixView() {        
         return new PlaygroundOwnView().get(matrix, rows, columns);
     }
     
@@ -200,7 +200,15 @@ public abstract class AbstractPlayground implements IPlayground {
      * Ships which has been hit are visible.
      * @return The playground
      */
-    public char[][] enemyView() {        
+    public char[][] enemyMatrixView() {        
         return new PlaygroundEnemyView().get(matrix, rows, columns);
+    }
+    
+    /**
+     * Get the playground with all ships visible on it.
+     * @return The playground
+     */
+    public PlaygroundCell[][] ownView() {        
+        return matrix;
     }
 }

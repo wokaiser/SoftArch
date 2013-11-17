@@ -6,7 +6,6 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import database.GameContent;
 import model.general.Constances;
 import model.general.Status;
 import model.playground.Coordinates;
@@ -62,8 +61,7 @@ public class GameController extends LoadableGameController {
      * @return false The game is not finished.
      */
     public boolean gameFinished() {
-        /* TODO set the check back to 0, if the Hibernate issue is fixed.*/
-        if (-1 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
+        if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
             content.getStatus().addText(content.getActivePlayer() + " won.");
             return true;
         }

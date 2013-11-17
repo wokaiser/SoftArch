@@ -1,18 +1,16 @@
 package database;
 
-import interfaces.IDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
-import com.db4o.ext.Db4oException;
 import com.db4o.query.Query;
 
-public class Db4oDatabase implements IDatabase {
-    
+import controller.GameContent;
+
+public class Db4oDatabase extends AbstractDatabase {
     private static final String FILENAME = "Db4o_Database";
     private static final int FIRST = 0;
     
@@ -37,7 +35,8 @@ public class Db4oDatabase implements IDatabase {
         query.descend("name").constrain(String.valueOf(name)).equal();
         ObjectSet<GameContent> result = query.execute();        
         if(result.isEmpty()) {
-            throw new Db4oException("No GameContent with name: " + name + "found!");
+            status.addError(SAVEGAME_NOT_EXIST);
+            return null;
         }        
         return result.get(FIRST);
     }
@@ -63,13 +62,13 @@ public class Db4oDatabase implements IDatabase {
      * @return true if save was successful, otherwise false
      */
     @Override
-    public boolean save(String name, GameContent content) {
+    public void save(String name, GameContent content) {
         if(isNameAlreadyUsed(name)) {
-            return false;
+            status.addError(SAVEGAME_NAME_EXIST);
+        } else {
+            content.setName(name);
+            database.store(content);
         }
-        content.setName(name);
-        database.store(content);
-        return true;
     }
 
     /**
@@ -78,13 +77,8 @@ public class Db4oDatabase implements IDatabase {
      * @return true if delete was successful, otherwise false
      */
     @Override
-    public boolean delete(String name) {
-        try {
-            database.delete(load(name));
-        } catch (Exception exc) {
-            return false;
-        }
-        return true;
+    public void delete(String name) {
+        database.delete(load(name));
     }    
     /**
      * Determines if name is already used

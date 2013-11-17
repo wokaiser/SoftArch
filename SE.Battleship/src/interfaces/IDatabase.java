@@ -2,7 +2,8 @@ package interfaces;
 
 import java.util.List;
 
-import database.GameContent;
+import model.general.Status;
+import controller.GameContent;
 
 public interface IDatabase {
     /**
@@ -24,13 +25,17 @@ public interface IDatabase {
      * @param content The GameGontent to be stored
      * @return True if saving was successfull
      */
-    boolean save(String name, GameContent content);
+    void save(String name, GameContent content);
     
     /**
      * Deletes the GameContent with the given name
      * @param name The name of the GameContent which should be deleted
-     * @return True if deleting was successfull 
      */
-    boolean delete(String name);
-    
+    void delete(String name);
+   
+    /**
+     * Get the status object, which will be used for information/error logging
+     * @return The status object
+     */
+    Status getSatus();
 }

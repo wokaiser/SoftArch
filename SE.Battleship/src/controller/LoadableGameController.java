@@ -9,13 +9,10 @@ public abstract class LoadableGameController extends AbstractGameController {
      * Saves the actual game
      * @param The name of the savegame
      */
-    public boolean saveGame(String name) {
+    public void saveGame(String name) {
         content.setName(name);
-        boolean retVal = database.save(name, content);
-        if(!retVal) {
-            content.getStatus().addError("Savegame already taken, choose another one!");
-        }
-        return retVal; 
+        database.save(name, content);
+        content.getStatus().moveStatus(database.getSatus());
     }
     /**
      * To check if a game was loaded. The status will be set to true if a game was loaded and
@@ -34,8 +31,6 @@ public abstract class LoadableGameController extends AbstractGameController {
         loadedGame = true;
         /* TODO: fix this hotfix. If we do not double switchPlayer, we see an incorrect playground.
          * switchPlayer() just change "activePlayer" and "activeAI" internally in content...*/
-        content.switchPlayer();
-        content.switchPlayer();
         content.getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
         notifyObservers();
         loadedGame = false;

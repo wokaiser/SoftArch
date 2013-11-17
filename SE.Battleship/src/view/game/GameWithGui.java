@@ -14,8 +14,8 @@ import javax.swing.*;
 import view.gui.PlaygroundFrame;
 import view.gui.StatusPanel;
 import model.general.Constances;
+import controller.GameContent;
 import controller.GameController;
-import database.GameContent;
 
 /** 
  * The GameWithGui class supports playing Battleships over a graphical user interface.
@@ -172,10 +172,14 @@ public class GameWithGui implements IObserver {
             public void actionPerformed(ActionEvent e) {
                 while(true) {
                     String name = JOptionPane.showInputDialog("Enter savegame name!");
-                    if(name == null || name.isEmpty() || controller.saveGame(name)) {
+                    if(name == null || name.isEmpty()) {
                         break;
                     }
-                    JOptionPane.showMessageDialog(mainFrame, controller.getStatus().getError(), "", JOptionPane.WARNING_MESSAGE);
+                    controller.saveGame(name);
+                    if (!controller.getStatus().errorExist()) {
+                        return;
+                    }
+                    JOptionPane.showMessageDialog(mainFrame, controller.getStatus().getError(), "Error", JOptionPane.WARNING_MESSAGE);
                     controller.getStatus().clearError();
                 }
             }

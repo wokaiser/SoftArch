@@ -14,6 +14,11 @@ public class PlaygroundCell {
         element = stat;
     }
     
+    public PlaygroundCell(char stat, char id) {
+        element = stat;
+        shipId = id;
+    }
+    
     public char get() {
         return element;
     }
@@ -26,7 +31,7 @@ public class PlaygroundCell {
         element = newElement;
     }
     
-    public void setShip(char id) {
+    public void setShipId(char id) {
         if (0 != shipId) {
             throw new IllegalAccessError("Could not set a ship twice to a playground cell.");
         }

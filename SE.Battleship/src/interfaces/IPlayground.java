@@ -1,12 +1,8 @@
 package interfaces;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import model.general.Status;
 import model.playground.Coordinates;
-import model.playground.Ship;
 
 public interface IPlayground {
     /**
@@ -19,11 +15,6 @@ public interface IPlayground {
      * @return The number of columns
      */
     int getColumns();
-    /**
-     * Place a list of ships random on the playground
-     * @param ships A list with the ships
-     */  
-    void placeShipsRandom(List<Ship> ships);
     /**
      * Method to check if on given Coordinates where already a shot.
      * @param target The Coordinates which to check.
@@ -42,11 +33,6 @@ public interface IPlayground {
      * @return status of shot
      */
     int shoot(Coordinates target);
-    /**
-     * Return the ships which are on the playground
-     * @return List with ships
-     */
-    List<Ship> getShips();
     /**
      * Return the status object, which log information about the program flow after
      * calling e.g. shoot(..)  method.

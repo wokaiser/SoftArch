@@ -1,7 +1,4 @@
-package database;
-
-import java.util.LinkedList;
-import java.util.List;
+package controller;
 
 import com.google.inject.Inject;
 
@@ -10,7 +7,6 @@ import model.general.Status;
 import model.playground.AbstractPlayground;
 import model.playground.Playground;
 import model.playground.PlaygroundCell;
-import model.playground.Ship;
 
 public class GameContent {
     /* valid player types */
@@ -63,9 +59,6 @@ public class GameContent {
      * @param gameType The gameType (SINGLEPLAYER or MULITPLAYER)
      */
     public void initContent(int rows, int columns, String player1, String player2, int gameType) {
-        /* the ships of player 1 and 2*/
-        List<Ship> fleet1 = createShips();
-        List<Ship> fleet2 = createShips();
         status = new Status();
         playground1 = new Playground(rows, columns);
         playground2 = new Playground(rows, columns);
@@ -73,8 +66,6 @@ public class GameContent {
         this.player2 = player2;
         player1AI.initialize(rows, columns);
         player2AI.initialize(rows, columns);
-        playground1.placeShipsRandom(fleet1);
-        playground2.placeShipsRandom(fleet2);
         activePlayer = this.player1;
         activeAI = this.player2AI;
         status.clear();
@@ -139,23 +130,7 @@ public class GameContent {
      */
     public String getName() {
         return name;
-    }    
-    /**
-     * Returns a fleet of ships
-     * @return A ship list with ships
-     */
-    private List<Ship> createShips() {
-        List<Ship> tmp = new LinkedList<Ship>();
-        tmp.add(new Ship("Battleship", Ship.LENGTHBATTLESHIP, 'A'));
-        tmp.add(new Ship("1st Cruiser", Ship.LENGTHCRUISER, 'B'));
-        tmp.add(new Ship("2nd Cruiser", Ship.LENGTHCRUISER, 'C'));
-        tmp.add(new Ship("1st Destroyer", Ship.LENGTHDESTROYER , 'D'));
-        tmp.add(new Ship("2nd Destroyer", Ship.LENGTHDESTROYER, 'E'));
-        tmp.add(new Ship("1st Submarine", Ship.LENGTHSUBMARINE, 'F'));
-        tmp.add(new Ship("2nd Submarine", Ship.LENGTHSUBMARINE, 'G'));
-        tmp.add(new  Ship("3rd Submarine", Ship.LENGTHSUBMARINE, 'H'));
-        return tmp;
-    }    
+    }   
     /**
      * check for correct game type
      * @throws exception if gameType is not SINGLEPLAYER or MULTIPLAYER

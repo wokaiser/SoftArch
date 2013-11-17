@@ -1,11 +1,12 @@
 package database;
 
-import interfaces.IDatabase;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class DummyDatabase implements IDatabase{
+import controller.GameContent;
+
+public class DummyDatabase extends AbstractDatabase {
 
     /**
      * Do nothing, because this is a dummy implementation
@@ -30,21 +31,19 @@ public class DummyDatabase implements IDatabase{
      * Do nothing, because this is a dummy implementation
      * @param name of the game
      * @param GameContent to save
-     * @return always false
      */
     @Override
-    public boolean save(String name, GameContent content) {
-        return false;
+    public void save(String name, GameContent content) {
+        
     }
 
     /**
      * Do nothing, because this is a dummy implementation
      * @param name of the game
-     * @return always false
      */
     @Override
-    public boolean delete(String name) {
-        return false;
+    public void delete(String name) {
+
     }
 
 }

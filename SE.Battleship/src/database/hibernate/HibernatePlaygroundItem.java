@@ -22,17 +22,19 @@ public class HibernatePlaygroundItem implements Serializable {
     private int rowcell;
     private int columncell;
     private char status;
+    private char shipId;
 
     @ManyToOne
     @JoinColumn(name = "gameContentid")
     private HibernateGameContent gameContent;
     
-    public HibernatePlaygroundItem(HibernateGameContent gameContent, int playground, int rowcell, int columncell, char status) {
+    public HibernatePlaygroundItem(HibernateGameContent gameContent, int playground, int rowcell, int columncell, char status, char shipId) {
         this.gameContent = gameContent;
         this.playground = playground;
         this.rowcell = rowcell;
         this.columncell = columncell;
         this.status = status;
+        this.shipId = shipId;
     }
     public HibernatePlaygroundItem() {
         
@@ -84,5 +86,11 @@ public class HibernatePlaygroundItem implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    public char getShipId() {
+        return shipId;
+    }
+    public void setShipId(char shipId) {
+        this.shipId = shipId;
     }    
 }

@@ -4,8 +4,6 @@ import interfaces.IPlayground;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import model.general.Constances;
-
 /** 
  * The Abstract Playground class supports a minimal implementation of a playground with the
  * basic functionality like get/set and view of playground.
@@ -118,7 +116,17 @@ public abstract class AbstractPlayground implements IPlayground {
      */
     protected void setShip(Coordinates coords, char id) {
         checkCoordinates(coords);
-        this.matrix[coords.getRow()][coords.getColumn()].setShip(id);
+        this.matrix[coords.getRow()][coords.getColumn()].setShipId(id);
+    }
+    
+    /**
+     * Get the ship at specified position
+     * @param The coordinates from which to get the ship
+     * @return The ship on the specified position
+     */
+    protected char getShip(Coordinates coords) {
+        checkCoordinates(coords);
+        return this.matrix[coords.getRow()][coords.getColumn()].getShipId();
     }
     
     /**

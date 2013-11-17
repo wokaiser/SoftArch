@@ -25,6 +25,7 @@ public class Playground extends AbstractPlayground {
         super(rows, columns);
         this.ships = new LinkedList<Ship>();
         this.status = new Status();
+        this.placeShipsRandom();
     }
     
     /**
@@ -36,16 +37,8 @@ public class Playground extends AbstractPlayground {
         super(matrix);
         this.ships = new LinkedList<Ship>();
         this.status = new Status();
-    }
-    /**
-     * Return the ships which are on the playground
-     * @return List with ships
-     */
-    @Override
-    public List<Ship> getShips() {
-        return ships;
-    }
-    
+        this.placeShipsOnOldPosition();
+    }    
     /**
      * Return the status object, which log information about the program flow after
      * calling e.g. shoot(..)  method.
@@ -54,7 +47,6 @@ public class Playground extends AbstractPlayground {
     public Status getStatus() {
         return status;
     }
-    
     /**
      * Method to place a ship on given Coordinates into a given direction.
      * @param target The Coordinates where to place the ship
@@ -233,22 +225,50 @@ public class Playground extends AbstractPlayground {
         return nearShipsCount;
     }
     
-    /**
-     * Place a list of ships random on the playground
-     * @param ships A list with the ships
-     */
-    public void placeShipsRandom(List<Ship> ships) {
-        while (!ships.isEmpty()) {
-            Ship s = ships.get(0);
-            Coordinates coords = randomCoords();
-            int vertical = random(-1, +1);
-            int horizontal = (vertical == 0) ? -1 : 0;
-            if (placeShip(coords, s, vertical, horizontal)) {
-                ships.remove(0);
+    private void placeShipsOnOldPosition() {
+        this.ships = createShips();
+        for (int row = 0; row < getRows(); row++) {
+            for (int column = 0; column < getColumns(); column++){
+                Coordinates coord = new Coordinates(row, column);
+                if (Constances.MATRIX_HIT == get(coord)) {
+                    updateShipsAfterHit(getShip(coord));
+                }
             }
         }
     }
     
+    /**
+     * Place a list of ships random on the playground
+     * @param ships A list with the ships
+     */
+    private void placeShipsRandom() {
+        List<Ship> newShips = createShips();
+        while (!newShips.isEmpty()) {
+            Ship s = newShips.get(0);
+            Coordinates coords = randomCoords();
+            int vertical = random(-1, +1);
+            int horizontal = (vertical == 0) ? -1 : 0;
+            if (placeShip(coords, s, vertical, horizontal)) {
+                newShips.remove(0);
+            }
+        }
+    }
+    /**
+     * Returns a fleet of ships
+     * @return A ship list with ships
+     */
+    private List<Ship> createShips() {
+        List<Ship> tmp = new LinkedList<Ship>();
+        tmp.add(new Ship("Battleship", Ship.LENGTHBATTLESHIP, 'A'));
+        tmp.add(new Ship("1st Cruiser", Ship.LENGTHCRUISER, 'B'));
+        tmp.add(new Ship("2nd Cruiser", Ship.LENGTHCRUISER, 'C'));
+        tmp.add(new Ship("1st Destroyer", Ship.LENGTHDESTROYER , 'D'));
+        tmp.add(new Ship("2nd Destroyer", Ship.LENGTHDESTROYER, 'E'));
+        tmp.add(new Ship("1st Submarine", Ship.LENGTHSUBMARINE, 'F'));
+        tmp.add(new Ship("2nd Submarine", Ship.LENGTHSUBMARINE, 'G'));
+        tmp.add(new  Ship("3rd Submarine", Ship.LENGTHSUBMARINE, 'H'));
+        return tmp;
+    }
     /**
      * Generates random Coordinates
      * @return Random coordinates where a ship could be placed

@@ -6,7 +6,6 @@ import interfaces.IGameController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import database.GameContent;
 import util.observer.Observable;
 
 public abstract class AbstractGameController extends Observable implements IGameController{

@@ -42,7 +42,7 @@ public interface IGameController {
      * Saves the actual game
      * @param The name of the savegame
      */
-    boolean saveGame(String name);
+    void saveGame(String name);
     /**
      * To check if a game was loaded. The status will be set to true if a game was loaded and
      * it will be set to false, after all observables were notified.

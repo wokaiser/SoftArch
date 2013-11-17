@@ -17,7 +17,6 @@ public class AiHard extends AiBase {
     public Coordinates getCoordinates() {
         nextShot = (null == firstHit) ? getRandomCoordinates() : getLogicChoosenCoordinates();
         checkCoordinates();
-        System.out.println(nextShot);
         return (null == nextShot) ? getRandomCoordinates() : nextShot;
     }
 

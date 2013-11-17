@@ -1,7 +1,5 @@
 package database;
 
-import interfaces.IDatabase;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,11 +13,12 @@ import org.hibernate.Transaction;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import controller.GameContent;
 import database.hibernate.HibernateGameContent;
 import database.hibernate.HibernatePlaygroundItem;
 import database.hibernate.HibernateUtil;
 
-public class HibernateDatabase implements IDatabase {
+public class HibernateDatabase extends AbstractDatabase {
 
     @Override
     public GameContent load(String name) {
@@ -32,7 +31,7 @@ public class HibernateDatabase implements IDatabase {
                 return loadGame(gameContent.get(index));
             }
         }
-
+        status.addError(SAVEGAME_NOT_EXIST);
         return null;
     }
     
@@ -76,7 +75,7 @@ public class HibernateDatabase implements IDatabase {
                     return matrix;
                 }
                 
-                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = new PlaygroundCell(playgroundItem.get(index).getStatus());
+                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = new PlaygroundCell(playgroundItem.get(index).getStatus(), playgroundItem.get(index).getShipId());
             }
         }
 
@@ -100,9 +99,14 @@ public class HibernateDatabase implements IDatabase {
     }
 
     @Override
-    public boolean save(String name, GameContent content) {
+    public void save(String name, GameContent content) {
         Transaction tx = null;
         Session session = null;
+        
+        if (getAll().contains(name)) {
+            status.addError(SAVEGAME_NAME_EXIST);
+            return;
+        }
 
         try {
             session = HibernateUtil.getInstance().getCurrentSession();
@@ -117,18 +121,39 @@ public class HibernateDatabase implements IDatabase {
             }
             tx.commit();
         } catch (HibernateException ex) {
+            status.addError(ex.getMessage());
             if (tx != null) {
                 tx.rollback();
             }
-            return false;
         }
-        return true;
     }
 
     @Override
-    public boolean delete(String name) {
-        
-        return false;
+    public void delete(String name) {
+        Transaction tx = null;
+        Session session = null;
+
+        try {
+            session = HibernateUtil.getInstance().getCurrentSession();
+            tx = session.beginTransaction();
+            
+            HibernateGameContent hContent = (HibernateGameContent) session.get(HibernateGameContent.class, name);
+            
+            for(HibernatePlaygroundItem item : hContent.getPlayground1()) {
+                session.delete(item);
+            }
+            for(HibernatePlaygroundItem item : hContent.getPlayground2()) {
+                session.delete(item);
+            }
+            session.delete(hContent);
+
+            tx.commit();
+        } catch (HibernateException ex) {
+            if (tx != null)
+                tx.rollback();
+            throw new RuntimeException(ex.getMessage());
+
+        }
     }
     
     private HibernateGameContent map(GameContent content) {
@@ -145,12 +170,12 @@ public class HibernateDatabase implements IDatabase {
         List<HibernatePlaygroundItem> playground1 = new LinkedList<HibernatePlaygroundItem>();
         List<HibernatePlaygroundItem> playground2 = new LinkedList<HibernatePlaygroundItem>();
         
-        char[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownMatrixView();
-        char[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownMatrixView();
+        PlaygroundCell[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
+        PlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
         for (int row = 0; row < content.getRows(); row++) {
             for (int column = 0; column < content.getColumns(); column++){
-                playground1.add(new HibernatePlaygroundItem(hContent, 1, row, column, playground1Raw[row][column]));
-                playground2.add(new HibernatePlaygroundItem(hContent, 2, row, column, playground2Raw[row][column]));
+                playground1.add(new HibernatePlaygroundItem(hContent, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId()));
+                playground2.add(new HibernatePlaygroundItem(hContent, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId()));
             }
         }
         hContent.setPlayground1(playground1);

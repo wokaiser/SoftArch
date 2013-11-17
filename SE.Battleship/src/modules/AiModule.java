@@ -5,7 +5,7 @@ import interfaces.IAi;
 
 import com.google.inject.AbstractModule;
 
-import database.GameContent;
+import controller.GameContent;
 
 public class AiModule extends AbstractModule {
     private String usedAI = null;

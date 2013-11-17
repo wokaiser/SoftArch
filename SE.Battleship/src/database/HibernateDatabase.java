@@ -123,7 +123,7 @@ public class HibernateDatabase extends AbstractDatabase {
             }
             tx.commit();
         } catch (HibernateException ex) {
-            status.addError("EXCEPTION: "+ex.getMessage());
+            status.addError(ex.getMessage());
             if (tx != null) {
                 tx.rollback();
             }

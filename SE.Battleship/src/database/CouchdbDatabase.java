@@ -69,9 +69,8 @@ public class CouchdbDatabase extends AbstractDatabase {
     @Override
     public void save(String name, GameContent content) {
         CouchdbGameContent hContent = map(content);
-        
         if (getAll().contains(name)) {
-            db.update(hContent);
+            status.addError(SAVEGAME_NAME_EXIST);
         } else {
             db.create(hContent.getId(), hContent);
         }

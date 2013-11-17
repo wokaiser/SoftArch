@@ -6,7 +6,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
 import database.CouchdbDatabase;
-import database.HibernateDatabase;
 
 public class DatabaseModule extends AbstractModule {
     /**

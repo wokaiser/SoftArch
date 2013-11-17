@@ -31,7 +31,6 @@ public abstract class LoadableGameController extends AbstractGameController {
         loadedGame = true;
         /* TODO: fix this hotfix. If we do not double switchPlayer, we see an incorrect playground.
          * switchPlayer() just change "activePlayer" and "activeAI" internally in content...*/
-        content.getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
         notifyObservers();
         loadedGame = false;
     }

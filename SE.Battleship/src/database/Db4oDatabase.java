@@ -37,8 +37,11 @@ public class Db4oDatabase extends AbstractDatabase {
         if(result.isEmpty()) {
             status.addError(SAVEGAME_NOT_EXIST);
             return null;
-        }        
-        return result.get(FIRST);
+        } else {
+            GameContent content = result.get(FIRST);
+            status.addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
+            return content;
+        }
     }
 
     /**

@@ -17,12 +17,12 @@ public abstract class AbstractPlayground implements IPlayground {
     
     private int rows;
     private int columns;
-    private char[][] matrix;
+    private PlaygroundCell[][] matrix;
     
-    public static final char[][] copyPlayground(char[][] matrixInput) {
+    public static final PlaygroundCell[][] copyPlayground(PlaygroundCell[][] matrixInput) {
         int rows = matrixInput.length;
         int columns = matrixInput[0].length;
-        char[][] matrix = new char[rows][columns];
+        PlaygroundCell[][] matrix = new PlaygroundCell[rows][columns];
         
         for (int r = 0; r < matrixInput.length; r++) {
             if (columns != matrixInput[r].length) {
@@ -41,14 +41,14 @@ public abstract class AbstractPlayground implements IPlayground {
         this.checkColumns(columns);
         this.rows = rows;
         this.columns = columns;
-        this.matrix = new char[rows][columns];
+        this.matrix = new PlaygroundCell[rows][columns];
         this.initMatrix();
     }
     
     /**
      * Creates a Playground with an given matrix.
      */
-    public AbstractPlayground(char[][] matrixInput) {
+    public AbstractPlayground(PlaygroundCell[][] matrixInput) {
         if (matrixInput == null) {
             throw new IllegalArgumentException("Null matrix for playground");
         }
@@ -56,7 +56,7 @@ public abstract class AbstractPlayground implements IPlayground {
         checkRows(rows);
         columns = matrixInput[0].length;
         checkColumns(columns);
-        matrix = new char[rows][columns];
+        matrix = new PlaygroundCell[rows][columns];
         matrix = copyPlayground(matrixInput);
     }
     
@@ -86,7 +86,7 @@ public abstract class AbstractPlayground implements IPlayground {
     private void initMatrix() {
         for (int row = 0; row < this.rows; row++) {
             for (int column = 0; column < this.columns; column++){
-                this.matrix[row][column] = Constances.MATRIX_INIT;
+                this.matrix[row][column] = new PlaygroundCell();
             }
         }
     }
@@ -98,7 +98,7 @@ public abstract class AbstractPlayground implements IPlayground {
      */
     protected char get(Coordinates coords) {
         checkCoordinates(coords);
-        return this.matrix[coords.getRow()][coords.getColumn()];
+        return this.matrix[coords.getRow()][coords.getColumn()].get();
     }
     
     /**
@@ -108,7 +108,17 @@ public abstract class AbstractPlayground implements IPlayground {
      */
     protected void set(Coordinates coords, char element) {
         checkCoordinates(coords);
-        this.matrix[coords.getRow()][coords.getColumn()] = element;
+        this.matrix[coords.getRow()][coords.getColumn()].set(element);
+    }
+    
+    /**
+     * Set the ship to the specified position
+     * @param The coordinates at which to set the element
+     * @param The ship id to set.
+     */
+    protected void setShip(Coordinates coords, char id) {
+        checkCoordinates(coords);
+        this.matrix[coords.getRow()][coords.getColumn()].setShip(id);;
     }
     
     /**

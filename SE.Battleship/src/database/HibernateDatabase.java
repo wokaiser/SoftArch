@@ -5,6 +5,7 @@ import interfaces.IDatabase;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.playground.PlaygroundCell;
 import modules.AiModule;
 
 import org.hibernate.HibernateException;
@@ -36,12 +37,12 @@ public class HibernateDatabase implements IDatabase {
     }
     
     private GameContent loadGame(HibernateGameContent savedGame) {
-        char[][] matrixPlayground1 = loadPlayground(1, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());        
+        PlaygroundCell[][] matrixPlayground1 = loadPlayground(1, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());        
         if (null == matrixPlayground1) {
             return null;
         }
         
-        char[][] matrixPlayground2 = loadPlayground(2, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());
+        PlaygroundCell[][] matrixPlayground2 = loadPlayground(2, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());
         if (null == matrixPlayground2) {
             return null;
         }
@@ -54,10 +55,10 @@ public class HibernateDatabase implements IDatabase {
         return content;
     }
     
-    private char[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
+    private PlaygroundCell[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
         Session session = HibernateUtil.getInstance().getCurrentSession();
 
-        char[][] matrix = new char[rows][columns]; 
+        PlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
         
         @SuppressWarnings("unchecked")
         List<HibernatePlaygroundItem> playgroundItem = session.createCriteria(HibernatePlaygroundItem.class).list();
@@ -75,7 +76,7 @@ public class HibernateDatabase implements IDatabase {
                     return matrix;
                 }
                 
-                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()] = playgroundItem.get(index).getStatus();
+                matrix[playgroundItem.get(index).getRowcell()][playgroundItem.get(index).getColumncell()].set(playgroundItem.get(index).getStatus());
             }
         }
 

@@ -32,7 +32,7 @@ public class Playground extends AbstractPlayground {
      * @param rows The number of columns of the playground
      * @param columns The number of rows of the playground
      */
-    public Playground(char[][] matrix) {
+    public Playground(PlaygroundCell[][] matrix) {
         super(matrix);
         this.ships = new LinkedList<Ship>();
         this.status = new Status();
@@ -149,7 +149,7 @@ public class Playground extends AbstractPlayground {
      */
     private void placeShipOnPlayground(Coordinates target, Ship ship, int vertical, int horizontal) {
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
-            set(target, ship.getId());
+            setShip(target, ship.getId());
             target = new Coordinates(target.getRow() + vertical, target.getColumn() + horizontal);
         }
     }

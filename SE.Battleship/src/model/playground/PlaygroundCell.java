@@ -6,8 +6,7 @@ public class PlaygroundCell {
     private char shipId = 0;
     private char element = Constances.MATRIX_INIT;
     
-    public PlaygroundCell(char stat) {
-        element = stat;
+    public PlaygroundCell() {
     }
     
     public char get() {

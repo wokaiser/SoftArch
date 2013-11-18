@@ -1,5 +1,7 @@
 package database;
 
+import interfaces.IGameContent;
+
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,9 +44,9 @@ public class CouchdbDatabase extends AbstractDatabase {
     }
     
     @Override
-    public GameContent load(String name) {
+    public IGameContent load(String name) {
         CouchdbGameContent hContent = db.find(CouchdbGameContent.class, name);
-        GameContent content = map(hContent);
+        IGameContent content = map(hContent);
         if(null == content) {
             status.addError(SAVEGAME_NOT_EXIST);
             return null;
@@ -67,7 +69,7 @@ public class CouchdbDatabase extends AbstractDatabase {
     }
 
     @Override
-    public void save(String name, GameContent content) {
+    public void save(String name, IGameContent content) {
         CouchdbGameContent hContent = map(content);
         if (getAll().contains(name)) {
             status.addError(SAVEGAME_NAME_EXIST);
@@ -84,7 +86,7 @@ public class CouchdbDatabase extends AbstractDatabase {
         }
     }
 
-    private CouchdbGameContent map(GameContent content) {
+    private CouchdbGameContent map(IGameContent content) {
         /* copy content information to Couchdb required format */
         CouchdbGameContent hContent = new CouchdbGameContent();
         hContent.setId(content.getName());
@@ -112,7 +114,7 @@ public class CouchdbDatabase extends AbstractDatabase {
         return hContent;
     }
     
-    private GameContent map(CouchdbGameContent hcontent) {
+    private IGameContent map(CouchdbGameContent hcontent) {
         if (hcontent == null) {
             return null;
         }

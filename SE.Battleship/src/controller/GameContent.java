@@ -3,12 +3,13 @@ package controller;
 import com.google.inject.Inject;
 
 import interfaces.IAi;
+import interfaces.IGameContent;
 import model.general.Status;
 import model.playground.AbstractPlayground;
 import model.playground.Playground;
 import model.playground.PlaygroundCell;
 
-public class GameContent {
+public class GameContent implements IGameContent {
     /* valid player types */
     private static final String WELCOME = "Welcome to Battleships";
     public static final String AI_PLAYER_1_EASY = "Computer 1 Easy";

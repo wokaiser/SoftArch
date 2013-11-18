@@ -2,6 +2,7 @@ package controller;
 
 import model.playground.PlaygroundCell;
 import interfaces.IDatabase;
+import interfaces.IGameContent;
 import interfaces.IGameController;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,7 +11,7 @@ import util.observer.Observable;
 
 public abstract class AbstractGameController extends Observable implements IGameController{
     protected IDatabase database = null;
-    protected GameContent content = null;
+    protected IGameContent content = null;
     
     /**
      * Override the Observable, to notify the Observers and clear the status after that.

@@ -15,5 +15,4 @@ public class DatabaseModule extends AbstractModule {
     protected void configure() {
         bind(IDatabase.class).to(CouchdbDatabase.class).in(Singleton.class);
     }
-
 }

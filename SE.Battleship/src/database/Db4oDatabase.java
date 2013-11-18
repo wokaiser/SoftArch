@@ -1,5 +1,7 @@
 package database;
 
+import interfaces.IGameContent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class Db4oDatabase extends AbstractDatabase {
      * @return a GameContent
      */
     @Override
-    public GameContent load(String name) {
+    public IGameContent load(String name) {
         Query query = database.query();
         query.constrain(GameContent.class);
         query.descend("name").constrain(String.valueOf(name)).equal();
@@ -65,7 +67,7 @@ public class Db4oDatabase extends AbstractDatabase {
      * @return true if save was successful, otherwise false
      */
     @Override
-    public void save(String name, GameContent content) {
+    public void save(String name, IGameContent content) {
         if(isNameAlreadyUsed(name)) {
             status.addError(SAVEGAME_NAME_EXIST);
         } else {
@@ -81,7 +83,7 @@ public class Db4oDatabase extends AbstractDatabase {
      */
     @Override
     public void delete(String name) {
-        GameContent content = load(name);
+        IGameContent content = load(name);
         if (null != content) {
             database.delete(content);
         }

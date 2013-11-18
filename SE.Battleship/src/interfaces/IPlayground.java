@@ -1,8 +1,10 @@
 package interfaces;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import model.general.Status;
 import model.playground.Coordinates;
+import model.playground.PlaygroundCell;
 
 public interface IPlayground {
     /**
@@ -44,7 +46,6 @@ public interface IPlayground {
      * @return The playground as a String
      */
     String ownStringView();
-    
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
@@ -56,7 +57,6 @@ public interface IPlayground {
      * @return The playground as a Json
      */
     JsonNode ownJsonView();
-    
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
@@ -68,11 +68,16 @@ public interface IPlayground {
      * return The playground
      */
     char[][] ownMatrixView();
-    
     /**
      * Get the playground from the view of an enemy, without any visible ships.
      * Ships which has been hit are visible.
      * return The playground
      */
     char[][] enemyMatrixView();
+    /**
+     * Get the own playground in the cell format
+     * Ships are visible
+     * return The playground
+     */
+    PlaygroundCell[][] ownView();
 }

@@ -3,15 +3,14 @@ package interfaces;
 import java.util.List;
 
 import model.general.Status;
-import controller.GameContent;
 
 public interface IDatabase {
     /**
      * Loads the GameContent with the given name
      * @param name The name of the GameContent to be loaded
-     * @return The desired GameContent
+     * @return The desired IGameContent
      */
-    GameContent load(String name);
+    IGameContent load(String name);
     
     /**
      * Gets all names of the stored GameContents
@@ -25,7 +24,7 @@ public interface IDatabase {
      * @param content The GameGontent to be stored
      * @return True if saving was successfull
      */
-    void save(String name, GameContent content);
+    void save(String name, IGameContent content);
     
     /**
      * Deletes the GameContent with the given name

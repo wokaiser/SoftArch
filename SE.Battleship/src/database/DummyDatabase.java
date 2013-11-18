@@ -1,10 +1,10 @@
 package database;
 
 
+import interfaces.IGameContent;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import controller.GameContent;
 
 public class DummyDatabase extends AbstractDatabase {
 
@@ -14,7 +14,7 @@ public class DummyDatabase extends AbstractDatabase {
      * @return null
      */
     @Override
-    public GameContent load(String name) {       
+    public IGameContent load(String name) {       
         status.addText("Dummy database load was called.");
         return null;
     }
@@ -34,7 +34,7 @@ public class DummyDatabase extends AbstractDatabase {
      * @param GameContent to save
      */
     @Override
-    public void save(String name, GameContent content) {
+    public void save(String name, IGameContent content) {
         status.addText("Dummy database save was called.");
     }
 

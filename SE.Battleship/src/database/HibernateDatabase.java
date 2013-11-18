@@ -1,5 +1,7 @@
 package database;
 
+import interfaces.IGameContent;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,14 +23,14 @@ import database.hibernate.HibernateUtil;
 public class HibernateDatabase extends AbstractDatabase {
 
     @Override
-    public GameContent load(String name) {
+    public IGameContent load(String name) {
          Session session = HibernateUtil.getInstance().getCurrentSession();
 
         @SuppressWarnings("unchecked")
         List<HibernateGameContent> gameContent = session.createCriteria(HibernateGameContent.class).list();
         for (int index = 0; index < gameContent.size(); index++) {
             if (0 == name.compareTo(gameContent.get(index).getId())) {
-                GameContent content = loadGame(gameContent.get(index));
+                IGameContent content = loadGame(gameContent.get(index));
                 status.addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
                 return content;
             }
@@ -101,7 +103,7 @@ public class HibernateDatabase extends AbstractDatabase {
     }
 
     @Override
-    public void save(String name, GameContent content) {
+    public void save(String name, IGameContent content) {
         Transaction tx = null;
         Session session = null;
         
@@ -158,7 +160,7 @@ public class HibernateDatabase extends AbstractDatabase {
         }
     }
     
-    private HibernateGameContent map(GameContent content) {
+    private HibernateGameContent map(IGameContent content) {
         /* copy content information to Hibernate required format */
         HibernateGameContent hContent = new HibernateGameContent();
         hContent.setId(content.getName());

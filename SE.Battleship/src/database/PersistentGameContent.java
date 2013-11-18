@@ -1,31 +1,52 @@
-package database.couchdb;
+package database;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.ektorp.support.CouchDbDocument;
 import org.ektorp.support.TypeDiscriminator;
-import java.util.List;
 
-public class CouchdbGameContent extends CouchDbDocument {
-    
-    private static final long serialVersionUID = 5513586160711602429L;
-
+/* hibernate Annotation */
+@Entity
+@Table(name = "gameContent")
+public class PersistentGameContent extends CouchDbDocument implements Serializable {
     /**
      * @TypeDiscriminator is used to mark properties that makes this class's
      *                    documents unique in the database.
      */
+    /* couchdb annotation */
     @TypeDiscriminator
+    private static final long serialVersionUID = -1748058246038695189L;
+ 
+    /* hibernate annotation */
+    @Id
+    @Column(name = "id")
     private String gameContentId;
 
-    private List<CouchdbPlaygroundItem> playground1;
-    private List<CouchdbPlaygroundItem> playground2;
+    /* hibernate annotation */
+    @OneToMany(mappedBy = "gameContent")
+    @Column(name = "playground1")
+    private List<PersistentPlaygroundItem> playground1;
+    /* hibernate annotation */
+    @OneToMany(mappedBy = "gameContent")
+    @Column(name = "playground2")
+    private List<PersistentPlaygroundItem> playground2;
     private int rows;
     private int columns;
     private int gameType;
     private String player1;
     private String player2;
 
-    public CouchdbGameContent() {
+    public PersistentGameContent() {
+        
     }
-
+    
     public String getId() {
         return gameContentId;
     }
@@ -34,19 +55,19 @@ public class CouchdbGameContent extends CouchDbDocument {
         this.gameContentId = id;
     }
 
-    public List<CouchdbPlaygroundItem> getPlayground1() {
+    public List<PersistentPlaygroundItem> getPlayground1() {
         return playground1;
     }
 
-    public void setPlayground1(List<CouchdbPlaygroundItem> playground1) {
+    public void setPlayground1(List<PersistentPlaygroundItem> playground1) {
         this.playground1 = playground1;
     }
 
-    public void setPlayground2(List<CouchdbPlaygroundItem> playground2) {
+    public void setPlayground2(List<PersistentPlaygroundItem> playground2) {
         this.playground2 = playground2;    
     }
 
-    public List<CouchdbPlaygroundItem> getPlayground2() {
+    public List<PersistentPlaygroundItem> getPlayground2() {
         return playground2;
     }
 

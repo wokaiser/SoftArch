@@ -1,9 +1,12 @@
 package database;
 
 import interfaces.IGameContent;
+import interfaces.IPlaygroundCell;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.playground.PlaygroundCell;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
@@ -96,5 +99,17 @@ public class Db4oDatabase extends AbstractDatabase {
     private boolean isNameAlreadyUsed(String name) {
         List<String> names = getAll();        
         return names.contains(name);
+    }
+
+    @Override
+    IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
+        /* db4o does not need any data mapping, so this method can be empty */
+        return new PlaygroundCell[0][0];
+    }
+
+    @Override
+    IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
+        /* db4o does not need any data mapping, so this method can be empty */
+        return new PlaygroundCell[0][0];
     }
 }

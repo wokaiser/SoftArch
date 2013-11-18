@@ -1,5 +1,6 @@
 package model.playground;
 
+import interfaces.ICoordinates;
 import interfaces.IPlayground;
 import interfaces.IPlaygroundCell;
 
@@ -95,7 +96,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * @param The coordinates from which to get the element
      * @return The element on the specified position
      */
-    protected char get(Coordinates coords) {
+    protected char get(ICoordinates coords) {
         checkCoordinates(coords);
         return this.matrix[coords.getRow()][coords.getColumn()].get();
     }
@@ -105,7 +106,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * @param The coordinates at which to set the element
      * @param The element to set.
      */
-    protected void set(Coordinates coords, char element) {
+    protected void set(ICoordinates coords, char element) {
         checkCoordinates(coords);
         this.matrix[coords.getRow()][coords.getColumn()].set(element);
     }
@@ -115,7 +116,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * @param The coordinates at which to set the element
      * @param The ship id to set.
      */
-    protected void setShip(Coordinates coords, char id) {
+    protected void setShip(ICoordinates coords, char id) {
         checkCoordinates(coords);
         this.matrix[coords.getRow()][coords.getColumn()].setShipId(id);
     }
@@ -125,7 +126,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * @param The coordinates from which to get the ship
      * @return The ship on the specified position
      */
-    protected char getShip(Coordinates coords) {
+    protected char getShip(ICoordinates coords) {
         checkCoordinates(coords);
         return this.matrix[coords.getRow()][coords.getColumn()].getShipId();
     }
@@ -152,7 +153,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * @param column The column to check
      * @return true if the coordinates are in range and false if not
      */
-    protected boolean checkCoordinates(Coordinates target) {
+    protected boolean checkCoordinates(ICoordinates target) {
         if (target.getRow() >= this.rows || target.getRow() < 0) {
             return false;
         }

@@ -1,5 +1,6 @@
 package model.playground;
 
+import interfaces.ICoordinates;
 import interfaces.IPlaygroundCell;
 
 import java.util.LinkedList;
@@ -57,8 +58,8 @@ public class Playground extends AbstractPlayground {
      * @return true if the ship could be placed.
      * @return false if the ship could not be placed.
      */
-    private boolean placeShip(Coordinates target, Ship ship, int vertical, int horizontal) {
-        Coordinates coords = target;
+    private boolean placeShip(ICoordinates target, Ship ship, int vertical, int horizontal) {
+        ICoordinates coords = target;
         
         //loop until the ship is complete placed
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
@@ -88,7 +89,7 @@ public class Playground extends AbstractPlayground {
      * @param target The Coordinates which where to shoot.
      * @return status of shot
      */
-    public int shoot(Coordinates target) {
+    public int shoot(ICoordinates target) {
         return (Constances.MATRIX_INIT != this.get(target)) ? validShot(target) : invalidShot(target);
     }
    
@@ -97,7 +98,7 @@ public class Playground extends AbstractPlayground {
      * @param target The Coordinates which where to shoot.
      * @return the status of the ship which was hit
      */
-    private int validShot(Coordinates target) {
+    private int validShot(ICoordinates target) {
         char shipId = get(target);
         set(target, Constances.MATRIX_HIT);
         return updateShipsAfterHit(shipId);  
@@ -108,7 +109,7 @@ public class Playground extends AbstractPlayground {
      * @param target The Coordinates which where to shoot.
      * @return the status of an invalid shot
      */
-    private int invalidShot(Coordinates target) {
+    private int invalidShot(ICoordinates target) {
         status.addText("No ship was hit.");    
         set(target, Constances.MATRIX_MISS);
         return Constances.SHOOT_MISS;
@@ -120,7 +121,7 @@ public class Playground extends AbstractPlayground {
      * @return true if there was already shot to the Coordinates
      * @return false if there was not shot to the Coordinates
      */
-    public boolean alreadyShot(Coordinates target) {
+    public boolean alreadyShot(ICoordinates target) {
         return Constances.MATRIX_HIT == get(target) || Constances.MATRIX_MISS == get(target);
     }
     
@@ -141,7 +142,7 @@ public class Playground extends AbstractPlayground {
      * @param ship The ship which to place
      * @param direction The direction into which to place the ship
      */
-    private void placeShipOnPlayground(Coordinates target, Ship ship, int vertical, int horizontal) {
+    private void placeShipOnPlayground(ICoordinates target, Ship ship, int vertical, int horizontal) {
         Coordinates coords = new Coordinates(target);
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
             setShip(coords, ship.getId());
@@ -217,7 +218,7 @@ public class Playground extends AbstractPlayground {
      * @param column The column coordinate
      * @return The number of near ships (0 if no ship is near)
      */
-    private int checkForNearShips(Coordinates target) {
+    private int checkForNearShips(ICoordinates target) {
         int[] checkRows = {0, 1, -1, 0, 0, 1, 1, -1, -1};
         int[] checkColumns = {0, 0, 0, -1, 1, -1, 1, 1, -1};
         int nearShipsCount = 0;
@@ -232,7 +233,7 @@ public class Playground extends AbstractPlayground {
         this.ships = createShips();
         for (int row = 0; row < getRows(); row++) {
             for (int column = 0; column < getColumns(); column++){
-                Coordinates coord = new Coordinates(row, column);
+                ICoordinates coord = new Coordinates(row, column);
                 if (Constances.MATRIX_HIT == get(coord)) {
                     updateShipsAfterHit(getShip(coord));
                 }

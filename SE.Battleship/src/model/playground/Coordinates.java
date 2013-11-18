@@ -1,10 +1,12 @@
 package model.playground;
 
+import interfaces.ICoordinates;
+
 /** 
  * The Class Coordinates save the coordinates of a element of a playground.
  * @author Dennis Parlak
  */
-public class Coordinates {
+public class Coordinates implements ICoordinates {
     private final int row;
     private final int column;
 
@@ -23,7 +25,7 @@ public class Coordinates {
      * @param row of the coordinates
      * @param column of the coordinates
      */
-    public Coordinates(Coordinates coords) {
+    public Coordinates(ICoordinates coords) {
         this.row = coords.getRow();
         this.column = coords.getColumn();
     }  
@@ -87,7 +89,7 @@ public class Coordinates {
      * @return -1 if this.row or this.column is smaller than the row or column of the other coordinates object
      * @return 1 if column and row of this is bigger.
      */
-    public int compareTo (Coordinates coords) {
+    public int compareTo (ICoordinates coords) {
         if (equals(coords)) {
             return 0;
         }

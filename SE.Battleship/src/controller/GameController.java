@@ -1,5 +1,6 @@
 package controller;
 
+import interfaces.ICoordinates;
 import interfaces.IDatabase;
 
 import com.google.inject.Guice;
@@ -8,7 +9,6 @@ import com.google.inject.Injector;
 
 import model.general.Constances;
 import model.general.Status;
-import model.playground.Coordinates;
 import modules.AiModule;
 
 /** 
@@ -81,9 +81,9 @@ public class GameController extends LoadableGameController {
      * from the result of the shot. 
      * @return The result of the shot (see Playground class)
      */
-    public int shoot(String player, Coordinates t) {
+    public int shoot(String player, ICoordinates t) {
         int shootStatus = Constances.SHOOT_INVALID;
-        Coordinates target = (content.aiIsActive()) ? content.getActiveAI().getCoordinates() : t;
+        ICoordinates target = (content.aiIsActive()) ? content.getActiveAI().getCoordinates() : t;
         
         if (!playerCanShoot(player)) {
             notifyObservers();

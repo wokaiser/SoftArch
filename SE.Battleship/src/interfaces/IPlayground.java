@@ -3,7 +3,6 @@ package interfaces;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import model.general.Status;
-import model.playground.Coordinates;
 
 public interface IPlayground {
     /**
@@ -22,7 +21,7 @@ public interface IPlayground {
      * @return true if there was already shot to the Coordinates
      * @return false if there was not shot to the Coordinates
      */
-    boolean alreadyShot(Coordinates target);
+    boolean alreadyShot(ICoordinates target);
     /**
      * Return the number of ships which still exist.
      * @return number of ships
@@ -33,7 +32,7 @@ public interface IPlayground {
      * @param target The Coordinates which where to shoot.
      * @return status of shot
      */
-    int shoot(Coordinates target);
+    int shoot(ICoordinates target);
     /**
      * Return the status object, which log information about the program flow after
      * calling e.g. shoot(..)  method.

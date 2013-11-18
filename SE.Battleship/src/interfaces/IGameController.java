@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import model.general.Status;
-import model.playground.Coordinates;
 
 public interface IGameController {
     /**
@@ -36,7 +35,7 @@ public interface IGameController {
      * from the result of the shot. 
      * @return The result of the shot (see Playground class)
      */
-    int shoot(String player, Coordinates t);
+    int shoot(String player, ICoordinates t);
     /**
      * Saves the actual game
      * @param The name of the savegame

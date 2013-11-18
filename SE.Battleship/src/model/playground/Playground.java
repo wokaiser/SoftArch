@@ -140,9 +140,10 @@ public class Playground extends AbstractPlayground {
      * @param direction The direction into which to place the ship
      */
     private void placeShipOnPlayground(Coordinates target, Ship ship, int vertical, int horizontal) {
+        Coordinates coords = new Coordinates(target);
         for (int shipSize = ship.getLength(); shipSize > 0; shipSize--) {
-            setShip(target, ship.getId());
-            target = new Coordinates(target.getRow() + vertical, target.getColumn() + horizontal);
+            setShip(coords, ship.getId());
+            coords = new Coordinates(coords.getRow() + vertical, coords.getColumn() + horizontal);
         }
     }
     

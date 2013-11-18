@@ -8,8 +8,6 @@ import java.util.List;
 import model.playground.Coordinates;
 
 public abstract class AiBase implements IAi {
-    protected int rows;
-    protected int columns;
     private List<Coordinates> range;
     
     /**
@@ -18,8 +16,6 @@ public abstract class AiBase implements IAi {
      * @param the number of columns
      */
     protected void baseInitialize(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
         this.range = new LinkedList<Coordinates>();
         
         for (int r = 0; r < rows; r++) {

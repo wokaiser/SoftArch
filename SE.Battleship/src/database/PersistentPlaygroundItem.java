@@ -59,57 +59,51 @@ public class PersistentPlaygroundItem extends CouchDbDocument implements Seriali
         this.status = status;
         this.shipId = shipId;
     }
-    
+    /* empty constructor is required for hibernate and couchdb internally. */
     public PersistentPlaygroundItem() {
         
     }
-    
     public PersistentGameContent getGameContent() {
         return gameContent;
     }
-
     public void setGameContent(PersistentGameContent gameContent) {
         this.gameContent = gameContent;
     }
-    
     public int getRowcell() {
         return rowcell;
     }
-
     public void setRowcell(int rowcell) {
         this.rowcell = rowcell;
     }
-
     public int getColumncell() {
         return columncell;
     }
-
     public void setColumncell(int columncell) {
         this.columncell = columncell;
     }
-    
     public char getStatus() {
         return status;
     }
-
     public void setStatus(char status) {
         this.status = status;
     }
-    
     public int getPlayground() {
         return playground;
     }
-
     public void setPlayground(int playground) {
         this.playground = playground;
     }
-
     public String getCouchdbId() {
         return couchdbId;
     }
-
     public void setCouchdbId(String id) {
         this.couchdbId = id;
+    }
+    public int getHibernateId() {
+        return hibernateId;
+    }
+    public void setHibernateId(int id) {
+        hibernateId = id;
     }
     public char getShipId() {
         return shipId;

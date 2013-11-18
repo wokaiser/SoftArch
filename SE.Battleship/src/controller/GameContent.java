@@ -6,7 +6,7 @@ import interfaces.IAi;
 import interfaces.IGameContent;
 import interfaces.IPlaygroundCell;
 import interfaces.IStatus;
-import model.general.Status;
+import util.Status;
 import model.playground.AbstractPlayground;
 import model.playground.Playground;
 

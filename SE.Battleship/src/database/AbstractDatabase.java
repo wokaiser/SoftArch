@@ -1,6 +1,6 @@
 package database;
 
-import model.general.Status;
+import util.Status;
 import interfaces.IDatabase;
 
 public abstract class AbstractDatabase implements IDatabase {

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.general.Constances;
-import model.general.Status;
+import util.Status;
 
 /** 
  * The Playground class provide all operation which are necessary to interact with

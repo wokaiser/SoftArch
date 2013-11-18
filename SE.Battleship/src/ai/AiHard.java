@@ -1,4 +1,4 @@
-package util.other;
+package ai;
 
 import model.general.Constances;
 import model.playground.Coordinates;

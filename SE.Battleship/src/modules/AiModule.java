@@ -1,6 +1,6 @@
 package modules;
 
-import util.other.*;
+import ai.*;
 import interfaces.IAi;
 
 import com.google.inject.AbstractModule;

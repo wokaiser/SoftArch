@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.other.AiHard;
+import ai.AiHard;
 import model.general.Constances;
 import model.playground.Coordinates;
 import static org.junit.Assert.*;

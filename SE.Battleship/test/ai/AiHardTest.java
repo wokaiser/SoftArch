@@ -1,3 +1,4 @@
+package ai;
 
 import interfaces.IAi;
 import interfaces.ICoordinates;

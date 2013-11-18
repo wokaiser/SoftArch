@@ -4,10 +4,10 @@ import com.google.inject.Inject;
 
 import interfaces.IAi;
 import interfaces.IGameContent;
+import interfaces.IPlaygroundCell;
 import model.general.Status;
 import model.playground.AbstractPlayground;
 import model.playground.Playground;
-import model.playground.PlaygroundCell;
 
 public class GameContent implements IGameContent {
     /* valid player types */
@@ -89,7 +89,7 @@ public class GameContent implements IGameContent {
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    public void initContent(int rows, int columns, String player1, String player2, int gameType, PlaygroundCell[][] playground1Input, PlaygroundCell[][] playground2Input) {
+    public void initContent(int rows, int columns, String player1, String player2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input) {
         status = new Status();
         this.playground1 = new Playground(AbstractPlayground.copyPlayground(playground1Input));
         this.playground2 = new Playground(AbstractPlayground.copyPlayground(playground2Input));

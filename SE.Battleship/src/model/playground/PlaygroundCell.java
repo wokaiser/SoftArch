@@ -1,17 +1,14 @@
 package model.playground;
 
+import interfaces.IPlaygroundCell;
 import model.general.Constances;
 
-public class PlaygroundCell {
+public class PlaygroundCell implements IPlaygroundCell {
     private char shipId = 0;
     private char element = Constances.MATRIX_INIT;
     
     public PlaygroundCell() {
-
-    }
-    
-    public PlaygroundCell(char stat) {
-        element = stat;
+        
     }
     
     public PlaygroundCell(char stat, char id) {

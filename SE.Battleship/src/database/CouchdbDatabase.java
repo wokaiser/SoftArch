@@ -1,6 +1,7 @@
 package database;
 
 import interfaces.IGameContent;
+import interfaces.IPlaygroundCell;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -100,8 +101,8 @@ public class CouchdbDatabase extends AbstractDatabase {
         List<CouchdbPlaygroundItem> playground1 = new LinkedList<CouchdbPlaygroundItem>();
         List<CouchdbPlaygroundItem> playground2 = new LinkedList<CouchdbPlaygroundItem>();
         
-        PlaygroundCell[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
-        PlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
+        IPlaygroundCell[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
+        IPlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
         for (int row = 0; row < content.getRows(); row++) {
             for (int column = 0; column < content.getColumns(); column++){
                 playground1.add(new CouchdbPlaygroundItem(1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId()));
@@ -118,8 +119,8 @@ public class CouchdbDatabase extends AbstractDatabase {
         if (hcontent == null) {
             return null;
         }
-        PlaygroundCell[][] matrixPlayground1 = loadPlayground(hcontent.getPlayground1(), hcontent.getRows(), hcontent.getColumns());
-        PlaygroundCell[][] matrixPlayground2 = loadPlayground(hcontent.getPlayground2(), hcontent.getRows(), hcontent.getColumns());
+        IPlaygroundCell[][] matrixPlayground1 = loadPlayground(hcontent.getPlayground1(), hcontent.getRows(), hcontent.getColumns());
+        IPlaygroundCell[][] matrixPlayground2 = loadPlayground(hcontent.getPlayground2(), hcontent.getRows(), hcontent.getColumns());
         Injector inject = Guice.createInjector(new AiModule().setSettings(hcontent.getPlayer1()), new AiModule().setSettings(hcontent.getPlayer2()));
         GameContent content = inject.getInstance(GameContent.class);
         content.initContent(hcontent.getRows(), hcontent.getColumns(), hcontent.getPlayer1(), hcontent.getPlayer2(), hcontent.getGameType(), matrixPlayground1, matrixPlayground2);
@@ -127,8 +128,8 @@ public class CouchdbDatabase extends AbstractDatabase {
         return content;
     }
 
-    private PlaygroundCell[][] loadPlayground(List<CouchdbPlaygroundItem> playground, int rows, int columns) {
-        PlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
+    private IPlaygroundCell[][] loadPlayground(List<CouchdbPlaygroundItem> playground, int rows, int columns) {
+        IPlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
 
         for (int index = 0; index < playground.size(); index++) {
             matrix[playground.get(index).getRowcell()][playground.get(index).getColumncell()] = new PlaygroundCell(playground.get(index).getStatus(), playground.get(index).getShipId());

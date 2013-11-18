@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import model.general.Status;
 import model.playground.Coordinates;
-import model.playground.PlaygroundCell;
 
 public interface IPlayground {
     /**
@@ -79,5 +78,5 @@ public interface IPlayground {
      * Ships are visible
      * return The playground
      */
-    PlaygroundCell[][] ownView();
+    IPlaygroundCell[][] ownView();
 }

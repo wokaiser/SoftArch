@@ -1,6 +1,7 @@
 package model.playground;
 
 import interfaces.IPlayground;
+import interfaces.IPlaygroundCell;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -15,12 +16,12 @@ public abstract class AbstractPlayground implements IPlayground {
     
     private int rows;
     private int columns;
-    private PlaygroundCell[][] matrix;
+    private IPlaygroundCell[][] matrix;
     
-    public static final PlaygroundCell[][] copyPlayground(PlaygroundCell[][] matrixInput) {
+    public static final IPlaygroundCell[][] copyPlayground(IPlaygroundCell[][] matrixInput) {
         int rows = matrixInput.length;
         int columns = matrixInput[0].length;
-        PlaygroundCell[][] matrix = new PlaygroundCell[rows][columns];
+        IPlaygroundCell[][] matrix = new PlaygroundCell[rows][columns];
         
         for (int r = 0; r < matrixInput.length; r++) {
             if (columns != matrixInput[r].length) {
@@ -46,7 +47,7 @@ public abstract class AbstractPlayground implements IPlayground {
     /**
      * Creates a Playground with an given matrix.
      */
-    public AbstractPlayground(PlaygroundCell[][] matrixInput) {
+    public AbstractPlayground(IPlaygroundCell[][] matrixInput) {
         if (matrixInput == null) {
             throw new IllegalArgumentException("Null matrix for playground");
         }
@@ -216,7 +217,7 @@ public abstract class AbstractPlayground implements IPlayground {
      * Get the playground with all ships visible on it.
      * @return The playground
      */
-    public PlaygroundCell[][] ownView() {        
+    public IPlaygroundCell[][] ownView() {        
         return matrix;
     }
 }

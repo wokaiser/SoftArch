@@ -1,7 +1,6 @@
 package interfaces;
 
 import model.general.Status;
-import model.playground.PlaygroundCell;
 
 public interface IGameContent {
     /**
@@ -23,7 +22,7 @@ public interface IGameContent {
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    void initContent(int rows, int columns, String player1, String player2, int gameType, PlaygroundCell[][] playground1Input, PlaygroundCell[][] playground2Input);
+    void initContent(int rows, int columns, String player1, String player2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input);
     /**
      * Set the flag, to indicate that the game started
      */

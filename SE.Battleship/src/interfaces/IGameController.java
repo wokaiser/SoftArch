@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import model.general.Status;
 import model.playground.Coordinates;
-import model.playground.PlaygroundCell;
 
 public interface IGameController {
     /**
@@ -121,7 +120,7 @@ public interface IGameController {
      * Get the playground of the active player (With all placed ships visible).
      * @return 
      */
-    PlaygroundCell[][] getOwnPlayground(String activePlayer);
+    IPlaygroundCell[][] getOwnPlayground(String activePlayer);
     /**
      * Check if a player switched after a shot
      * @return true if player switched, false if not

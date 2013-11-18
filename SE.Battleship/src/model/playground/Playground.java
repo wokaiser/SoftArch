@@ -1,5 +1,7 @@
 package model.playground;
 
+import interfaces.IPlaygroundCell;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class Playground extends AbstractPlayground {
      * @param rows The number of columns of the playground
      * @param columns The number of rows of the playground
      */
-    public Playground(PlaygroundCell[][] matrix) {
+    public Playground(IPlaygroundCell[][] matrix) {
         super(matrix);
         this.ships = new LinkedList<Ship>();
         this.status = new Status();

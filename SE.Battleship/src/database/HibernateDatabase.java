@@ -1,6 +1,7 @@
 package database;
 
 import interfaces.IGameContent;
+import interfaces.IPlaygroundCell;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,12 +41,12 @@ public class HibernateDatabase extends AbstractDatabase {
     }
     
     private GameContent loadGame(HibernateGameContent savedGame) {
-        PlaygroundCell[][] matrixPlayground1 = loadPlayground(1, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());        
+        IPlaygroundCell[][] matrixPlayground1 = loadPlayground(1, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());        
         if (null == matrixPlayground1) {
             return null;
         }
         
-        PlaygroundCell[][] matrixPlayground2 = loadPlayground(2, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());
+        IPlaygroundCell[][] matrixPlayground2 = loadPlayground(2, savedGame.getRows(), savedGame.getColumns(), savedGame.getId());
         if (null == matrixPlayground2) {
             return null;
         }
@@ -58,10 +59,10 @@ public class HibernateDatabase extends AbstractDatabase {
         return content;
     }
     
-    private PlaygroundCell[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
+    private IPlaygroundCell[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
         Session session = HibernateUtil.getInstance().getCurrentSession();
 
-        PlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
+        IPlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
         
         @SuppressWarnings("unchecked")
         List<HibernatePlaygroundItem> playgroundItem = session.createCriteria(HibernatePlaygroundItem.class).list();
@@ -174,8 +175,8 @@ public class HibernateDatabase extends AbstractDatabase {
         List<HibernatePlaygroundItem> playground1 = new LinkedList<HibernatePlaygroundItem>();
         List<HibernatePlaygroundItem> playground2 = new LinkedList<HibernatePlaygroundItem>();
         
-        PlaygroundCell[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
-        PlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
+        IPlaygroundCell[][] playground1Raw = content.getOwnPlayground(content.getPlayer1()).ownView();
+        IPlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
         for (int row = 0; row < content.getRows(); row++) {
             for (int column = 0; column < content.getColumns(); column++){
                 playground1.add(new HibernatePlaygroundItem(hContent, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId()));

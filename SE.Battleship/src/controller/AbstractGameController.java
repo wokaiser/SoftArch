@@ -1,9 +1,9 @@
 package controller;
 
-import model.playground.PlaygroundCell;
 import interfaces.IDatabase;
 import interfaces.IGameContent;
 import interfaces.IGameController;
+import interfaces.IPlaygroundCell;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -96,7 +96,7 @@ public abstract class AbstractGameController extends Observable implements IGame
      * Get the playground of the active player (With all placed ships visible).
      * @return 
      */
-    public PlaygroundCell[][] getOwnPlayground(String activePlayer) {
+    public IPlaygroundCell[][] getOwnPlayground(String activePlayer) {
         return content.getOwnPlayground(activePlayer).ownView();
     }
     /**

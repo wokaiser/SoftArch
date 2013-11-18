@@ -1,9 +1,16 @@
 package controller;
 
+import interfaces.IDatabase;
+
 import java.util.List;
 
 public abstract class LoadableGameController extends AbstractGameController {
-    protected boolean loadedGame = false;
+    private IDatabase database = null;
+    private boolean loadedGame = false;
+    
+    public LoadableGameController(IDatabase db) {
+        database = db;
+    }
     
     /**
      * Saves the actual game

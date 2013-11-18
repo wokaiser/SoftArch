@@ -41,16 +41,7 @@ public class PersistentPlaygroundItem extends CouchDbDocument implements Seriali
     @JoinColumn(name = "gameContentid")
     private PersistentGameContent gameContent;
     
-    /* couchdb constructor */
-    public PersistentPlaygroundItem(int playground, int rowcell, int columncell, char status, char shipId) {
-        this.playground = playground;
-        this.rowcell = rowcell;
-        this.columncell = columncell;
-        this.status = status;
-        this.shipId = shipId;
-    }
-    
-    /* hibernate constructor */
+    /* hibernate/couchdb constructor */
     public PersistentPlaygroundItem(PersistentGameContent gameContent, int playground, int rowcell, int columncell, char status, char shipId) {
         this.gameContent = gameContent;
         this.playground = playground;
@@ -63,51 +54,67 @@ public class PersistentPlaygroundItem extends CouchDbDocument implements Seriali
     public PersistentPlaygroundItem() {
         
     }
+    
     public PersistentGameContent getGameContent() {
         return gameContent;
     }
+    
     public void setGameContent(PersistentGameContent gameContent) {
         this.gameContent = gameContent;
     }
+    
     public int getRowcell() {
         return rowcell;
     }
+    
     public void setRowcell(int rowcell) {
         this.rowcell = rowcell;
     }
+    
     public int getColumncell() {
         return columncell;
     }
+    
     public void setColumncell(int columncell) {
         this.columncell = columncell;
     }
+    
     public char getStatus() {
         return status;
     }
+    
     public void setStatus(char status) {
         this.status = status;
     }
+    
     public int getPlayground() {
         return playground;
     }
+    
     public void setPlayground(int playground) {
         this.playground = playground;
     }
+    
     public String getCouchdbId() {
         return couchdbId;
     }
+    
     public void setCouchdbId(String id) {
         this.couchdbId = id;
     }
+    
     public int getHibernateId() {
         return hibernateId;
     }
+    
     public void setHibernateId(int id) {
         hibernateId = id;
     }
+    
     public char getShipId() {
         return shipId;
     }
+    
     public void setShipId(char shipId) {
         this.shipId = shipId;
     }    

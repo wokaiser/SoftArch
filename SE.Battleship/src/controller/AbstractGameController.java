@@ -1,6 +1,5 @@
 package controller;
 
-import interfaces.IDatabase;
 import interfaces.IGameContent;
 import interfaces.IGameController;
 import interfaces.IPlaygroundCell;
@@ -10,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import util.observer.Observable;
 
 public abstract class AbstractGameController extends Observable implements IGameController{
-    protected IDatabase database = null;
     protected IGameContent content = null;
     
     /**

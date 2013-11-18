@@ -22,7 +22,7 @@ public class GameController extends LoadableGameController {
      */
     @Inject
     public GameController(IDatabase db) {
-        database = db;
+        super(db);
     }    
     /**
      * Create a new controller with a whole new playground which have new random placed ships on it.

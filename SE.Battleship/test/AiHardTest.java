@@ -1,5 +1,6 @@
 
 import interfaces.IAi;
+import interfaces.ICoordinates;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import util.other.AiHard;
 import model.general.Constances;
 import model.playground.Coordinates;
-import model.playground.Ship;
 import static org.junit.Assert.*;
 
 public class AiHardTest {
@@ -31,8 +31,8 @@ public class AiHardTest {
 
 	@Test
 	public void testShoot() throws Exception {
-	    Coordinates next;
-	    Coordinates coord = ai.getCoordinates();
+	    ICoordinates next;
+	    ICoordinates coord = ai.getCoordinates();
 	    ai.shotResult(Constances.SHOOT_HIT);
 	    Coordinates expected1 = new Coordinates(coord.getRow(), coord.getColumn() - 1);
 	    Coordinates expected2 = new Coordinates(coord.getRow() - 1, coord.getColumn());

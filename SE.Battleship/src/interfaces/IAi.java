@@ -1,7 +1,5 @@
 package interfaces;
 
-import model.playground.Coordinates;
-
 public interface IAi {
     /**
      * Sets the range of the field which the AI needs to know
@@ -13,7 +11,7 @@ public interface IAi {
      * The AI Shoots
      * @return Coordinates to which the AI shoots
      */
-    Coordinates getCoordinates();
+    ICoordinates getCoordinates();
     /**
      * Call after a shot this method to tell the AI how the shot was (hit, miss, etc,..)
      * @param The status of the shot

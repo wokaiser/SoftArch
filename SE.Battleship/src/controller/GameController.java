@@ -2,13 +2,13 @@ package controller;
 
 import interfaces.ICoordinates;
 import interfaces.IDatabase;
+import interfaces.IStatus;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import model.general.Constances;
-import model.general.Status;
 import modules.AiModule;
 
 /** 
@@ -72,7 +72,7 @@ public class GameController extends LoadableGameController {
      * call like shoot(..)
      * @return status A status object with logged information.
      */
-    public Status getStatus() {
+    public IStatus getStatus() {
         return content.getStatus();
     }    
     /**

@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import interfaces.IAi;
 import interfaces.IGameContent;
 import interfaces.IPlaygroundCell;
+import interfaces.IStatus;
 import model.general.Status;
 import model.playground.AbstractPlayground;
 import model.playground.Playground;
@@ -36,7 +37,7 @@ public class GameContent implements IGameContent {
     private IAi activeAI;
     private String activePlayer;
     /* the status object log information about important method calls like shoot(..) */
-    private Status status;
+    private IStatus status;
     private boolean switchedPlayer;
     private int gameType;
     private boolean gameStarted;
@@ -214,7 +215,7 @@ public class GameContent implements IGameContent {
     /**
      * Gets the status
      */
-    public Status getStatus() {
+    public IStatus getStatus() {
         return status;
     }
     /**

@@ -1,7 +1,5 @@
 package interfaces;
 
-import model.general.Status;
-
 public interface IGameContent {
     /**
      * Initialises the content
@@ -76,7 +74,7 @@ public interface IGameContent {
     /**
      * Gets the status
      */
-    Status getStatus();
+    IStatus getStatus();
     /**
      * Gets the switched player
      */

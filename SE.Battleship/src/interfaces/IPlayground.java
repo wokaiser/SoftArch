@@ -2,8 +2,6 @@ package interfaces;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import model.general.Status;
-
 public interface IPlayground {
     /**
      * Get number of rows of the playground
@@ -38,7 +36,7 @@ public interface IPlayground {
      * calling e.g. shoot(..)  method.
      * @return status The Status object.
      */
-    Status getStatus();
+    IStatus getStatus();
     /**
      * Get the playground with all ships visible on it.
      * @return The playground as a String

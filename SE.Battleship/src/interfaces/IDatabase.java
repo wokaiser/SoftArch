@@ -2,8 +2,6 @@ package interfaces;
 
 import java.util.List;
 
-import model.general.Status;
-
 public interface IDatabase {
     /**
      * Loads the GameContent with the given name
@@ -36,5 +34,5 @@ public interface IDatabase {
      * Get the status object, which will be used for information/error logging
      * @return The status object
      */
-    Status getStatus();
+    IStatus getStatus();
 }

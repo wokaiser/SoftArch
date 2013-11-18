@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import model.general.Status;
-
 public interface IGameController {
     /**
      * Sets the range of the field which the AI needs to know
@@ -28,7 +26,7 @@ public interface IGameController {
      * call like shoot(..)
      * @return status A status object with logged information.
      */
-    Status getStatus();
+    IStatus getStatus();
     /**
      * Actual player shoots to a target. After the shot, the player switch if the player
      * have not hit a target. The observers will be notified after the shot, independent

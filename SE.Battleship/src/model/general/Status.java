@@ -1,10 +1,12 @@
 package model.general;
 
+import interfaces.IStatus;
+
 /** 
  * The Status class can be used to log information about the program flow.
  * @author Dennis Parlak
  */
-public class Status {
+public class Status implements IStatus{
     private String text;
     private String error;
     private int textCount;
@@ -99,7 +101,7 @@ public class Status {
     /**
      * copy the text and errors from another Status object to this object.
      */
-    public void copyStatus(Status from) {
+    public void copyStatus(IStatus from) {
         if (0 < from.getTextCount()) {
             this.addText(from.getText().substring(1));
         }
@@ -112,7 +114,7 @@ public class Status {
      * Move the text and errors from another Status object to this object.
      * This method clears the log of the other object in difference to copyStatus(..)
      */
-    public void moveStatus(Status from) {
+    public void moveStatus(IStatus from) {
         this.copyStatus(from);
         from.clear();
     }

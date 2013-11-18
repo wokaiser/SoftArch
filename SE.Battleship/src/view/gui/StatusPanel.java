@@ -1,5 +1,7 @@
 package view.gui;
 
+import interfaces.IStatus;
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 
@@ -7,8 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
-
-import model.general.Status;
 
 /**
  * The StatusPanel class is a JPanel to display information and errors.
@@ -33,7 +33,7 @@ public class StatusPanel extends JPanel {
      * the status panel will be highlighted in RED, otherwise in WHITE.
      * @status The status object, which saves normal text and errors.
      */
-    public final void update(Status status) {
+    public final void update(IStatus status) {
         if (status.errorExist()) {
             statusLabel.setText(status.getError());
             this.setBackground(Color.RED);

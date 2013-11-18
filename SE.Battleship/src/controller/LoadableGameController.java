@@ -12,7 +12,7 @@ public abstract class LoadableGameController extends AbstractGameController {
     public void saveGame(String name) {
         content.setName(name);
         database.save(name, content);
-        content.getStatus().moveStatus(database.getSatus());
+        content.getStatus().moveStatus(database.getStatus());
     }
     /**
      * To check if a game was loaded. The status will be set to true if a game was loaded and

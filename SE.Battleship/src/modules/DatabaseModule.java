@@ -5,7 +5,7 @@ import interfaces.IDatabase;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
-import database.CouchdbDatabase;
+import database.*;
 
 public class DatabaseModule extends AbstractModule {
     /**

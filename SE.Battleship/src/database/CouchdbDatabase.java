@@ -37,7 +37,7 @@ public class CouchdbDatabase extends AbstractDatabase {
                     "http://127.0.0.1:5984").build();
     
         } catch (MalformedURLException e) {
-            status.addError(e.getMessage());
+            getStatus().addError(e.getMessage());
         }
         CouchDbInstance dbInstance = new StdCouchDbInstance(client);
         db = dbInstance.createConnector("battleship_db", true);
@@ -48,10 +48,10 @@ public class CouchdbDatabase extends AbstractDatabase {
         CouchdbGameContent hContent = db.find(CouchdbGameContent.class, name);
         IGameContent content = map(hContent);
         if(null == content) {
-            status.addError(SAVEGAME_NOT_EXIST);
+            getStatus().addError(SAVEGAME_NOT_EXIST);
             return null;
         } else {
-            status.addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
+            getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
             return content;
         }
     }
@@ -72,7 +72,7 @@ public class CouchdbDatabase extends AbstractDatabase {
     public void save(String name, IGameContent content) {
         CouchdbGameContent hContent = map(content);
         if (getAll().contains(name)) {
-            status.addError(SAVEGAME_NAME_EXIST);
+            getStatus().addError(SAVEGAME_NAME_EXIST);
         } else {
             db.create(hContent.getId(), hContent);
         }

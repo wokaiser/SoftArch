@@ -31,11 +31,11 @@ public class HibernateDatabase extends AbstractDatabase {
         for (int index = 0; index < gameContent.size(); index++) {
             if (0 == name.compareTo(gameContent.get(index).getId())) {
                 IGameContent content = loadGame(gameContent.get(index));
-                status.addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
+                getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
                 return content;
             }
         }
-        status.addError(SAVEGAME_NOT_EXIST);
+        getStatus().addError(SAVEGAME_NOT_EXIST);
         return null;
     }
     
@@ -108,7 +108,7 @@ public class HibernateDatabase extends AbstractDatabase {
         Session session = null;
         
         if (getAll().contains(name)) {
-            status.addError(SAVEGAME_NAME_EXIST);
+            getStatus().addError(SAVEGAME_NAME_EXIST);
             return;
         }
 
@@ -125,7 +125,7 @@ public class HibernateDatabase extends AbstractDatabase {
             }
             tx.commit();
         } catch (HibernateException ex) {
-            status.addError(ex.getMessage());
+            getStatus().addError(ex.getMessage());
             if (tx != null) {
                 tx.rollback();
             }
@@ -156,7 +156,7 @@ public class HibernateDatabase extends AbstractDatabase {
             if (tx != null) {
                 tx.rollback();
             }
-            status.addError(ex.getMessage());
+            getStatus().addError(ex.getMessage());
         }
     }
     

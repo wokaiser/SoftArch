@@ -37,11 +37,11 @@ public class Db4oDatabase extends AbstractDatabase {
         query.descend("name").constrain(String.valueOf(name)).equal();
         ObjectSet<GameContent> result = query.execute();        
         if(result.isEmpty()) {
-            status.addError(SAVEGAME_NOT_EXIST);
+            getStatus().addError(SAVEGAME_NOT_EXIST);
             return null;
         } else {
             GameContent content = result.get(FIRST);
-            status.addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
+            getStatus().addText("Successfully loaded game. "+content.getActivePlayer() + " please select your target.");
             return content;
         }
     }
@@ -69,7 +69,7 @@ public class Db4oDatabase extends AbstractDatabase {
     @Override
     public void save(String name, IGameContent content) {
         if(isNameAlreadyUsed(name)) {
-            status.addError(SAVEGAME_NAME_EXIST);
+            getStatus().addError(SAVEGAME_NAME_EXIST);
         } else {
             content.setName(name);
             database.store(content);

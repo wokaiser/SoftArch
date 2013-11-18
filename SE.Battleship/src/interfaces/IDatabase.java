@@ -36,5 +36,5 @@ public interface IDatabase {
      * Get the status object, which will be used for information/error logging
      * @return The status object
      */
-    Status getSatus();
+    Status getStatus();
 }

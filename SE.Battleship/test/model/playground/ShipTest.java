@@ -49,6 +49,13 @@ public class ShipTest {
 		ship.setDamage();
 		ship.setDamage();
 		assertTrue(ship.isDestroyed());
+		try {
+		    //try to damage ship again which should not be possible because ship is already destroyed.
+		    ship.setDamage();
+		    fail("Should have raised an IllegalArgumentException");
+		} catch (IllegalStateException expected) {
+
+		}
 	}
 	// Test if ship could be damaged
 	@Test
@@ -59,4 +66,14 @@ public class ShipTest {
 		ship.setDamage();
 		assertTrue(ship.isDestroyed());		
 	}
+	// Test if ship could be damaged
+    @Test
+    public void testEquals() throws Exception {
+        Ship ship1 = new Ship("Test", 2, 'a');
+        Ship ship2 = new Ship("Test", 2, 'b');
+        Ship ship3 = new Ship("Test3", 4, 'b');
+        assertFalse(ship1.equals(null));
+        assertFalse(ship1.equals(ship2));
+        assertTrue(ship2.equals(ship3));
+    }
 }

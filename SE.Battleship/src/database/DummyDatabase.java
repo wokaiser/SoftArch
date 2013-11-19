@@ -51,15 +51,27 @@ public class DummyDatabase extends AbstractDatabase {
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
         /* dummy database does not need any data mapping, so this method can be empty */
         return new PlaygroundCell[0][0];
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
         /* dummy database does not need any data mapping, so this method can be empty */
         return new PlaygroundCell[0][0];
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
+        /* dummy database does not need any data mapping, so this method can be empty */
+        return new PersistentPlaygroundItem();
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
+        /* dummy database does not need any data mapping, so this method can be empty */
+        return new PersistentPlaygroundItem();
     }
 
 }

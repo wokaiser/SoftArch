@@ -107,17 +107,7 @@ public class HibernateDatabase extends AbstractDatabase {
             getStatus().addError(ex.getMessage());
         }
     }
-
-    @Override
-    IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
-        return loadPlayground(1, hcontent.getRows(), hcontent.getColumns(), hcontent.getId());
-    }
-
-    @Override
-    IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
-        return loadPlayground(2, hcontent.getRows(), hcontent.getColumns(), hcontent.getId());
-    }
-  
+    
     private IPlaygroundCell[][] loadPlayground(int playground, int rows, int columns, String gameContentid) {
         Session session = HibernateUtil.getInstance().getCurrentSession();
 
@@ -144,5 +134,25 @@ public class HibernateDatabase extends AbstractDatabase {
         }
 
         return matrix;
+    }
+
+    @Override
+    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
+        return loadPlayground(1, hcontent.getRows(), hcontent.getColumns(), hcontent.getId());
+    }
+
+    @Override
+    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
+        return loadPlayground(2, hcontent.getRows(), hcontent.getColumns(), hcontent.getId());
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
+        return new PersistentPlaygroundItem(hContent, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId());
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
+        return new PersistentPlaygroundItem(hContent, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId());
     }
 }

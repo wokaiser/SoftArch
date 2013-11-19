@@ -102,14 +102,24 @@ public class Db4oDatabase extends AbstractDatabase {
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
         /* db4o does not need any data mapping, so this method can be empty */
         return new PlaygroundCell[0][0];
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
         /* db4o does not need any data mapping, so this method can be empty */
         return new PlaygroundCell[0][0];
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
+        return new PersistentPlaygroundItem(hContent, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId());
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
+        return new PersistentPlaygroundItem(hContent, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId());
     }
 }

@@ -88,13 +88,23 @@ public class CouchdbDatabase extends AbstractDatabase {
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
         return loadPlayground(hcontent.getPlayground1(), hcontent.getRows(), hcontent.getColumns());
     }
 
     @Override
-    IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
+    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
         return loadPlayground(hcontent.getPlayground2(), hcontent.getRows(), hcontent.getColumns());
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
+        return new PersistentPlaygroundItem(null, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId());
+    }
+    
+    @Override
+    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
+        return new PersistentPlaygroundItem(null, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId());
     }
     
 }

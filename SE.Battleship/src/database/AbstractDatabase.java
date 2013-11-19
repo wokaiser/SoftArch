@@ -41,8 +41,8 @@ public abstract class AbstractDatabase implements IDatabase {
         return content;
     }
     
-    abstract IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent);
-    abstract IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent);
+    protected abstract IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent);
+    protected abstract IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent);
     
     protected PersistentGameContent map(IGameContent content) {
         /* copy content information to Couchdb required format */
@@ -62,8 +62,8 @@ public abstract class AbstractDatabase implements IDatabase {
         IPlaygroundCell[][] playground2Raw = content.getOwnPlayground(content.getPlayer2()).ownView();
         for (int row = 0; row < content.getRows(); row++) {
             for (int column = 0; column < content.getColumns(); column++){
-                playground1.add(new PersistentPlaygroundItem(hContent, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId()));
-                playground2.add(new PersistentPlaygroundItem(hContent, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId()));
+                playground1.add(createPersistentPlaygroundItem1(hContent, row, column, playground1Raw));
+                playground2.add(createPersistentPlaygroundItem2(hContent, row, column, playground2Raw));
             }
         }
         hContent.setPlayground1(playground1);
@@ -71,4 +71,8 @@ public abstract class AbstractDatabase implements IDatabase {
         
         return hContent;
     }
+    
+    protected abstract PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw);
+    
+    protected abstract PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw);
 }

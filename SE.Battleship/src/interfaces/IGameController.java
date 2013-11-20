@@ -123,4 +123,9 @@ public interface IGameController {
      * @return true if player switched, false if not
      */
     boolean switchedPlayer();
+    /**
+     * Get a List with all Highscores
+     * @return all highscores
+     */
+    List<IHighscoreEntry> getHighscores();
 }

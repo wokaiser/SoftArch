@@ -22,7 +22,7 @@ public interface IGameContent {
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    public void initContent(int rows, int columns, String player1, String player2, int moves1, int moves2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input);
+    void initContent(int rows, int columns, String player1, String player2, int moves1, int moves2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input);
     /**
      * Set the flag, to indicate that the game started
      */

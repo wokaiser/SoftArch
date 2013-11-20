@@ -94,7 +94,7 @@ public class GameController extends LoadableGameController {
         
         content.incMove();
         
-        content.getStatus().addText(content.getActivePlayer()+" shoot to: " + target.toString() + " with his "+content.getMoves(content.getActivePlayer())+" shot.");
+        content.getStatus().addText(content.getActivePlayer()+" shoot to: " + target.toString() + " with his "+content.getMoves(content.getActivePlayer())+" move.");
         
         if (content.getEnemyPlayground(player).alreadyShot(target)) {
             content.getStatus().addError(content.getActivePlayer()+" already shot to this target. Try again.");    

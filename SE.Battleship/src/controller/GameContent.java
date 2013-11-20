@@ -257,7 +257,7 @@ public class GameContent implements IGameContent {
      * Gets the own playground
      */
     public Playground getOwnPlayground(String activePlayer) {
-        if (player1 == activePlayer) {
+        if (this.player1 == activePlayer) {
             return playground1;
         }
         return playground2;
@@ -278,7 +278,7 @@ public class GameContent implements IGameContent {
      * Get the number of moves, which player 1 done.
      */
 	public int getMoves(String player) {
-        if (player1 == player) {
+	    if (0 == player.compareTo(player1)) {
         	return moves1;
         }
         return moves2;
@@ -287,7 +287,7 @@ public class GameContent implements IGameContent {
      * Increment the number of moves, which player 1/2 done.
      */
 	public void incMove() {
-        if (player1 == activePlayer) {
+	    if (0 == activePlayer.compareTo(player1)) {
         	moves1++;
         } else {
         	moves2++;

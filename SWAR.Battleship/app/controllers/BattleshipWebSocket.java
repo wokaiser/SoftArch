@@ -12,10 +12,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import controller.GameController;
-import database.GameContent;
+import controller.GameContent;
 import play.libs.Json;
 import play.libs.F.Callback;
 import play.mvc.*;
+import util.Connection;
 import view.game.Game;
 
 
@@ -63,7 +64,7 @@ public class BattleshipWebSocket extends Controller {
 		System.out.println("getNewOnlineGame - 1");
 		onlineGames.remove(uuid);
 		System.out.println("getNewOnlineGame - 2");
-		OnlineGame onlineGame = new OnlineGame(GameController.HUMAN_PLAYER_1, null);
+		OnlineGame onlineGame = new OnlineGame(GameContent.HUMAN_PLAYER_1, null);
 		System.out.println("getNewOnlineGame - 3");
 		onlineGame.setController(Game.newGameController());
 		System.out.println("getNewOnlineGame - 4");
@@ -73,7 +74,7 @@ public class BattleshipWebSocket extends Controller {
 	}
 	
 	public static OnlineGame joinOnlineGame(String joinUuuid, String ownUuid) {
-		OnlineGame controller = new OnlineGame(GameController.HUMAN_PLAYER_2, onlineGames.get(joinUuuid).getController());
+		OnlineGame controller = new OnlineGame(GameContent.HUMAN_PLAYER_2, onlineGames.get(joinUuuid).getController());
 		onlineGames.put(ownUuid, controller);
 		return controller;
 	}
@@ -92,7 +93,7 @@ public class BattleshipWebSocket extends Controller {
                 ObjectNode status = Json.newObject();
                 /* check if a uuid is in the session scope. If not cookies are probably disabled */
                 if (null == uuid) {
-        			status.put("error", "Enable Cookies and refresh the site to play battleships.");
+        			status.put("error", "Enable Cookies and connect to "+Connection.getActiveNetConnectionLocalHostIP()+":9000 to play battleships.");
         			out.write(status);
                 	return;
                 }
@@ -141,7 +142,7 @@ public class BattleshipWebSocket extends Controller {
 	        		System.out.println("newSinglePlayerGame");
 	        		onlineGame = getNewOnlineGame(uuid);
 	        		System.out.println("1");
-	        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.AI_PLAYER_1, GameContent.SINGLEPLAYER);
+	        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_EASY, GameContent.SINGLEPLAYER);
 	        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
 	        		System.out.println("2");
 	        		status.put("player", onlineGame.getPlayer());
@@ -174,7 +175,7 @@ public class BattleshipWebSocket extends Controller {
 		        		System.out.println("newMultiPlayerGame");
 		        		openGames.add(uuid);
 		        		onlineGame = getNewOnlineGame(uuid);
-		        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameController.HUMAN_PLAYER_1, GameController.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
+		        		onlineGame.getController().newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.HUMAN_PLAYER_2, GameContent.MULTIPLAYER);
 		        		onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
 		        		status.put("player", onlineGame.getPlayer());
 		        		status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
@@ -200,11 +201,7 @@ public class BattleshipWebSocket extends Controller {
 	        	if ((event.findPath("shootX").canConvertToInt())
 	        	  &&(event.findPath("shootY").canConvertToInt())) {
 	        		System.out.println("shoot from "+onlineGame.getPlayer());
-	        		int x = event.findPath("shootX").asInt();
-	        		int y = event.findPath("shootY").asInt();
-	        		Coordinates target = new Coordinates(controller.getRows(), controller.getColumns());
-	        		target.setRow(x);
-	        		target.setColumn(y);
+	        		Coordinates target = new Coordinates(event.findPath("shootX").asInt(), event.findPath("shootY").asInt());
 	        		controller.shoot(onlineGame.getPlayer(), target);
 	        		return;
 	        	}

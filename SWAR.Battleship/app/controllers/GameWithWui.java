@@ -5,8 +5,9 @@ import play.mvc.WebSocket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import controller.GameController;
-import database.GameContent;
+import controller.GameContent;
 import interfaces.IObserver;
+import interfaces.IStatus;
 
 public class GameWithWui implements IObserver{
 	private final WebSocket.Out<JsonNode> out;
@@ -27,7 +28,7 @@ public class GameWithWui implements IObserver{
     	if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
     		System.out.println(controller.getActivePlayer()+" please select your target");	
 		}
-		model.general.Status controllerStatus = controller.getStatus();
+		IStatus controllerStatus = controller.getStatus();
 
 		if (controllerStatus.errorExist()) {
 			status.put("error", controllerStatus.getError());

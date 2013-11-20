@@ -105,6 +105,5 @@ public class CouchdbDatabase extends AbstractDatabase {
     @Override
     protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
         return new PersistentPlaygroundItem(null, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId());
-    }
-    
+    }  
 }

@@ -36,7 +36,7 @@ public abstract class AbstractDatabase implements IDatabase {
         IPlaygroundCell[][] matrixPlayground2 = loadPlayground2(hcontent);
         Injector inject = Guice.createInjector(new AiModule().setSettings(hcontent.getPlayer1()), new AiModule().setSettings(hcontent.getPlayer2()));
         GameContent content = inject.getInstance(GameContent.class);
-        content.initContent(hcontent.getRows(), hcontent.getColumns(), hcontent.getPlayer1(), hcontent.getPlayer2(), hcontent.getGameType(), matrixPlayground1, matrixPlayground2);
+        content.initContent(hcontent.getRows(), hcontent.getColumns(), hcontent.getPlayer1(), hcontent.getPlayer2(), hcontent.getMoves1(), hcontent.getMoves2(), hcontent.getGameType(), matrixPlayground1, matrixPlayground2);
         content.startGame();
         return content;
     }
@@ -53,6 +53,8 @@ public abstract class AbstractDatabase implements IDatabase {
         hContent.setColumns(content.getColumns());    
         hContent.setPlayer1(content.getPlayer1());
         hContent.setPlayer2(content.getPlayer2());
+        hContent.setMoves1(content.getMoves(content.getPlayer1()));
+        hContent.setMoves2(content.getMoves(content.getPlayer2()));
         
         /* copy playground information to Hibernate required format */
         List<PersistentPlaygroundItem> playground1 = new LinkedList<PersistentPlaygroundItem>();

@@ -32,6 +32,8 @@ public class AiModule extends AbstractModule {
             bind(IAi.class).to(AiEasy.class);
         } else if (0 == usedAI.compareTo(GameContent.AI_PLAYER_2_HARD)) {
             bind(IAi.class).to(AiEasy.class);
+        } else {
+        	bind(IAi.class).to(AiEasy.class);
         }
     }
 }

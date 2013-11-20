@@ -31,6 +31,8 @@ public class GameContent implements IGameContent {
     /* name of player 1 and 2 */
     private String player1;
     private String player2;
+    private int moves1;
+    private int moves2;
     /* AI for player 1 and 2 */
     private IAi player1AI;
     private IAi player2AI;
@@ -61,7 +63,9 @@ public class GameContent implements IGameContent {
      * @param gameType The gameType (SINGLEPLAYER or MULITPLAYER)
      */
     public void initContent(int rows, int columns, String player1, String player2, int gameType) {
-        status = new Status();
+    	moves1 = 0;
+    	moves2 = 0;
+    	status = new Status();
         playground1 = new Playground(rows, columns);
         playground2 = new Playground(rows, columns);
         this.player1 = player1;
@@ -86,12 +90,16 @@ public class GameContent implements IGameContent {
      * @param columns The number of columns of the playground
      * @param player1 The name of player1 (if it should be a computer player use AI_PLAYER_1)
      * @param player2 The name of player2 (if it should be a computer player use AI_PLAYER_2)
+     * @param move1 The number of moves, which player 1 already used.
+     * @param move2 The number of moves, which player 2 already used
      * @param gameType The gameType (SINGLEPLAYER or MULITPLAYER)
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    public void initContent(int rows, int columns, String player1, String player2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input) {
-        status = new Status();
+    public void initContent(int rows, int columns, String player1, String player2, int moves1, int moves2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input) {
+    	this.moves1 = moves1;
+    	this.moves2 = moves2;
+    	status = new Status();
         this.playground1 = new Playground(AbstractPlayground.copyPlayground(playground1Input));
         this.playground2 = new Playground(AbstractPlayground.copyPlayground(playground2Input));
         this.player1 = player1;
@@ -138,7 +146,7 @@ public class GameContent implements IGameContent {
      * @throws exception if gameType is not SINGLEPLAYER or MULTIPLAYER
      */
     private void checkGameType() {
-        if (this.gameType != MULTIPLAYER && this.gameType != SINGLEPLAYER) {
+        if (gameType != MULTIPLAYER && gameType != SINGLEPLAYER) {
             throw new IllegalAccessError("Invalid game Type. Choose MULTIPLAYER or SINGLEPLAYER.");
         }
     }    
@@ -249,7 +257,7 @@ public class GameContent implements IGameContent {
      * Gets the own playground
      */
     public Playground getOwnPlayground(String activePlayer) {
-        if (this.player1 == activePlayer) {
+        if (player1 == activePlayer) {
             return playground1;
         }
         return playground2;
@@ -266,4 +274,23 @@ public class GameContent implements IGameContent {
     public String getPlayer2() {
         return player2;
     }
+    /**
+     * Get the number of moves, which player 1 done.
+     */
+	public int getMoves(String player) {
+        if (player1 == player) {
+        	return moves1;
+        }
+        return moves2;
+	}
+    /**
+     * Increment the number of moves, which player 1/2 done.
+     */
+	public void incMove() {
+        if (player1 == activePlayer) {
+        	moves1++;
+        } else {
+        	moves2++;
+        }
+	}
 }

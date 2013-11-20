@@ -16,11 +16,13 @@ public interface IGameContent {
      * @param columns The number of columns of the playground
      * @param player1 The name of player1 (if it should be a computer player use AI_PLAYER_1)
      * @param player2 The name of player2 (if it should be a computer player use AI_PLAYER_2)
+     * @param move1 The number of moves, which player 1 already used.
+     * @param move2 The number of moves, which player 2 already used
      * @param gameType The gameType (SINGLEPLAYER or MULITPLAYER)
      * @param playground1 of player1
      * @param playground2 of player2
      */
-    void initContent(int rows, int columns, String player1, String player2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input);
+    public void initContent(int rows, int columns, String player1, String player2, int moves1, int moves2, int gameType, IPlaygroundCell[][] playground1Input, IPlaygroundCell[][] playground2Input);
     /**
      * Set the flag, to indicate that the game started
      */
@@ -103,4 +105,12 @@ public interface IGameContent {
      * Gets the name of player2
      */
     String getPlayer2();
+    /**
+     * Get the number of moves of a player.
+     */
+    int getMoves(String player);
+    /**
+     * Increment the number of moves, which player 1/2 done.
+     */
+    void incMove(); 
 }

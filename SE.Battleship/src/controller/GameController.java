@@ -92,7 +92,9 @@ public class GameController extends LoadableGameController {
         
         content.setSwitchedPlayer(false);
         
-        content.getStatus().addText(content.getActivePlayer()+" shoot to: " + target.toString() + ".");
+        content.incMove();
+        
+        content.getStatus().addText(content.getActivePlayer()+" shoot to: " + target.toString() + " with his "+content.getMoves(content.getActivePlayer())+" shot.");
         
         if (content.getEnemyPlayground(player).alreadyShot(target)) {
             content.getStatus().addError(content.getActivePlayer()+" already shot to this target. Try again.");    

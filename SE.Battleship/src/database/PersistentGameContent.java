@@ -42,6 +42,8 @@ public class PersistentGameContent extends CouchDbDocument implements Serializab
     private int gameType;
     private String player1;
     private String player2;
+    private int moves1;
+    private int moves2;
 
     public PersistentGameContent() {
         
@@ -110,4 +112,20 @@ public class PersistentGameContent extends CouchDbDocument implements Serializab
     public void setPlayer2(String player2) {
         this.player2 = player2;
     }
+
+	public int getMoves1() {
+		return moves1;
+	}
+
+	public void setMoves1(int moves1) {
+		this.moves1 = moves1;
+	}
+
+	public int getMoves2() {
+		return moves2;
+	}
+
+	public void setMoves2(int moves2) {
+		this.moves2 = moves2;
+	}
 }

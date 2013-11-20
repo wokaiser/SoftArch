@@ -2,12 +2,9 @@ package database;
 
 
 import interfaces.IGameContent;
-import interfaces.IPlaygroundCell;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import model.playground.PlaygroundCell;
 
 public class DummyDatabase extends AbstractDatabase {
 
@@ -49,29 +46,4 @@ public class DummyDatabase extends AbstractDatabase {
     public void delete(String name) {
         getStatus().addText("Dummy database delete was called.");
     }
-
-    @Override
-    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
-        /* dummy database does not need any data mapping, so this method can be empty */
-        return new PlaygroundCell[0][0];
-    }
-
-    @Override
-    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
-        /* dummy database does not need any data mapping, so this method can be empty */
-        return new PlaygroundCell[0][0];
-    }
-    
-    @Override
-    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
-        /* dummy database does not need any data mapping, so this method can be empty */
-        return new PersistentPlaygroundItem();
-    }
-    
-    @Override
-    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
-        /* dummy database does not need any data mapping, so this method can be empty */
-        return new PersistentPlaygroundItem();
-    }
-
 }

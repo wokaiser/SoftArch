@@ -1,13 +1,10 @@
 package database;
 
 import interfaces.IGameContent;
-import interfaces.IPlaygroundCell;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import model.playground.PlaygroundCell;
 
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -77,33 +74,4 @@ public class CouchdbDatabase extends AbstractDatabase {
             db.delete(hContent);   
         }
     }
-
-    private IPlaygroundCell[][] loadPlayground(List<PersistentPlaygroundItem> playground, int rows, int columns) {
-        IPlaygroundCell[][] matrix = new PlaygroundCell[rows][columns]; 
-
-        for (int index = 0; index < playground.size(); index++) {
-            matrix[playground.get(index).getRowcell()][playground.get(index).getColumncell()] = new PlaygroundCell(playground.get(index).getStatus(), playground.get(index).getShipId());
-        }
-        return matrix;
-    }
-
-    @Override
-    protected IPlaygroundCell[][] loadPlayground1(PersistentGameContent hcontent) {
-        return loadPlayground(hcontent.getPlayground1(), hcontent.getRows(), hcontent.getColumns());
-    }
-
-    @Override
-    protected IPlaygroundCell[][] loadPlayground2(PersistentGameContent hcontent) {
-        return loadPlayground(hcontent.getPlayground2(), hcontent.getRows(), hcontent.getColumns());
-    }
-    
-    @Override
-    protected PersistentPlaygroundItem createPersistentPlaygroundItem1(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground1Raw) {
-        return new PersistentPlaygroundItem(null, 1, row, column, playground1Raw[row][column].get(), playground1Raw[row][column].getShipId());
-    }
-    
-    @Override
-    protected PersistentPlaygroundItem createPersistentPlaygroundItem2(PersistentGameContent hContent, int row, int column, IPlaygroundCell[][] playground2Raw) {
-        return new PersistentPlaygroundItem(null, 2, row, column, playground2Raw[row][column].get(), playground2Raw[row][column].getShipId());
-    }  
 }

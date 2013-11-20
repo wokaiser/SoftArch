@@ -18,8 +18,8 @@ import interfaces.IHighscore;
 import interfaces.IHighscoreEntry;
 
 public class HtwgHighscore implements IHighscore {
-    private final String GAME_NAME = "Battleship_Group02";
-    private final String SERVER_ADDRESS = "http://localhost:9000";
+    private static final String GAME_NAME = "Battleship_Group02";
+    private static final String SERVER_ADDRESS = "http://localhost:9000";
     
     public List<IHighscoreEntry> getAll() {
             List<IHighscoreEntry> scores = new LinkedList<IHighscoreEntry>();

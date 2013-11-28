@@ -24,11 +24,30 @@ public class TestObservable {
 
     @Test
     public void testRemoveObserver() {
+    	ObserverMockup[] observers = new ObserverMockup[] { new ObserverMockup(), new ObserverMockup(), new ObserverMockup() };
+    	for (ObserverMockup observer: observers) {
+			obs.addObserver(observer);
+		}
+    	ObserverMockup tmp = new ObserverMockup();
+    	String uuid = obs.addObserver(tmp);
+    	obs.removeObserver(uuid);
+    	obs.notifyObservers();
+    	for (ObserverMockup observer : observers) {
+			assertTrue(observer.wasNotified());
+		}
+    	assertFalse(tmp.wasNotified());
     }
 
     @Test
     public void testRemoveAllObservers() {
-
+    	ObserverMockup[] observers = new ObserverMockup[] { new ObserverMockup(), new ObserverMockup(), new ObserverMockup() };
+    	for (ObserverMockup observer: observers) {
+			obs.addObserver(observer);
+		}
+    	obs.removeAllObservers();
+    	obs.notifyObservers();for (ObserverMockup observer : observers) {
+			assertFalse(observer.wasNotified());
+		}
     }
 
     @Test

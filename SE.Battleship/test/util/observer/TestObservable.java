@@ -2,6 +2,8 @@ package util.observer;
 
 import static org.junit.Assert.*;
 
+import java.util.UUID;
+
 import mockup.ObserverMockup;
 
 import org.junit.*;
@@ -15,11 +17,21 @@ public class TestObservable {
 	}
 
 	@Test
-    public void testAddObserver() {
+    public void testAddObserver1() {
         String tmpA = obs.addObserver(new ObserverMockup());
         assertNotNull(tmpA);
         String tmpB = obs.addObserver(new ObserverMockup());
         assertNotEquals(tmpA, tmpB);
+    }
+	
+	@Test
+    public void testAddObserver2() {
+		String uuid = UUID.randomUUID().toString();
+        String tmpA = obs.addObserver(new ObserverMockup());
+        assertNotNull(tmpA);
+        String tmpB = obs.addObserver(uuid, new ObserverMockup());
+        assertNotEquals(tmpA, tmpB);
+        assertEquals(tmpB, uuid);
     }
 
     @Test

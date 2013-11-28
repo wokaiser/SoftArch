@@ -20,7 +20,7 @@ public abstract class LoadableGameController extends AbstractGameController {
         if (GameContent.MULTIPLAYER == content.getGameType()) {
             content.getStatus().addError("Multiplayer games cannot be saved!");
             return;
-    }
+        }
         content.setName(name);
         database.save(name, content);
         content.getStatus().moveStatus(database.getStatus());

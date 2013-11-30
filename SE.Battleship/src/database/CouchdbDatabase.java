@@ -23,7 +23,7 @@ public class CouchdbDatabase extends AbstractDatabase {
         HttpClient client = null;
         try {
             client = new StdHttpClient.Builder().url(
-                    "http://127.0.0.1:5984").build();
+                    "http://lenny2.in.htwg-konstanz.de:5984").build();
     
         } catch (MalformedURLException e) {
             getStatus().addError(e.getMessage());

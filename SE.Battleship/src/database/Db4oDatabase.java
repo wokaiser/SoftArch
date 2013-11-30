@@ -20,7 +20,14 @@ public class Db4oDatabase extends AbstractDatabase {
      * Creats a new Db4o database and opens it
      */
     public Db4oDatabase() {
-        database = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), FILENAME);
+        database = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), FILENAME);        
+    }
+    
+    /**
+     * This method is ONLY to be used for testing purposes!
+     */
+    public void close() {
+    	database.close();
     }
 
     /**

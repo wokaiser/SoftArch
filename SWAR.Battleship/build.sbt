@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   cache,
   "org.codehaus.jackson" % "jackson-mapper-asl" % "1.8.5",
   "com.google.inject" % "guice" % "3.0",
-  "com.db4o" % "db4o-full-java5" % "8.0-SNAPSHOT"
+  "com.db4o" % "db4o-full-java5" % "8.0-SNAPSHOT",
+  "org.ektorp" % "org.ektorp" % "1.2.2"
 )     
 
 play.Project.playJavaSettings

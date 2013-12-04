@@ -1,11 +1,9 @@
-package modules;
+package database;
 
 import interfaces.IDatabase;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-
-import database.*;
 
 public class DatabaseModule extends AbstractModule {
     /**
@@ -13,6 +11,6 @@ public class DatabaseModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bind(IDatabase.class).to(CouchdbDatabase.class).in(Singleton.class);
+        bind(IDatabase.class).to(Db4oDatabase.class).in(Singleton.class);
     }
 }

@@ -1,13 +1,13 @@
 package view.game;
 
 import model.general.Constances;
-import modules.DatabaseModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import controller.GameContent;
 import controller.GameController;
+import database.DatabaseModule;
 
 public final class Game {
     /**

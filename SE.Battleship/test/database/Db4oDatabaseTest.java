@@ -20,7 +20,7 @@ public class Db4oDatabaseTest {
 	private String name3 = "test12345";
 		
 	@Test
-	public void testCouchdbDatabase() {
+	public void testDb4oDatabase() {
 		try {
 			database = new Db4oDatabase();
 		} catch (Exception exc) {

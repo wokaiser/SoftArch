@@ -5,6 +5,7 @@ import java.util.List;
 import highscore.HtwgHighscore;
 import interfaces.ICoordinates;
 import interfaces.IDatabase;
+import interfaces.IGameContent;
 import interfaces.IHighscore;
 import interfaces.IHighscoreEntry;
 import interfaces.IStatus;
@@ -36,14 +37,15 @@ public class GameController extends LoadableGameController {
      */
     public final void newController(int rows, int columns, String player1, String player2, int gameType) {
         Injector inject = Guice.createInjector(new AiModule().setSettings(player1), new AiModule().setSettings(player2));
-        content = inject.getInstance(GameContent.class);
-        content.initContent(rows, columns, player1, player2, gameType);
+        setContent(inject.getInstance(GameContent.class));
+        getContent().initContent(rows, columns, player1, player2, gameType);
     }
     /**
      * Start the game now. In a single player game this method can be called directly. In a distributed
      * multi player game, the second player has to call this method.
      */
     public void startGame() {
+    	IGameContent content = getContent();
         if (null == content) {
             throw new IllegalAccessError("newController was not called before.");
         }
@@ -60,6 +62,7 @@ public class GameController extends LoadableGameController {
      * @return the game type which should be SINGLEPLAYER or MULTIPLAYER
      */
     public int getGameType() {
+    	IGameContent content = getContent();
         return content.getGameType();
     }    
     /**
@@ -68,6 +71,7 @@ public class GameController extends LoadableGameController {
      * @return false The game is not finished.
      */
     public boolean gameFinished() {
+    	IGameContent content = getContent();
         if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
             content.getStatus().addText(content.getActivePlayer() + " won.");
             return true;
@@ -79,7 +83,8 @@ public class GameController extends LoadableGameController {
      * call like shoot(..)
      * @return status A status object with logged information.
      */
-    public IStatus getStatus() {
+    public IStatus getStatus() {    	
+    	IGameContent content = getContent();
         return content.getStatus();
     }    
     /**
@@ -89,6 +94,7 @@ public class GameController extends LoadableGameController {
      * @return The result of the shot (see Playground class)
      */
     public int shoot(String player, ICoordinates t) {
+    	IGameContent content = getContent();
         int shootStatus = Constances.SHOOT_INVALID;
         ICoordinates target = (content.aiIsActive()) ? content.getActiveAI().getCoordinates() : t;
         
@@ -125,6 +131,7 @@ public class GameController extends LoadableGameController {
     }
     
     private boolean playerCanShoot(String player) {
+       IGameContent content = getContent();
        if (!content.gameStarted()) {
             content.getStatus().addError("Wait for another player to get started.");
             return false;
@@ -149,6 +156,7 @@ public class GameController extends LoadableGameController {
      * the Observers after every shot.
      */
     private void aiShoot() {
+    	IGameContent content = getContent();
         while (!gameFinished() && content.aiIsActive()) {
             int status = shoot(getActivePlayer(), null);
             content.getActiveAI().shotResult(status);

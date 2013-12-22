@@ -24,7 +24,7 @@ public class BattleshipWebSocket extends Controller {
 	
 	/* this Map holds all controllers, for all players. A play can get his controller with his uuid */
 	private static HashMap<String, OnlineGame> onlineGames = new HashMap<String, OnlineGame>();
-	/* this list holds all open multiplayer games, which mean that one player wait for another player */
+	/* this list holds all open multi player games, which mean that one player wait for another player */
 	private static List<String> openGames = new LinkedList<String>();
 	
 	/**
@@ -74,6 +74,10 @@ public class BattleshipWebSocket extends Controller {
 	}
 	
 	public static OnlineGame joinOnlineGame(String joinUuuid, String ownUuid) {
+		/* remove the game which will be joined from the list of openGames, because this
+		   game cannot be joined by another player. */
+		openGames.remove(joinUuuid);
+		
 		OnlineGame controller = new OnlineGame(GameContent.HUMAN_PLAYER_2, onlineGames.get(joinUuuid).getController());
 		onlineGames.put(ownUuid, controller);
 		return controller;

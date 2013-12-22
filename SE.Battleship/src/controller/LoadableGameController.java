@@ -1,6 +1,7 @@
 package controller;
 
 import interfaces.IDatabase;
+import interfaces.IGameContent;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public abstract class LoadableGameController extends AbstractGameController {
      * @param The name of the savegame
      */
     public void saveGame(String name) {
+    	IGameContent content = getContent();
         if (GameContent.MULTIPLAYER == content.getGameType()) {
             content.getStatus().addError("Multiplayer games cannot be saved!");
             return;
@@ -38,7 +40,7 @@ public abstract class LoadableGameController extends AbstractGameController {
      * @param the name of the game to load
      */
     public void loadGame(String name) {
-        content = database.load(name);
+        setContent(database.load(name));
         loadedGame = true;
         notifyObservers();
         loadedGame = false;

@@ -9,7 +9,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import util.observer.Observable;
 
 public abstract class AbstractGameController extends Observable implements IGameController{
-    protected IGameContent content = null;
+    private IGameContent content = null;
+    
+    /**
+     * Override the Observable, to notify the Observers and clear the status after that.
+     */
+    public void setContent(IGameContent c) {
+    	content = c;
+    }     
+    
+    /**
+     * Get the game content
+     * @return the game content
+     */
+    public IGameContent getContent() {
+    	return content;
+    }
     
     /**
      * Override the Observable, to notify the Observers and clear the status after that.

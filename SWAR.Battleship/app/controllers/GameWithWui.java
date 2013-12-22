@@ -23,13 +23,20 @@ public class GameWithWui implements IObserver{
 	@Override
 	public void update() {
 		System.out.println("Update for player: "+player);
-		ObjectNode status = Json.newObject();                            	
+		ObjectNode status = Json.newObject();
+		ObjectNode playground = Json.newObject();
    
     	if (controller.switchedPlayer() && controller.getGameType() == GameContent.MULTIPLAYER) {
     		System.out.println(controller.getActivePlayer()+" please select your target");	
 		}
 		IStatus controllerStatus = controller.getStatus();
 
+		if (controller.gameFinished()) {
+			status.put("info", controllerStatus.getText());
+  			out.write(status);
+  			return;
+		}
+		
 		if (controllerStatus.errorExist()) {
 			status.put("error", controllerStatus.getError());
   			out.write(status);
@@ -38,20 +45,12 @@ public class GameWithWui implements IObserver{
 		if (controllerStatus.textExist()) {
 			status.put("info", controllerStatus.getText());
   			out.write(status);
-  			status.removeAll();
-		}
-		
-		if (controller.gameFinished()) {
-			status.put("info", controllerStatus.getText());
-  			out.write(status);
-  			status.removeAll();
-  			return;
 		}
 
-		/* send an update */
-    	status.put("ownPlayground", controller.getOwnPlaygroundAsJson(player));
-    	status.put("enemyPlayground", controller.getEnemyPlaygroundAsJson(player));
-		out.write(status);
+		/* send an update of the playground */
+    	playground.put("ownPlayground", controller.getOwnPlaygroundAsJson(player));
+    	playground.put("enemyPlayground", controller.getEnemyPlaygroundAsJson(player));
+		out.write(playground);
 		return;
 	}
 }

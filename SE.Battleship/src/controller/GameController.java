@@ -24,8 +24,9 @@ public class GameController extends LoadableGameController {
      * Creates a new game     
      */
     @Inject
-    public GameController(IDatabase db) {
+    public GameController(IDatabase db, IHighscore h) {
         super(db);
+        highscore = h;
     }    
     /**
      * Create a new controller with a whole new playground which have new random placed ships on it.
@@ -166,10 +167,5 @@ public class GameController extends LoadableGameController {
     		return "No Highscore available.";
     	}
         return highscore.toString();
-    }
-    
-    @Inject
-    public void setHighscoreService(IHighscore h) {
-    	highscore = h;
     }
 }

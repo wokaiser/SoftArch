@@ -1,7 +1,6 @@
 package controller;
 
 import static org.junit.Assert.*;
-
 import interfaces.IDatabase;
 import interfaces.IStatus;
 import mockup.DatabaseMockup;
@@ -21,14 +20,14 @@ public class GameControllerTest {
 
 	@Before
 	public void setUp() {
-		controller = new GameController(databaseMockup);
+		controller = new GameController(databaseMockup, null);
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_EASY, GameContent.SINGLEPLAYER);
 	}
 	
 	@Test
 	public void testGameController() {
 		try {
-			new GameController(null);
+			new GameController(null, null);
 		} catch (Exception exc) {
 			fail("Should not throw exception at this point.");
 		}
@@ -136,8 +135,7 @@ public class GameControllerTest {
 		assertFalse(controller.loadedGame());
 		controller.saveGame(name);
 		controller.loadGame(name);
-		// TODO Dennis fragen warum false?!
-		//assertTrue(controller.loadedGame());
+		assertFalse(controller.loadedGame());
     }
 	
     public void testLoadGame() {

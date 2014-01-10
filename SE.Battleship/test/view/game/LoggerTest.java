@@ -17,7 +17,7 @@ public class LoggerTest {
 	
 	@Before
 	public void setUp() {
-		controller = new GameController(null);
+		controller = new GameController(null, null);
 		controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_EASY, GameContent.SINGLEPLAYER);
 		logger = new Logger(controller);		
 	}

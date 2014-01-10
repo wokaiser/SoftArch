@@ -1,13 +1,9 @@
 package controller;
 
-import java.util.List;
-
-import highscore.HtwgHighscore;
 import interfaces.ICoordinates;
 import interfaces.IDatabase;
 import interfaces.IGameContent;
 import interfaces.IHighscore;
-import interfaces.IHighscoreEntry;
 import interfaces.IStatus;
 
 import com.google.inject.Guice;
@@ -23,14 +19,13 @@ import modules.AiModule;
  * @author Dennis Parlak
  */
 public class GameController extends LoadableGameController {
-    private IHighscore highscore;
+    private IHighscore highscore = null;
     /**
      * Creates a new game     
      */
     @Inject
     public GameController(IDatabase db) {
         super(db);
-        highscore = new HtwgHighscore();
     }    
     /**
      * Create a new controller with a whole new playground which have new random placed ships on it.
@@ -166,7 +161,15 @@ public class GameController extends LoadableGameController {
         }
     }
     @Override
-    public List<IHighscoreEntry> getHighscores() {
-        return highscore.getAll();
+    public String getHighscores() {
+    	if (null == highscore) {
+    		return "No Highscore available.";
+    	}
+        return highscore.toString();
+    }
+    
+    @Inject
+    public void setHighscoreService(IHighscore h) {
+    	highscore = h;
     }
 }

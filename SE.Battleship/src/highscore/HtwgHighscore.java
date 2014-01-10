@@ -45,7 +45,7 @@ public class HtwgHighscore implements IHighscore {
         for (int i=0; i<scoreArray.length(); i++) {
             JSONObject item = scoreArray.getJSONObject(i);
             if (item.getString("game").equals(GAME_NAME)) {
-                scores.add(new HtwgHighscoreEntry(item.getString("player"), item.getLong("score")));
+                scores.add(new HighscoreEntry(item.getString("player"), item.getLong("score")));
             }
         }
         return scores;
@@ -60,4 +60,16 @@ public class HtwgHighscore implements IHighscore {
             /* exception will be ignored */
         }
     }
+    
+	public String toString(){
+		StringBuilder builder = new StringBuilder("");
+		
+		for (IHighscoreEntry e : getAll()) {
+			builder.append(e.getPlayer());
+			builder.append(" : ");
+			builder.append(e.getScore());
+			builder.append("\n");
+		}		
+		return builder.toString();
+	}
 }

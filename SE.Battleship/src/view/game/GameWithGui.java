@@ -143,9 +143,22 @@ public class GameWithGui implements IObserver {
         menu.add(loadMenu());
         menu.add(deleteMenu());
         menu.add(saveMenu());
+        menu.add(showHighScore());
         menu.add(quitMenu());
         menuBar.add(menu);
         mainFrame.setJMenuBar(menuBar);
+    }
+    
+    /**
+     * Create the menu to show high score
+     * @param JMenuItem
+     */
+    private JMenuItem showHighScore() {
+        return createNewItem("High Score", KeyEvent.VK_H, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(mainFrame, controller.getHighscores(), "High Score", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
     }
     
     /**

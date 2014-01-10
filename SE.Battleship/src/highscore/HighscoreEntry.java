@@ -2,7 +2,7 @@ package highscore;
 
 import interfaces.IHighscoreEntry;
 
-public class HtwgHighscoreEntry implements IHighscoreEntry {
+public class HighscoreEntry implements IHighscoreEntry {
     private final String player;
     private final long score;
 
@@ -11,7 +11,7 @@ public class HtwgHighscoreEntry implements IHighscoreEntry {
      * @param name of the player which own this highscore
      * @param score of the player
      */
-    public HtwgHighscoreEntry(String player, long score) {
+    public HighscoreEntry(String player, long score) {
         this.player = player;
         this.score = score;
     }

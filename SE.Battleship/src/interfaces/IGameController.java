@@ -124,8 +124,8 @@ public interface IGameController {
      */
     boolean switchedPlayer();
     /**
-     * Get a List with all Highscores
+     * Get a string with all Highscores
      * @return all highscores
      */
-    List<IHighscoreEntry> getHighscores();
+    String getHighscores();
 }

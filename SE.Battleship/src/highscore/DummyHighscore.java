@@ -7,12 +7,12 @@ import interfaces.IHighscore;
 import interfaces.IHighscoreEntry;
 
 public class DummyHighscore implements IHighscore {
-	private static int DUMMY_SCORE_1 = 40;
-	private static int DUMMY_SCORE_2 = 50;
-	private static int DUMMY_SCORE_3 = 52;
-	private static String DUMMY_NAME_1 = "Matze";
-	private static String DUMMY_NAME_2 = "Tilo";
-	private static String DUMMY_NAME_3 = "Max";
+	private static final int DUMMY_SCORE_1 = 40;
+	private static final int DUMMY_SCORE_2 = 50;
+	private static final int DUMMY_SCORE_3 = 52;
+	private static final String DUMMY_NAME_1 = "Matze";
+	private static final String DUMMY_NAME_2 = "Tilo";
+	private static final String DUMMY_NAME_3 = "Max";
 	private List<IHighscoreEntry> scores = new LinkedList<IHighscoreEntry>();
 	
 	public DummyHighscore() {

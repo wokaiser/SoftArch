@@ -7,13 +7,18 @@ import interfaces.IHighscore;
 import interfaces.IHighscoreEntry;
 
 public class DummyHighscore implements IHighscore {
-
-	List<IHighscoreEntry> scores = new LinkedList<IHighscoreEntry>();
+	private static int DUMMY_SCORE_1 = 40;
+	private static int DUMMY_SCORE_2 = 50;
+	private static int DUMMY_SCORE_3 = 52;
+	private static String DUMMY_NAME_1 = "Matze";
+	private static String DUMMY_NAME_2 = "Tilo";
+	private static String DUMMY_NAME_3 = "Max";
+	private List<IHighscoreEntry> scores = new LinkedList<IHighscoreEntry>();
 	
 	public DummyHighscore() {
-		scores.add(new HighscoreEntry("Matze", 40));
-		scores.add(new HighscoreEntry("Max", 50));
-		scores.add(new HighscoreEntry("Tilo", 52));
+		scores.add(new HighscoreEntry(DUMMY_NAME_1, DUMMY_SCORE_1));
+		scores.add(new HighscoreEntry(DUMMY_NAME_2, DUMMY_SCORE_2));
+		scores.add(new HighscoreEntry(DUMMY_NAME_3, DUMMY_SCORE_3));
 	}
 	
 	@Override

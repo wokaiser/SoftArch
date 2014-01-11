@@ -112,7 +112,7 @@ public class BattleshipWebSocket extends Controller {
         			out.write(status);
         			return;
                 }
-            	
+
                 GameController controller = onlineGame.getController();
                 /* check if a game is still active */
             	if (controller.gameFinished()) {
@@ -188,7 +188,66 @@ public class BattleshipWebSocket extends Controller {
 		      			return;
 	        		}
 	        	}
-	       
+	        	/* new multiplayer game */
+	        	if (null != event.findPath("saveGame").textValue()) {
+                    if (null == controller) {
+                        status.put("saveGameError", "No Game to save.");
+                        out.write(status);
+                        return;
+                    } else {
+                        onlineGame.getController().saveGame(event.findPath("saveGame").textValue());
+                        if (controller.getStatus().errorExist()) {
+                            status.put("saveGameError", controller.getStatus().getError());
+                            out.write(status);
+                            controller.getStatus().clearError();
+                        } else {
+                            status.put("saveGameSuccess", "Game successfully saved.");
+                            out.write(status);
+                        }
+                        return;
+                    }
+                }
+                
+	        	/* new multiplayer game */
+	        	if (null != event.findPath("loadGame").textValue()) {
+                    if (null == controller) {
+                        onlineGame = getNewOnlineGame(uuid);
+                        onlineGame.getController().loadGame(event.findPath("loadGame").textValue());
+                        onlineGame.getController().addObserver(onlineGame.getPlayer(), new GameWithWui(onlineGame, in, out));
+                        status.put("player", onlineGame.getPlayer());
+                        status.put("ownPlayground", onlineGame.getController().getOwnPlaygroundAsJson(onlineGame.getPlayer()));
+                        status.put("enemyPlayground", onlineGame.getController().getEnemyPlaygroundAsJson(onlineGame.getPlayer()));
+                        out.write(status);
+                        onlineGame.getController().startGame();
+                        return;
+                    } else {
+                        onlineGame.getController().loadGame(event.findPath("loadGame").textValue());
+                        onlineGame.getController().startGame();
+                        return;
+                    }
+                }
+                
+	        	/* new multiplayer game */
+	        	if (null != event.findPath("getHighscore").textValue()) {
+                    status.put("highscore", Game.newGameController().getHighscores());
+                    out.write(status);
+                    return;
+                }
+	        	
+	        	/* get save game */
+	        	if (null != event.findPath("getSavegames").textValue()) {
+                    StringBuilder builder = new StringBuilder("<div class='form-group'><label for='loadSelect'>Select the game to load</label><select id='loadSelect' class='form-control'>");
+                    for (String str : Game.newGameController().getStoredGames()) {
+                        builder.append("<option>");
+                        builder.append(str);
+                        builder.append("</option>");
+                    }
+                    builder.append("</select>");
+                    status.put("getSavegames", builder.toString());
+                    out.write(status);
+                    return;
+                }
+                
 	        	/* check if no controller is ready */
 	        	if (null == controller) {
 	        		status.put("info", "Create a new game to start with Battleship.");
@@ -196,18 +255,6 @@ public class BattleshipWebSocket extends Controller {
 	        		return;
 	        	}
                 
-	        	/* new multiplayer game */
-	        	if (null != event.findPath("getHighscore").textValue()) {
-                    if (null == controller) {
-                        status.put("info", "First create a game to see the highscoe");
-                        out.write(status);
-                        return;
-                    }
-                    status.put("highscore", controller.getHighscores());
-                    out.write(status);
-                    return;
-                }
-	        	
 	        	if (controller.gameFinished()) {
 	    			status.put("info", "Creating a new game is required.");
 	    			out.write(status);

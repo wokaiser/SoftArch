@@ -14,6 +14,9 @@ var controller = (function () {
         'updatePlayground'     : $.Callbacks(),
         'updateStatus'         : $.Callbacks(),
         'highscore'            : $.Callbacks(),
+        'getSavegames'         : $.Callbacks(),
+        'saveGameError'        : $.Callbacks(),
+        'saveGameSuccess'      : $.Callbacks(),
     };
 
     /* definition of functions to add callback functions. */
@@ -77,6 +80,12 @@ var controller = (function () {
             eventListener["updateStatus"].fire(data); 
         } else if (data.highscore) {
             eventListener["highscore"].fire(data.highscore); 
+        } else if (data.getSavegames) {
+            eventListener["getSavegames"].fire(data.getSavegames); 
+        } else if (data.saveGameSuccess) {
+            eventListener["saveGameSuccess"].fire(data.saveGameSuccess); 
+        }  else if (data.saveGameError) {
+            eventListener["saveGameError"].fire(data.saveGameError); 
         }
         
         if (data.multiPlayerWait) {
@@ -116,8 +125,24 @@ var controller = (function () {
         websocketSend({shootX : coord.x, shootY : coord.y});
     };
     
+    var getSavegames = function() {
+        console.log("getSavegames");
+        websocketSend({getSavegames : "get savegames."});
+    };
+    
+    var loadGame = function (name) {
+        websocketSend({loadGame : name});
+    };
+    
+    var saveGame = function (name) {
+        websocketSend({saveGame : name});
+    };
+    
     /* Public methods and variables */
     return {      
+        saveGame            : saveGame,
+        loadGame            : loadGame,
+        getSavegames        : getSavegames,
         addEventListener    : addEventListener,
         run                 : run,
         newSinglePlayerGame : newSinglePlayerGame,

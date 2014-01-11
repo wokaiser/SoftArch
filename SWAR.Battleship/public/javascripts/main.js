@@ -17,7 +17,29 @@ controller.addEventListener('highscore',
         $('#myModalTitle').html("HighScore");
         $('#myModalBody').html(score.replaceAll("\n", "<br/>"));
         $('#myModal').modal('toggle');
-    });
+    }
+);
+    
+    
+controller.addEventListener('getSavegames', 
+    function(games) {
+        $('#loadModalBody').html(games);
+        $('#loadModal').modal('toggle');
+    }
+);
+
+controller.addEventListener('saveGameError', 
+    function(error) {
+        alert(error);
+    }
+);
+
+controller.addEventListener('saveGameSuccess', 
+    function(success) {
+        $('#saveModal').modal('toggle');
+        alert(success);
+    }
+);
 
 
 /* start application controller */

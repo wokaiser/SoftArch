@@ -20,6 +20,12 @@ var eventHandle = (function () {
         }
     });
     
+    $( "a.Highscore" ).on({
+        click: function() {
+            controller.getHighscore();
+        }
+    });
+    
     /* Public methods and variables */
     return {      
         clickablePlayground  : clickablePlayground,

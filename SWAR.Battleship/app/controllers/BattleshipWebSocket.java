@@ -195,6 +195,18 @@ public class BattleshipWebSocket extends Controller {
 	        		out.write(status);
 	        		return;
 	        	}
+                
+	        	/* new multiplayer game */
+	        	if (null != event.findPath("getHighscore").textValue()) {
+                    if (null == controller) {
+                        status.put("info", "First create a game to see the highscoe");
+                        out.write(status);
+                        return;
+                    }
+                    status.put("highscore", controller.getHighscores());
+                    out.write(status);
+                    return;
+                }
 	        	
 	        	if (controller.gameFinished()) {
 	    			status.put("info", "Creating a new game is required.");

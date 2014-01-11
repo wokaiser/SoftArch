@@ -13,6 +13,7 @@ var controller = (function () {
         'init'                 : $.Callbacks(),
         'updatePlayground'     : $.Callbacks(),
         'updateStatus'         : $.Callbacks(),
+        'highscore'            : $.Callbacks(),
     };
 
     /* definition of functions to add callback functions. */
@@ -74,6 +75,8 @@ var controller = (function () {
             eventListener["updateStatus"].fire(data);
         } else if (data.info) {
             eventListener["updateStatus"].fire(data); 
+        } else if (data.highscore) {
+            eventListener["highscore"].fire(data.highscore); 
         }
         
         if (data.multiPlayerWait) {
@@ -105,6 +108,10 @@ var controller = (function () {
         websocketSend({newMultiPlayerGame : "Creates a multi player game, or join an existing game."});
     };
     
+    var getHighscore = function () {
+        websocketSend({getHighscore : "get highscore."});
+    };
+    
     var shoot = function (coord) {
         websocketSend({shootX : coord.x, shootY : coord.y});
     };
@@ -115,6 +122,7 @@ var controller = (function () {
         run                 : run,
         newSinglePlayerGame : newSinglePlayerGame,
         newMultiPlayerGame  : newMultiPlayerGame,
+        getHighscore        : getHighscore,
         shoot               : shoot,
     };
 })();

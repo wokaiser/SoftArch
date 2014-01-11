@@ -1,5 +1,6 @@
 package controller;
 
+import highscore.HighscoreEntry;
 import interfaces.ICoordinates;
 import interfaces.IDatabase;
 import interfaces.IGameContent;
@@ -104,18 +105,23 @@ public class GameController extends LoadableGameController {
         content.incMove();
         
         content.getStatus().addText(content.getActivePlayer()+" shoot to: " + target.toString() + " with his "+content.getMoves(content.getActivePlayer())+" move.");
-        
+               
         if (content.getEnemyPlayground(player).alreadyShot(target)) {
             content.getStatus().addError(content.getActivePlayer()+" already shot to this target. Try again.");    
         } else {
             shootStatus = content.getEnemyPlayground(player).shoot(target);
+            
+            if (0 == content.getEnemyPlayground(content.getActivePlayer()).getNumberOfExistingShips()) {
+            	highscore.add(new HighscoreEntry(content.getActivePlayer(), content.getMoves(content.getActivePlayer())));
+            }
+            
             content.getStatus().moveStatus(content.getEnemyPlayground(player).getStatus());
             /* set flags for AI */
             if(Constances.SHOOT_MISS == shootStatus) {
                 /* no ship hit/destroyed, so switch the user */
                 content.switchPlayer();
                 content.getStatus().addText(content.getActivePlayer() + " it's your turn now.");
-            }            
+            }   
         }
         
         notifyObservers();

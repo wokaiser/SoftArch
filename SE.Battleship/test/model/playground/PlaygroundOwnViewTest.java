@@ -7,6 +7,8 @@ import model.playground.PlaygroundOwnView;
 
 import org.junit.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class PlaygroundOwnViewTest {
 	
 	private static final int ARRAYLENGTH = 586;
@@ -24,6 +26,18 @@ public class PlaygroundOwnViewTest {
 		} catch (Exception exc) {
 			fail("Should not have thrown exception at constructor!");
 		}
+	}
+	
+	@Test
+	public void testtoJson() {
+		IPlaygroundCell[][] tmp = new PlaygroundCell[Constances.DEFAULT_ROWS][Constances.DEFAULT_COLUMNS];
+        for (int row = 0; row < Constances.DEFAULT_ROWS; row++) {
+            for (int column = 0; column < Constances.DEFAULT_COLUMNS; column++) {
+                tmp[row][column] = new PlaygroundCell();
+            }
+        }
+		JsonNode result = view.toJson(tmp, Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS);
+		assertTrue(result != null);
 	}
 	
 	@Test

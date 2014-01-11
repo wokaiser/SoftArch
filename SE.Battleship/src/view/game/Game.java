@@ -11,6 +11,9 @@ import database.DatabaseModule;
 import database.HighscoreModule;
 
 public final class Game {
+	private static final DatabaseModule db = new DatabaseModule();
+	private static final HighscoreModule highscore = new HighscoreModule();
+	private static final Injector inject = Guice.createInjector(db, highscore);
     /**
      * Made this a singleton to please Sonar :)
      */
@@ -34,7 +37,6 @@ public final class Game {
      * @return A GameController
      */
     public static GameController newGameController() {
-        Injector inject = Guice.createInjector(new DatabaseModule(), new HighscoreModule());
         GameController controller = inject.getInstance(GameController.class);
         controller.newController(Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS, GameContent.HUMAN_PLAYER_1, GameContent.AI_PLAYER_1_HARD, GameContent.SINGLEPLAYER);
         return controller;

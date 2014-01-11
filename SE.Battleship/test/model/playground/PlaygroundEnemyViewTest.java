@@ -7,6 +7,8 @@ import model.playground.PlaygroundEnemyView;
 
 import org.junit.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class PlaygroundEnemyViewTest {
 	
 	private static final int ARRAYLENGTH = 586;
@@ -37,6 +39,18 @@ public class PlaygroundEnemyViewTest {
 		String result = view.toString(tmp, Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS);
 		assertTrue(result != null);
 		assertTrue(result.length() == ARRAYLENGTH);
+	}
+
+	@Test
+	public void testtoJson() {
+		IPlaygroundCell[][] tmp = new PlaygroundCell[Constances.DEFAULT_ROWS][Constances.DEFAULT_COLUMNS];
+        for (int row = 0; row < Constances.DEFAULT_ROWS; row++) {
+            for (int column = 0; column < Constances.DEFAULT_COLUMNS; column++) {
+                tmp[row][column] = new PlaygroundCell();
+            }
+        }
+		JsonNode result = view.toJson(tmp, Constances.DEFAULT_ROWS, Constances.DEFAULT_COLUMNS);
+		assertTrue(result != null);
 	}
 	
 	@Test
